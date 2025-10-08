@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light theme -->
+    <color name="primary">#7195FF</color> <!-- light blue -->
+
+    <color name="secondary">#374E8E</color> <!-- dark blue -->
+
+    <color name="background">#FFFFFF</color>
+
+    <color name="surface">#DFDFDF</color>
+    <color name="dark_surface">#7E7E7E</color>
+
+
+    <color name="error">#FF0000</color>
+
+    <color name="text">#000000</color>
+    
+    <color name="transparent">#00000000</color>
+
+</resources>

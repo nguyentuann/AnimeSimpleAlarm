@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme (pink) -->
+    <color name="secondary">#E05101</color> <!-- pink -->
+
+    <color name="primary">#FF7627</color> <!-- light pink -->
+
+    <color name="background">#000417</color> <!-- dark bg -->
+
+    <color name="surface">#4F5053</color>
+    <color name="dark_surface">#282828</color>
+
+    <color name="error">#FF0000</color>
+
+    <color name="text">#FFFFFF</color>
+
+    <color name="transparent">#00000000</color>
+</resources>

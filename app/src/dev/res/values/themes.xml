@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SimpleAlarmAndroid" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="RedTimePickerDialog" parent="android:Theme.Holo.Light.Dialog">
+        <!-- Màu cho spinner selector và nút OK/Cancel -->
+        <item name="android:colorAccent">@android:color/holo_red_light</item>
+        <!-- Màu chữ chính (tuỳ chọn) -->
+        <item name="android:textColorPrimary">@android:color/holo_red_dark</item>
+    </style>
+
+</resources>
