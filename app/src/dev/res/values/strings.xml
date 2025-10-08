@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">Alarm</string>
+    <string name="app_name">Anime Alarm</string>
 
 
-    <string name="appbar_title">My Alarms</string>
     <string name="timer">Timer</string>
     <string name="setting">Setting</string>
     <string name="quick_alarm">Quick Alarm</string>

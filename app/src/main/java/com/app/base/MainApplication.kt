@@ -19,7 +19,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.logger.Level
 import org.koin.dsl.module
-import vn.tutorial.simplealarmandroid.ui.home.HomeFragment
+import com.app.base.ui.home.HomeFragment
 
 class MainApplication : BaseApplication() {
     override val appInfo: AppInfo by lazy {

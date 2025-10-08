@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Alarm</string>
-    <string name="appbar_title">Báo thức của tôi</string>
+    <string name="app_name">Anime Alarm</string>
     <string name="timer">Hẹn giờ</string>
     <string name="setting">Cài đặt</string>
     <string name="quick_alarm">Báo thức nhanh</string>

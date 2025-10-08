@@ -107,9 +107,6 @@ class AlarmReceiverActivity : AppCompatActivity() {
                 ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary))
 
             if (stop == 3) {
-//                mediaPlayer?.stop()
-//                mediaPlayer?.release()
-//                mediaPlayer = null
                 stopService(Intent(this, AlarmSoundService::class.java))
                 finish()
             }

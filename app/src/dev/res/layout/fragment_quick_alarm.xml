@@ -3,36 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.alarm.QuickAlarmFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:navigationIconTint="@color/text"
-        app:navigationIcon="@drawable/ic_back">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quick_alarm"
-            android:textColor="@color/text"
-            android:textSize="24sp" />
-    </com.google.android.material.appbar.MaterialToolbar>
+    <include
+        android:id="@+id/quick_toolbar"
+        layout="@layout/toolbar_common" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:text="@string/quick_alarm" />
 
         <LinearLayout
             android:layout_width="match_parent"

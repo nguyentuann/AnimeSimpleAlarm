@@ -35,10 +35,10 @@ class QuickAlarmFragment : Fragment() {
 
         binding.btnCreateMyOwn.setOnClickListener {
             parentFragmentManager.popBackStack()
-            (activity as? MainActivity)?.addNewAlarm()
+//            (activity as? MainActivity)?.addNewAlarm()
         }
 
-        binding.toolBar.setNavigationOnClickListener {
+        binding.quickToolbar.toolBar.setNavigationOnClickListener {
             activity?.onBackPressedDispatcher?.onBackPressed()
         }
 

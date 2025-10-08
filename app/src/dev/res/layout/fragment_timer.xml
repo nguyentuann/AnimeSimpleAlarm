@@ -5,6 +5,12 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+
+    <include
+        android:id="@+id/timer_toolbar"
+        layout="@layout/toolbar_common" />
+
+
     <!-- Timer display -->
     <LinearLayout
         android:layout_width="match_parent"
