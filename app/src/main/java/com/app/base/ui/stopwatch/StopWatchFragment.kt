@@ -1,4 +1,4 @@
-package com.app.base.ui.timer_stopwatch
+package com.app.base.ui.stopwatch
 
 import android.annotation.SuppressLint
 import android.os.Bundle

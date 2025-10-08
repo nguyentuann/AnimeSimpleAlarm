@@ -14,39 +14,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_semi_bold"
-            android:text="@string/appbar_title"
+            android:text="@string/app_name"
+            android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tool_bar_setting"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <ImageButton
-            android:id="@+id/tool_bar_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:contentDescription="@string/timer"
-            android:padding="12dp"
-            android:src="@drawable/ic_timer"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tool_bar_quick"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/text" />
-
-        <ImageButton
-            android:id="@+id/tool_bar_quick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:contentDescription="@string/quick_alarm"
-            android:padding="12dp"
-            android:src="@drawable/ic_quick"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tool_bar_setting"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/tool_bar_setting"
@@ -57,22 +34,10 @@
             android:padding="12dp"
             android:src="@drawable/ic_setting"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tool_bar_add"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/text" />
-
-        <ImageButton
-            android:id="@+id/tool_bar_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/btn_border"
-            android:contentDescription="@string/add"
-            android:padding="8dp"
-            android:src="@drawable/ic_add"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:tint="@color/secondary" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

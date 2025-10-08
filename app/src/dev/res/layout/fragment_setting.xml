@@ -7,20 +7,9 @@
     android:orientation="vertical"
     tools:context=".ui.settings.SettingFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="@color/text">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings"
-            android:textColor="@color/text"
-            android:textSize="24sp" />
-    </com.google.android.material.appbar.MaterialToolbar>
+    <include
+        android:id="@+id/setting_toolbar"
+        layout="@layout/toolbar_common" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

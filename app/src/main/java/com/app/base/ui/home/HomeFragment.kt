@@ -1,4 +1,4 @@
-package vn.tutorial.simplealarmandroid.ui.home
+package com.app.base.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -50,27 +50,6 @@ class HomeFragment : Fragment() {
             adapter = alarmAdapter
         }
 
-        // click thêm mới
-        homeFragment.toolBar.toolBarAdd.setOnClickListener {
-            (activity as MainActivity).addNewAlarm()
-        }
-
-        homeFragment.addAlarmCard.setOnClickListener {
-            (activity as MainActivity).addNewAlarm()
-        }
-
-        // chuyển sang timer stopwatch
-        homeFragment.toolBar.toolBarTimer.setOnClickListener {
-            (activity as MainActivity).timerStopWatch()
-        }
-
-        homeFragment.toolBar.toolBarSetting.setOnClickListener {
-            (activity as MainActivity).setting()
-        }
-
-        homeFragment.toolBar.toolBarQuick.setOnClickListener {
-            (activity as MainActivity).quickAlarm()
-        }
 
         // quan sát dữ liệu
         listAlarmViewModel.alarmList.observe(viewLifecycleOwner) { alarms ->
@@ -104,7 +83,7 @@ class HomeFragment : Fragment() {
     private fun editAlarm(alarmId: String) {
         val fragment = NewAlarmFragment.Companion.newInstance(alarmId)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.home_container, fragment)
+            .replace(R.id.nav_host_fragment, fragment)
             .addToBackStack(null)
             .commit()
     }

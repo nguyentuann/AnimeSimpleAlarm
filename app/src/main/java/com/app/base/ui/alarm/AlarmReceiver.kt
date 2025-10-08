@@ -10,16 +10,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import javax.inject.Inject
 import com.app.base.R
 import com.app.base.data.model.AlarmModel
+import org.koin.java.KoinJavaComponent.getKoin
 
 class AlarmReceiver() : BroadcastReceiver() {
 
-    @Inject
-    lateinit var alarmScheduler: AlarmScheduler
-
     override fun onReceive(context: Context, intent: Intent) {
+
+        val alarmScheduler: AlarmScheduler = getKoin().get()
+
         val id = intent.getStringExtra("ALARM_ID")
         val message = intent.getStringExtra("ALARM_MESSAGE")
         val sound = intent.getIntExtra("ALARM_SOUND", 0)

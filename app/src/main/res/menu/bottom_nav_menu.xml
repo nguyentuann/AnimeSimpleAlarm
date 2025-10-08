@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_alarm"
+        android:title="@string/alarm" />
+
+    <item
+        android:id="@+id/quickAlarmFragment"
+        android:icon="@drawable/ic_quick_alarm"
+        android:title="@string/quick_alarm" />
+
+    <item
+        android:id="@+id/timerFragment"
+        android:icon="@drawable/ic_timer"
+        android:title="@string/timer" />
+
+    <item
+        android:id="@+id/stopwatchFragment"
+        android:icon="@drawable/ic_stopwatch"
+        android:title="@string/stopwatch" />
+
+
+</menu>
