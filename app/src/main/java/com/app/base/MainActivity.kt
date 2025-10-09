@@ -11,18 +11,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.app.base.helpers.setAppLocale
 import com.app.base.local.db.AppPreferences
+import com.app.base.ui.alarm.NewAlarmFragment
+import com.app.base.ui.settings.SettingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
     private val appPrefs: AppPreferences by inject()
     private lateinit var navController: NavController
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -67,22 +69,25 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.homeFragment)
                     true
                 }
+
                 R.id.quickAlarmFragment -> {
                     navController.navigate(R.id.quickAlarmFragment)
                     true
                 }
+
                 R.id.timerFragment -> {
                     navController.navigate(R.id.timerFragment)
                     true
                 }
+
                 R.id.stopwatchFragment -> {
                     navController.navigate(R.id.stopwatchFragment)
                     true
                 }
+
                 else -> false
             }
         }
     }
-
 }
 

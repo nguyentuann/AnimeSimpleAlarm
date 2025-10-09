@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.base.MainActivity
 import com.app.base.R
 import com.app.base.components.CommonComponents
 import com.app.base.data.model.AlarmModel
@@ -43,13 +43,13 @@ class HomeFragment : Fragment() {
             { alarm -> editAlarm(alarm) },
             { alarm -> enableAlarm(alarm) }
         )
+        initListener()
 
 
         homeFragment.alarmList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = alarmAdapter
         }
-
 
         // quan sát dữ liệu
         listAlarmViewModel.alarmList.observe(viewLifecycleOwner) { alarms ->
@@ -62,11 +62,27 @@ class HomeFragment : Fragment() {
                 homeFragment.addAlarmCard.visibility = View.VISIBLE
             }
         }
+
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _homeFragment = null
+    private fun initListener() {
+        homeFragment.addAlarmCard.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("alarmId", null)
+            }
+            findNavController().navigate(R.id.action_home_to_newAlarm, bundle)
+        }
+
+        homeFragment.toolBar.toolBarSetting.setOnClickListener {
+            val bundle = Bundle()
+            findNavController().navigate(R.id.action_home_to_setting, bundle)
+        }
+
+        homeFragment.floatBtnAdd.setOnClickListener {
+            val bundle = Bundle()
+            findNavController().navigate(R.id.action_home_to_newAlarm, bundle)
+        }
     }
 
     private fun deleteAlarm(alarm: AlarmModel) {
@@ -90,5 +106,10 @@ class HomeFragment : Fragment() {
 
     private fun enableAlarm(alarm: AlarmModel) {
         listAlarmViewModel.active(alarm, alarm.isOn)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _homeFragment = null
     }
 }
