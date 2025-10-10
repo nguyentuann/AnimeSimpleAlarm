@@ -8,4 +8,5 @@ data class AlarmModel(
     var sound: Int? = null,
     var dateOfWeek: List<Int>? = null,
     var date: Long? = null,
+    var character: Int? = null
 )

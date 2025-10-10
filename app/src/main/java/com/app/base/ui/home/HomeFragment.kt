@@ -62,8 +62,6 @@ class HomeFragment : Fragment() {
                 homeFragment.addAlarmCard.visibility = View.VISIBLE
             }
         }
-
-
     }
 
     private fun initListener() {

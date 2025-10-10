@@ -24,6 +24,7 @@
         app:itemIconTint="@color/bottom_nav_color_selector"
         app:itemTextColor="@color/bottom_nav_color_selector"
         app:labelVisibilityMode="labeled"
+        app:itemActiveIndicatorStyle="@style/NoActiveIndicator"
         app:layout_anchorGravity="bottom"
         app:menu="@menu/bottom_nav_menu" />
 

@@ -1,4 +1,4 @@
-package com.app.base.ui.alarm
+package com.app.base.ui.alarm.sound
 
 import android.app.Service
 import android.content.Intent

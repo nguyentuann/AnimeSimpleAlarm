@@ -21,7 +21,8 @@ class NewAlarmViewModel : BaseViewModel() {
             message = null,
             sound = null,
             dateOfWeek = null,
-            date = null
+            date = null,
+            character = null
         )
     )
 
@@ -50,6 +51,10 @@ class NewAlarmViewModel : BaseViewModel() {
         _newAlarm.value = _newAlarm.value?.copy(dateOfWeek = dateOfWeek)
     }
 
+    fun updateCharacter(character: Int?) {
+        _newAlarm.value = _newAlarm.value?.copy(character = character)
+    }
+
     fun resetAlarm() {
         _newAlarm.value = AlarmModel(
             id = UUID.randomUUID().toString(),
@@ -59,7 +64,8 @@ class NewAlarmViewModel : BaseViewModel() {
             message = null,
             sound = null,
             dateOfWeek = null,
-            date = null
+            date = null,
+            character = null
         )
     }
 
@@ -85,7 +91,8 @@ class NewAlarmViewModel : BaseViewModel() {
             message = null,
             sound = null,
             dateOfWeek = null,
-            date = null
+            date = null,
+            character = null
         )
         return initial != _newAlarm.value
     }

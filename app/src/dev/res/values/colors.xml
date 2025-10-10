@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Light theme -->
-    <color name="primary">#7195FF</color> <!-- light blue -->
+    <color name="primary">#7195FF</color>
 
-    <color name="secondary">#374E8E</color> <!-- dark blue -->
+    <color name="secondary">#374E8E</color>
 
     <color name="background">#FFFFFF</color>
 
