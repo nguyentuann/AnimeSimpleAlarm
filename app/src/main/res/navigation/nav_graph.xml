@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/quickAlarmFragment"
-        android:name="com.app.base.ui.alarm.QuickAlarmFragment" />
+        android:name="com.app.base.ui.quickalarm.QuickAlarmFragment" />
     <fragment
         android:id="@+id/timerFragment"
         android:name="com.app.base.ui.timer.TimerFragment" />
@@ -40,10 +40,50 @@
 
     <fragment
         android:id="@+id/newAlarmFragment"
-        android:name="com.app.base.ui.alarm.NewAlarmFragment" />
+        android:name="com.app.base.ui.alarm.NewAlarmFragment">
+
+        <action
+            android:id="@+id/action_new_to_character"
+            app:destination="@+id/characterFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_new_to_sound"
+            app:destination="@+id/soundFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_new_to_dates"
+            app:destination="@+id/datesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+
+    </fragment>
 
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.app.base.ui.settings.SettingFragment" />
+
+    <fragment
+        android:id="@+id/characterFragment"
+        android:name="com.app.base.ui.alarm.character.CharacterFragment" />
+
+    <fragment
+        android:id="@+id/soundFragment"
+        android:name="com.app.base.ui.alarm.sound.SoundFragment" />
+    <fragment
+        android:id="@+id/datesFragment"
+        android:name="com.app.base.ui.alarm.dates.DatesFragment" />
+
+
 
 </navigation>

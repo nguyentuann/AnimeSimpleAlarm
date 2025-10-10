@@ -8,7 +8,7 @@
     <string name="description_btn_add">Chạm vào đây để tạo báo thức</string>
     <string name="new_alarm">Báo thức mới</string>
     <string name="edit_alarm">Chỉnh sửa báo thức</string>
-    <string name="schedule_alarm">Lên lịch báo thức</string>
+    <string name="schedule">Lên lịch</string>
     <string name="message_placeholder">Nhập tin nhắn báo thức</string>
     <string name="default_text">Mặc định</string>
     <string name="save">Lưu</string>
@@ -75,6 +75,11 @@
     <string name="everyday">Hằng ngày</string>
     <string name="once">Một lần</string>
     <string name="create">Tạo nhanh</string>
+    <string name="repeat">Lặp lại</string>
+    <string name="message">Tin nhắn</string>
+    <string name="sound">Âm thanh</string>
+    <string name="never">Không bao giờ</string>
+    <string name="default_character">Nhânvaajtt mặc định</string>
 
 
 </resources>

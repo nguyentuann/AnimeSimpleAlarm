@@ -1,4 +1,4 @@
-package com.app.base.ui.alarm
+package com.app.base.ui.quickalarm
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.app.base.MainActivity
 import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentQuickAlarmBinding
 import com.app.base.viewModel.ListAlarmViewModel

@@ -2,8 +2,5 @@
     android:shape="rectangle">
     <!-- Màu nền bên trong -->
     <solid android:color="@color/primary" />
-
     <corners android:radius="8dp" />
-
-
 </shape>
