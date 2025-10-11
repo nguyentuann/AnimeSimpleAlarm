@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.base.data.model.AlarmModel
 import kotlinx.coroutines.launch
 import com.app.base.repository.AlarmRepository
+import com.app.base.utils.LogUtil
 import com.brally.mobile.base.viewmodel.BaseViewModel
 
 class ListAlarmViewModel(
@@ -14,6 +15,7 @@ class ListAlarmViewModel(
 
     fun saveAlarm(alarm: AlarmModel) {
         viewModelScope.launch {
+            LogUtil.log("save alarm in list: $alarm")
             repository.addAlarm(alarm)
         }
     }

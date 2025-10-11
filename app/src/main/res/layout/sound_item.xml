@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardSound"
     android:layout_width="match_parent"
@@ -21,20 +20,21 @@
             android:layout_width="@dimen/dp_36"
             android:layout_height="@dimen/dp_36"
             android:contentDescription="@string/noDescription"
-            android:src="@drawable/ic_music" />
+            android:src="@drawable/ic_music"
+            app:tint="@color/text" />
 
         <TextView
             android:id="@+id/tvSoundName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semi_bold"
+            android:paddingStart="@dimen/dp_16"
+            android:text="@string/noDescription"
             android:textColor="@color/text"
             android:textSize="@dimen/sp_18"
-            android:paddingStart="@dimen/dp_16"
-            android:fontFamily="@font/open_sans_semi_bold"
-            android:text="@string/noDescription"
 
-           />
+            />
 
         <ImageView
             android:id="@+id/btnPlayPause"
@@ -42,7 +42,7 @@
             android:layout_height="@dimen/dp_36"
             android:contentDescription="@string/noDescription"
             android:src="@drawable/ic_play"
-             />
+            app:tint="@color/text" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -10,9 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.app.base.R
 import com.app.base.components.CommonComponents
-import com.app.base.data.model.AlarmModel
+import com.app.base.data.model.toMyString
 import com.app.base.databinding.FragmentNewAlarmBinding
 import com.app.base.helpers.AlarmHelper
+import com.app.base.utils.AppConstants
+import com.app.base.utils.LogUtil
 import com.app.base.utils.TimeConverter
 import com.app.base.viewModel.ListAlarmViewModel
 import com.app.base.viewModel.NewAlarmViewModel
@@ -21,7 +23,6 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.util.Calendar
 
 class NewAlarmFragment : Fragment() {
@@ -29,8 +30,7 @@ class NewAlarmFragment : Fragment() {
     private var _binding: FragmentNewAlarmBinding? = null
     private val binding get() = _binding!!
 
-    private val selectedDays = mutableSetOf<Int>()
-    private val newAlarmViewModel by activityViewModel<NewAlarmViewModel>()
+    private val newAlarmViewModel by activityViewModels<NewAlarmViewModel>()
     private val listAlarmViewModel by activityViewModels<ListAlarmViewModel>()
 
     override fun onCreateView(
@@ -43,15 +43,29 @@ class NewAlarmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getString(ARG_ALARM_ID)?.let { id ->
-            listAlarmViewModel.getAlarmById(id).value?.let { setAlarm(it) }
+        val alarmId = arguments?.getString("alarm_id")
+
+        if (alarmId == null) {
+            LogUtil.log("ko id ")
+            newAlarmViewModel.initNewAlarmIfNeeded()
+            binding.tvTitle.setText(R.string.new_alarm)
+        } else {
+            LogUtil.log("co id ")
+            binding.tvTitle.setText(R.string.edit_alarm)
+            listAlarmViewModel.getAlarmById(alarmId).observe(viewLifecycleOwner) { alarm ->
+                if (alarm != null) {
+                    LogUtil.log("alarm khac null")
+                    newAlarmViewModel.setAlarmOnce(alarm)
+                } else {
+                    LogUtil.log("alarm null")
+                }
+            }
         }
 
         setupToolbar()
         setupButtons()
         observeViewModel()
         setupMessageWatcher()
-        popUpTimePicker()
     }
 
     private fun setupToolbar() {
@@ -64,6 +78,7 @@ class NewAlarmFragment : Fragment() {
         binding.btnEdit.setOnClickListener {
             popUpTimePicker()
         }
+
         binding.btnCalendar.setOnClickListener { popUpDatePicker() }
 
         val bundle = Bundle()
@@ -85,14 +100,54 @@ class NewAlarmFragment : Fragment() {
 
     private fun observeViewModel() {
         newAlarmViewModel.newAlarm.observe(viewLifecycleOwner) { alarm ->
+
+            if (alarm == null) return@observe
+
             binding.tvTime.text = TimeConverter.convertTimeToString(alarm.hour, alarm.minute)
+
+            if (alarm.date != null) {
+                binding.scheduleAlarm.text = getString(
+                    R.string.schedule_for,
+                    TimeConverter.dayMonthYearFormatFromCalendar(alarm.date!!)
+                )
+            } else {
+                binding.scheduleAlarm.text = getString(R.string.schedule)
+            }
+
+            if (alarm.dateOfWeek != null) {
+                binding.dates.text =
+                    TimeConverter.convertListDateToString(requireContext(), alarm.dateOfWeek!!)
+            } else {
+                binding.dates.text = getString(R.string.never)
+            }
+
+            if (alarm.character != null) {
+                binding.btnCharacter.text = AppConstants.getNameCharacterById(alarm.character!!)
+            } else {
+                binding.btnCharacter.setText(R.string.character)
+            }
+
+            if (alarm.sound != null) {
+                binding.btnSound.setText(AppConstants.getNameSoundById(alarm.sound!!))
+            } else {
+                binding.btnSound.setText(R.string.default_tone)
+            }
+
+            if (alarm.message != null) {
+                if (binding.tfMessage.text.toString() != alarm.message) {
+                    binding.tfMessage.setText(alarm.message)
+                }
+            }
         }
     }
 
     private fun setupMessageWatcher() {
-        binding.tfMessage.setText(newAlarmViewModel.newAlarm.value?.message ?: "")
+        // Watch thay đổi từ EditText để cập nhật ViewModel
         binding.tfMessage.doOnTextChanged { text, _, _, _ ->
-            newAlarmViewModel.updateMessage(text.toString())
+            val currentMessage = newAlarmViewModel.newAlarm.value?.message ?: ""
+            if (text.toString() != currentMessage) {
+                newAlarmViewModel.updateMessage(text.toString())
+            }
         }
     }
 
@@ -110,6 +165,7 @@ class NewAlarmFragment : Fragment() {
             .build()
 
         picker.addOnPositiveButtonClickListener {
+            // todo lưu giờ được chọn
             newAlarmViewModel.updateTime(picker.hour, picker.minute)
         }
 
@@ -138,68 +194,53 @@ class NewAlarmFragment : Fragment() {
             val m = pickedCal.get(Calendar.MONTH)
             val d = pickedCal.get(Calendar.DAY_OF_MONTH)
 
-            binding.scheduleAlarm.text = getString(
-                R.string.schedule_for,
-                TimeConverter.dayMonthYearFormat(d, m, y)
-            )
+            //todo update date
             newAlarmViewModel.updateDate(AlarmHelper.getCalendarFromDate(y, m, d))
+            newAlarmViewModel.updateDateOfWeek(null)
         }
 
         picker.show(parentFragmentManager, "DatePicker")
     }
 
-    fun setAlarm(alarm: AlarmModel) {
-        newAlarmViewModel.setAlarm(alarm)
-        binding.tvTitle.setText(R.string.edit_alarm)
-        binding.tfMessage.setText(alarm.message)
-        binding.tvTime.text = TimeConverter.convertTimeToString(alarm.hour, alarm.minute)
-        if (alarm.date != null) {
-            binding.scheduleAlarm.text = TimeConverter.dayMonthYearFormatFromCalendar(alarm.date!!)
-        }
-
-        selectedDays.clear()
-        alarm.dateOfWeek?.let { selectedDays.addAll(it) }
-    }
-
     private fun saveAlarm() {
-        val alarm = newAlarmViewModel.newAlarm.value!!
+
+        var alarm = newAlarmViewModel.newAlarm.value!!
+        LogUtil.log(alarm.toMyString())
 
         val alarmId = arguments?.getString("alarm_id")
         if (alarmId != null) {
             listAlarmViewModel.updateAlarm(alarm)
         } else {
+            newAlarmViewModel.isNoDateChoose()
+            alarm = newAlarmViewModel.newAlarm.value!!
             listAlarmViewModel.saveAlarm(alarm)
         }
 
+        newAlarmViewModel.clearAlarm()
         activity?.onBackPressedDispatcher?.onBackPressed()
     }
 
     private fun checkDiscardChanges() {
-        if (newAlarmViewModel.isChange() || selectedDays.isNotEmpty() || binding.tfMessage.text.trim()
+        if (newAlarmViewModel.isChange() || binding.tfMessage.text.trim()
                 .isNotEmpty()
         ) {
             CommonComponents.confirmDialog(
                 requireContext(),
                 getString(R.string.discard_change),
                 getString(R.string.discard_change_message),
-                onConfirm = { activity?.onBackPressedDispatcher?.onBackPressed() }
+                onConfirm = {
+                    activity?.onBackPressedDispatcher?.onBackPressed()
+                    newAlarmViewModel.clearAlarm()
+                }
             )
-        } else activity?.onBackPressedDispatcher?.onBackPressed()
-    }
-
-    companion object {
-        private const val ARG_ALARM_ID = "alarm_id"
-
-        fun newInstance(alarmId: String) = NewAlarmFragment().apply {
-            arguments = Bundle().apply { putString(ARG_ALARM_ID, alarmId) }
+        } else {
+            activity?.onBackPressedDispatcher?.onBackPressed()
+            newAlarmViewModel.clearAlarm()
         }
     }
 
     override fun onStop() {
         super.onStop()
-        newAlarmViewModel.resetAlarm()
-        selectedDays.clear()
-        binding.tfMessage.setText("")
     }
 
     override fun onDestroyView() {

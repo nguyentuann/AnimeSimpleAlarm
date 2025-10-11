@@ -7,6 +7,29 @@
     android:layout_height="match_parent"
     tools:context=".ui.alarm.AlarmReceiverActivity">
 
+    <ImageView
+        android:id="@+id/bg_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/noDescription"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_conan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#80000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <LinearLayout
         android:id="@+id/layout_time"
         android:layout_width="match_parent"
@@ -15,7 +38,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="16.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,7 +49,7 @@
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/noDescription"
             android:src="@drawable/ic_day"
-            app:tint="@color/text"
+            app:tint="@color/white"
 
             />
 
@@ -36,7 +59,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_semi_bold"
             android:text="02:00"
-            android:textColor="@color/text"
+            android:textColor="@color/white"
             android:textSize="60sp" />
     </LinearLayout>
 
@@ -47,7 +70,7 @@
         android:padding="16dp"
         android:text="Message"
         android:textAlignment="center"
-        android:textColor="@color/text"
+        android:textColor="@color/white"
         android:textSize="28sp"
         app:layout_constraintTop_toBottomOf="@+id/layout_time" />
 
@@ -66,40 +89,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/space">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_stop"
             style="@style/btnChooseDate"
             android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:layout_marginStart="@dimen/dp_4"
             android:text="@string/stop" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_this"
             style="@style/btnChooseDate"
             android:layout_height="80dp"
-            android:paddingVertical="16dp"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:layout_weight="1"
             android:text="@string/this_string" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_alarm"
             style="@style/btnChooseDate"
             android:layout_height="80dp"
-            android:paddingVertical="16dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/dp_4"
             android:text="@string/alarm" />
     </LinearLayout>
-
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_centerInParent="true"
-        android:paddingVertical="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_buttons"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/naruto" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

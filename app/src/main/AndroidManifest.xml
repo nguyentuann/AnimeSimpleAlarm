@@ -37,6 +37,17 @@
         tools:replace="android:fullBackupContent, theme">
 
         <activity
+            android:name=".ui.alarm.AlarmReceiverActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:taskAffinity=""
+            android:turnScreenOn="true" />
+
+        <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing"
             android:exported="true"
@@ -66,5 +77,17 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <receiver
+            android:name=".ui.alarm.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".ui.alarm.sound.AlarmSoundService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback"
+            tools:ignore="ForegroundServicePermission" />
     </application>
 </manifest>

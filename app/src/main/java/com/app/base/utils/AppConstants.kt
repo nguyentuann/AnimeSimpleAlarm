@@ -41,6 +41,7 @@ object AppConstants {
         return characters[name] ?: R.drawable.img_naruto
     }
 
+
     fun getAllCharacters(): List<Int> {
         return characters.values.toList()
     }

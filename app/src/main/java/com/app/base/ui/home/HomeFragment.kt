@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +13,6 @@ import com.app.base.components.CommonComponents
 import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentHomeBinding
 import com.app.base.ui.alarm.AlarmAdapter
-import com.app.base.ui.alarm.NewAlarmFragment
 import com.app.base.viewModel.ListAlarmViewModel
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -66,21 +66,17 @@ class HomeFragment : Fragment() {
 
     private fun initListener() {
         homeFragment.addAlarmCard.setOnClickListener {
-            val bundle = Bundle().apply {
-                putString("alarmId", null)
-            }
-            findNavController().navigate(R.id.action_home_to_newAlarm, bundle)
-        }
-
-        homeFragment.toolBar.toolBarSetting.setOnClickListener {
-            val bundle = Bundle()
-            findNavController().navigate(R.id.action_home_to_setting, bundle)
+            findNavController().navigate(R.id.action_home_to_newAlarm)
         }
 
         homeFragment.floatBtnAdd.setOnClickListener {
-            val bundle = Bundle()
-            findNavController().navigate(R.id.action_home_to_newAlarm, bundle)
+            findNavController().navigate(R.id.action_home_to_newAlarm)
         }
+
+        homeFragment.toolBar.toolBarSetting.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_setting)
+        }
+
     }
 
     private fun deleteAlarm(alarm: AlarmModel) {
@@ -95,11 +91,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun editAlarm(alarmId: String) {
-        val fragment = NewAlarmFragment.Companion.newInstance(alarmId)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment, fragment)
-            .addToBackStack(null)
-            .commit()
+        // Sửa: truyền alarm_id
+        val bundle = bundleOf("alarm_id" to alarmId)
+        findNavController().navigate(R.id.action_home_to_newAlarm, bundle)
     }
 
     private fun enableAlarm(alarm: AlarmModel) {

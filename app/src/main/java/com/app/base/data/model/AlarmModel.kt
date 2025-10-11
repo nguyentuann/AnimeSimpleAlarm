@@ -1,4 +1,5 @@
 package com.app.base.data.model
+
 data class AlarmModel(
     val id: String,
     var hour: Int,
@@ -10,3 +11,7 @@ data class AlarmModel(
     var date: Long? = null,
     var character: Int? = null
 )
+
+fun AlarmModel.toMyString(): String {
+    return "AlarmModel(id='$id', hour=$hour, minute=$minute, isOn=$isOn, message=$message, sound=$sound, dateOfWeek=$dateOfWeek, date=$date, character=$character)"
+}

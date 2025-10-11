@@ -63,13 +63,23 @@ object AlarmHelper {
     }
 
     // todo lấy ra ngày mai
-    fun getTomorrowDate(): Long {
-        return Calendar.getInstance().apply {
-            add(Calendar.DAY_OF_YEAR, 1)
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
+    fun getNearestTime(hour: Int, minute: Int): Long {
+        val now = Calendar.getInstance()
+
+        // Tạo một Calendar đại diện cho thời điểm mong muốn hôm nay
+        val target = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
-        }.timeInMillis
+        }
+
+        // Nếu thời gian đó đã trôi qua, cộng thêm 1 ngày
+        if (target.timeInMillis <= now.timeInMillis) {
+            target.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        return target.timeInMillis
     }
+
 }

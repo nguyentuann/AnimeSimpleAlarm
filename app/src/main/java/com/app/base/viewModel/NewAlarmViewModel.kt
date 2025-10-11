@@ -2,31 +2,47 @@ package com.app.base.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.app.base.data.model.AlarmModel
 import com.app.base.helpers.AlarmHelper
+import com.app.base.utils.LogUtil
 import com.brally.mobile.base.viewmodel.BaseViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.UUID
 
 class NewAlarmViewModel : BaseViewModel() {
 
-    private val _newAlarm = MutableLiveData<AlarmModel>(
-        AlarmModel(
-            id = UUID.randomUUID().toString(),
-            hour = 0,
-            minute = 0,
-            isOn = true,
-            message = null,
-            sound = null,
-            dateOfWeek = null,
-            date = null,
-            character = null
-        )
-    )
+    private var _newAlarm = MutableLiveData<AlarmModel?>()
+    val newAlarm: LiveData<AlarmModel?> = _newAlarm
 
-    val newAlarm: LiveData<AlarmModel> = _newAlarm
+    private var initialized = false
+
+    fun initNewAlarmIfNeeded() {
+        if (!initialized) {
+            _newAlarm.value = AlarmModel(
+                id = UUID.randomUUID().toString(),
+                hour = 0,
+                minute = 0,
+                isOn = true,
+                message = null,
+                sound = null,
+                dateOfWeek = null,
+                date = null,
+                character = null
+            )
+            initialized = true
+        }
+    }
+
+    fun setAlarmOnce(alarm: AlarmModel) {
+        if (!initialized) {
+            _newAlarm.value = alarm
+            initialized = true
+        }
+    }
+
+    fun clearAlarm() {
+        _newAlarm.value = null
+        initialized = false
+    }
 
     fun updateTime(hour: Int, minute: Int) {
         _newAlarm.value = _newAlarm.value?.copy(hour = hour, minute = minute)
@@ -36,11 +52,8 @@ class NewAlarmViewModel : BaseViewModel() {
         _newAlarm.value = _newAlarm.value?.copy(date = date)
     }
 
-
     fun updateMessage(text: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _newAlarm.postValue(_newAlarm.value?.copy(message = text))
-        }
+        _newAlarm.value = _newAlarm.value?.copy(message = text)
     }
 
     fun updateSound(sound: Int?) {
@@ -55,31 +68,12 @@ class NewAlarmViewModel : BaseViewModel() {
         _newAlarm.value = _newAlarm.value?.copy(character = character)
     }
 
-    fun resetAlarm() {
-        _newAlarm.value = AlarmModel(
-            id = UUID.randomUUID().toString(),
-            hour = 0,
-            minute = 0,
-            isOn = true,
-            message = null,
-            sound = null,
-            dateOfWeek = null,
-            date = null,
-            character = null
-        )
-    }
-
-    fun prepareAlarmBeforeSave(selectedDays: Set<Int>, message: String, sound: Int) {
+    fun isNoDateChoose() {
         val alarm = _newAlarm.value ?: return
-
-        when {
-            alarm.date != null -> updateDateOfWeek(null)
-            selectedDays.isEmpty() -> updateDate(AlarmHelper.getTomorrowDate())
-            else -> updateDateOfWeek(selectedDays.sorted())
+        if (alarm.dateOfWeek == null && alarm.date == null) {
+            LogUtil.log("ca 2 null")
+            updateDate(AlarmHelper.getNearestTime(alarm.hour, alarm.minute))
         }
-
-        updateMessage(message)
-        updateSound(sound)
     }
 
     fun isChange(): Boolean {
@@ -96,9 +90,4 @@ class NewAlarmViewModel : BaseViewModel() {
         )
         return initial != _newAlarm.value
     }
-
-    fun setAlarm(alarm: AlarmModel) {
-        _newAlarm.value = alarm
-    }
-
 }
