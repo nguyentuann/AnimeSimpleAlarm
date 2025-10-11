@@ -4,40 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:gravity="center_vertical"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingHorizontal="16dp"
     tools:ignore="UseCompoundDrawables">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingVertical="@dimen/dp_16"
-        >
 
         <TextView
             android:id="@+id/tvDateName"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
+            android:textAlignment="viewStart"
             android:fontFamily="@font/open_sans_semi_bold"
             android:text="@string/noDescription"
             android:textColor="@color/text"
             android:textSize="@dimen/sp_18"
 
-            />
+            tools:ignore="RtlCompat" />
 
         <ImageView
             android:id="@+id/btnCheck"
             android:layout_width="@dimen/dp_36"
             android:layout_height="@dimen/dp_36"
             android:contentDescription="@string/noDescription"
-            android:visibility="gone"
             android:src="@drawable/ic_save" />
-    </LinearLayout>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>

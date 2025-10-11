@@ -25,8 +25,6 @@ import com.app.base.ui.alarm.sound.AlarmSoundService
 
 class AlarmReceiverActivity : AppCompatActivity() {
 
-    private lateinit var appPrefs: AppPreferences
-
     private lateinit var binding: ActivityAlarmReceiverBinding
     var stop by mutableIntStateOf(0)
     private var mediaPlayer: MediaPlayer? = null
@@ -41,6 +39,7 @@ class AlarmReceiverActivity : AppCompatActivity() {
         val message = intent.getStringExtra("ALARM_MESSAGE")
         val hour = intent.getIntExtra("ALARM_HOUR", 0)
         val minute = intent.getIntExtra("ALARM_MINUTE", 0)
+        val character = intent.getIntExtra("CHARACTER", R.drawable.img_naruto)
 
 
         binding.icon
@@ -56,9 +55,7 @@ class AlarmReceiverActivity : AppCompatActivity() {
         setListener(binding.btnThis)
         setListener(binding.btnAlarm)
 
-        appPrefs = AppPreferences(this)
-        val character = appPrefs.appCharacter
-        binding.lottieView.setAnimation(character)
+        binding.bgImage.setImageResource(character)
 
     }
 
@@ -81,23 +78,6 @@ class AlarmReceiverActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
-    private fun setupMediaPlayer(sound: Int) {
-        try {
-            mediaPlayer = if (sound != 0) {
-                MediaPlayer.create(this, sound)
-            } else {
-                val ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-                MediaPlayer.create(this, ringtoneUri)
-            }
-
-            mediaPlayer?.apply {
-                isLooping = true
-                start()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
     @SuppressLint("ImplicitSamInstance")
     fun setListener(btn: Button) {
@@ -105,7 +85,7 @@ class AlarmReceiverActivity : AppCompatActivity() {
             btn.isEnabled = false
             stop += 1
             btn.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary))
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.secondary))
 
             if (stop == 3) {
                 stopService(Intent(this, AlarmSoundService::class.java))

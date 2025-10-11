@@ -1,11 +1,14 @@
 package com.app.base.ui.alarm
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -13,11 +16,14 @@ import androidx.core.content.ContextCompat
 import com.app.base.R
 import com.app.base.data.model.AlarmModel
 import com.app.base.ui.alarm.sound.AlarmSoundService
+import com.app.base.utils.LogUtil
 import org.koin.java.KoinJavaComponent.getKoin
 
 class AlarmReceiver() : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+
+        LogUtil.log("Nhận alarm")
 
         val alarmScheduler: AlarmScheduler = getKoin().get()
 
@@ -55,11 +61,10 @@ class AlarmReceiver() : BroadcastReceiver() {
 
         val notification = NotificationCompat.Builder(context, "alarm_channel")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Alarm")
+            .setContentTitle("Anime Alarm")
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
-            .setSound(null)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setAutoCancel(true)
             .setFullScreenIntent(fullScreenPendingIntent, true) // 👈 quan trọng

@@ -61,7 +61,7 @@ class SoundFragment : Fragment() {
     }
 
     private fun selectSound(id: Int) {
-        newAlarmViewModel.updateCharacter(id)
+        newAlarmViewModel.updateSound(id)
     }
 
     override fun onDestroyView() {

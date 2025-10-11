@@ -12,7 +12,7 @@ import com.app.base.utils.AppConstants
 import com.brally.mobile.base.adapter.BaseListAdapter
 
 class SoundAdapter(
-    private val selectSound: (Int) -> Unit
+    private val selectSound: (Int) -> Unit,
 ) : BaseListAdapter<Int, SoundItemBinding>() {
 
     private var selectedPosition = RecyclerView.NO_POSITION
@@ -63,7 +63,6 @@ class SoundAdapter(
             mediaPlayer?.pause()
             isPlaying = false
         } else {
-            // 🛑 Dừng bài cũ
             mediaPlayer?.stop()
             mediaPlayer?.release()
 
@@ -87,8 +86,6 @@ class SoundAdapter(
         // Gọi callback nếu cần
         selectSound(soundRes)
     }
-
-
 
     fun release() {
         mediaPlayer?.release()

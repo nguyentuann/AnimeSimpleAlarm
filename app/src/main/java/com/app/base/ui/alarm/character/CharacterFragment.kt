@@ -19,7 +19,6 @@ class CharacterFragment : Fragment() {
     private lateinit var characterAdapter: CharacterAdapter
     private val newAlarmViewModel by activityViewModel<NewAlarmViewModel>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,6 +34,8 @@ class CharacterFragment : Fragment() {
         initListener()
 
         characterAdapter = CharacterAdapter(
+            selectedCharacter = newAlarmViewModel.newAlarm.value?.character
+                ?: R.drawable.img_naruto,
             selectCharacter = { id -> selectCharacter(id) }
         )
 

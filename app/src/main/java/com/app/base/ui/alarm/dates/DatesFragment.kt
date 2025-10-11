@@ -5,18 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
 import com.app.base.databinding.FragmentCharacterBinding
 import com.app.base.utils.AppConstants
 import com.app.base.viewModel.NewAlarmViewModel
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class DatesFragment : Fragment() {
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
     private lateinit var datesAdapter: DatesAdapter
-    private val newAlarmViewModel by activityViewModel<NewAlarmViewModel>()
+    private val newAlarmViewModel by activityViewModels<NewAlarmViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,10 +30,12 @@ class DatesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         initListener()
 
         datesAdapter = DatesAdapter(
-            selectDates = { dates -> selectDates(dates) }
+            positions = newAlarmViewModel.newAlarm.value?.dateOfWeek ?: emptyList(),
+            selectDateOfWeek = { dates -> selectDateOfWeek(dates) }
         )
 
         binding.recyclerCharacters.apply {
@@ -42,9 +44,7 @@ class DatesFragment : Fragment() {
             adapter = datesAdapter
         }
 
-        datesAdapter.submitList(
-            AppConstants.getAllDates()
-        )
+        datesAdapter.submitList(AppConstants.getAllDates())
 
     }
 
@@ -59,7 +59,8 @@ class DatesFragment : Fragment() {
 
     }
 
-    private fun selectDates(dates: List<Int>) {
-        newAlarmViewModel.updateCharacter(id)
+    private fun selectDateOfWeek(dates: List<Int>) {
+        newAlarmViewModel.updateDateOfWeek(dates)
+        newAlarmViewModel.updateDate(null)
     }
 }

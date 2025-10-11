@@ -4,13 +4,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.base.R
 import com.app.base.databinding.CharacterItemBinding
+import com.app.base.utils.AppConstants
 import com.brally.mobile.base.adapter.BaseListAdapter
 
 class CharacterAdapter(
+    val selectedCharacter: Int,
     private val selectCharacter: (Int) -> Unit
 ) : BaseListAdapter<Int, CharacterItemBinding>() {
 
-    private var selectedPosition = RecyclerView.NO_POSITION
+    private var selectedPosition = AppConstants.getAllCharacters().indexOf(selectedCharacter)
 
     override fun bindData(binding: CharacterItemBinding, item: Int, position: Int) {
         with(binding) {

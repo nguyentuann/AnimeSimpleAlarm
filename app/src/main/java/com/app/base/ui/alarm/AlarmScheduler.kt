@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import com.app.base.data.model.AlarmModel
 import com.app.base.helpers.AlarmHelper
+import com.app.base.utils.LogUtil
 
 class AlarmScheduler(
     private val context: Context
@@ -21,6 +22,7 @@ class AlarmScheduler(
             putExtra("ALARM_HOUR", alarm.hour)
             putExtra("ALARM_MINUTE", alarm.minute)
             putExtra("DAYS", alarm.dateOfWeek?.toIntArray())
+            putExtra("CHARACTER", alarm.character)
         }
 
         return PendingIntent.getBroadcast(
@@ -52,6 +54,8 @@ class AlarmScheduler(
             triggerTime,
             getPendingIntent(alarm)
         )
+
+        LogUtil.log("Lên lịch")
 
     }
 
