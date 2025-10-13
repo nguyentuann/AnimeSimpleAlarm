@@ -16,11 +16,11 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" >
-        <argument
-            android:name="alarmId"
-            android:defaultValue=""
-            app:argType="string" />
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="alarmId"
+                android:defaultValue=""
+                app:argType="string" />
         </action>
 
         <action
@@ -34,7 +34,26 @@
 
     <fragment
         android:id="@+id/quickAlarmFragment"
-        android:name="com.app.base.ui.quickalarm.QuickAlarmFragment" />
+        android:name="com.app.base.ui.quickalarm.QuickAlarmFragment">
+
+        <action
+            android:id="@+id/action_quick_to_newAlarm"
+            app:destination="@+id/newAlarmFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@+id/homeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
     <fragment
         android:id="@+id/timerFragment"
         android:name="com.app.base.ui.timer.TimerFragment" />

@@ -1,6 +1,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Khi on -->
-    <item android:color="@color/background" android:state_selected="true"/>
+    <item android:color="@color/white" android:state_selected="true"/>
     <!-- Khi off -->
     <item android:color="@color/text"/>
 </selector>

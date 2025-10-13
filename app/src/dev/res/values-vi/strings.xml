@@ -74,12 +74,12 @@
     <string name="saturday">Thứ bảy</string>
     <string name="everyday">Hằng ngày</string>
     <string name="once">Một lần</string>
-    <string name="create">Tạo nhanh</string>
+    <string name="create">Tạo riêng của tôi</string>
     <string name="repeat">Lặp lại</string>
     <string name="message">Tin nhắn</string>
     <string name="sound">Âm thanh</string>
     <string name="never">Không bao giờ</string>
-    <string name="default_character">Nhânvaajtt mặc định</string>
+    <string name="default_character">Nhân vật mặc định</string>
 
 
 </resources>
