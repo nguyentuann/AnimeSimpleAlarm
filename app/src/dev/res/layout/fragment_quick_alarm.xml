@@ -24,25 +24,25 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn5m"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="@string/_5m" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn15m"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="@string/_15m" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn30m"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="@string/_30m" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn45m"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="@string/_45m" />
         </LinearLayout>
@@ -54,33 +54,33 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn1h"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="1h" />
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn6h"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="6h" />
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn12h"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="12h" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn18h"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="18h" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn24h"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:layout_weight="1"
                 android:text="24h" />
         </LinearLayout>
@@ -93,7 +93,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_create_my_own"
-                style="@style/btnChooseDate"
+                style="@style/btnNormal"
                 android:backgroundTint="@color/surface"
                 android:paddingHorizontal="@dimen/dp_32"
                 android:text="@string/create"

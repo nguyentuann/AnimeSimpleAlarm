@@ -28,13 +28,13 @@
 
         <Button
             android:id="@+id/btn_lap"
-            style="@style/btnChooseDate"
+            style="@style/btnNormal"
             android:backgroundTint="@color/primary"
             android:text="@string/lap" />
 
         <Button
             android:id="@+id/btn_start_stopwatch"
-            style="@style/btnChooseDate"
+            style="@style/btnNormal"
             android:backgroundTint="@color/primary"
             android:text="@string/start" />
     </LinearLayout>

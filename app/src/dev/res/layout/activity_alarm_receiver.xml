@@ -91,7 +91,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_stop"
-            style="@style/btnChooseDate"
+            style="@style/btnNormal"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:layout_marginEnd="@dimen/dp_4"
@@ -100,7 +100,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_this"
-            style="@style/btnChooseDate"
+            style="@style/btnNormal"
             android:layout_height="80dp"
             android:layout_marginEnd="@dimen/dp_4"
             android:layout_weight="1"
@@ -108,7 +108,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_alarm"
-            style="@style/btnChooseDate"
+            style="@style/btnNormal"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:layout_marginEnd="@dimen/dp_4"

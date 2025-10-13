@@ -12,6 +12,8 @@ class AppPreferences(context: Context) {
         private const val LANG_KEY = "app_language"
         private const val APP_THEME = "app_theme"
         private const val APP_CHARACTER = "app_character"
+        private const val KEY_END_TIME = "end_time"
+        private const val KEY_IS_RUNNING = "is_running"
     }
 
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -29,5 +31,22 @@ class AppPreferences(context: Context) {
     var appCharacter: Int
         get() = prefs.getInt(APP_CHARACTER, R.raw.doraemon)
         set(value) = prefs.edit { putInt(APP_CHARACTER, value) }
+
+    fun saveTimer(endTime: Long, isRunning: Boolean) {
+        prefs.edit {
+            putLong(KEY_END_TIME, endTime)
+                .putBoolean(KEY_IS_RUNNING, isRunning)
+        }
+    }
+
+    fun clearTimer() {
+        prefs.edit {
+            remove(KEY_END_TIME)
+                .remove(KEY_IS_RUNNING)
+        }
+    }
+
+    fun getEndTime(): Long = prefs.getLong(KEY_END_TIME, 0L)
+    fun isRunning(): Boolean = prefs.getBoolean(KEY_IS_RUNNING, false)
 }
 
