@@ -101,8 +101,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btn_dates"
             style="@style/AddAlarmConstraintLayoutStyle"
-            android:paddingBottom="@dimen/dp_24"
-            android:layout_marginTop="@dimen/dp_24">
+            android:layout_marginTop="@dimen/dp_24"
+            android:paddingBottom="@dimen/dp_24">
 
             <TextView
                 android:id="@+id/repeat"
@@ -235,8 +235,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            style="@style/AddAlarmConstraintLayoutStyle">
+        <androidx.constraintlayout.widget.ConstraintLayout style="@style/AddAlarmConstraintLayoutStyle">
+
             <TextView
                 android:id="@+id/sound"
                 android:layout_width="wrap_content"
@@ -269,12 +269,11 @@
             android:id="@+id/btn_save"
             style="@style/btnChooseDate"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_60"
-            android:layout_marginHorizontal="@dimen/dp_100"
-            android:layout_marginTop="@dimen/dp_60"
-            android:backgroundTint="@color/primary"
-            android:paddingHorizontal="@dimen/dp_32"
+            android:layout_marginHorizontal="@dimen/dp_80"
+            android:layout_marginTop="@dimen/dp_50"
+            android:backgroundTint="@color/surface"
             android:text="@string/save"
+            android:textColor="@color/secondary"
             android:textSize="@dimen/sp_18" />
     </LinearLayout>
 
