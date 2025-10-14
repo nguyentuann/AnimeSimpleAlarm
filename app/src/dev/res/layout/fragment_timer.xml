@@ -91,17 +91,20 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn5"
             style="@style/btnNormal"
+            android:backgroundTint="@color/primary"
             android:layout_weight="1"
             android:text="@string/_5m" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn10"
             style="@style/btnNormal"
+            android:backgroundTint="@color/primary"
             android:layout_weight="1"
             android:text="@string/_10m" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn15"
+            android:backgroundTint="@color/primary"
             style="@style/btnNormal"
             android:layout_weight="1"
             android:text="@string/_15m" />
@@ -109,6 +112,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn30"
             style="@style/btnNormal"
+            android:backgroundTint="@color/primary"
             android:layout_weight="1"
             android:text="@string/_30m" />
 
@@ -116,6 +120,7 @@
             android:id="@+id/btn45"
             style="@style/btnNormal"
             android:layout_weight="1"
+            android:backgroundTint="@color/primary"
             android:text="@string/_45m" />
     </LinearLayout>
 
