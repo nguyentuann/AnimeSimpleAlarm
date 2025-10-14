@@ -1,8 +1,9 @@
 package com.app.base.utils
 
 import android.content.Context
-import java.util.Calendar
 import com.app.base.R
+import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 object TimeConverter {
     fun convertTimeToString(hour: Int, minute: Int): String {
@@ -14,7 +15,7 @@ object TimeConverter {
         return "%02d:%02d %s".format(hour12, minute, amPm)
     }
 
-    fun convertListDateToString(context: Context,days: List<Int>?): String {
+    fun convertListDateToString(context: Context, days: List<Int>?): String {
 
         if (days == null || days.isEmpty()) return context.getString(R.string.once)
         if (days.size == 7) return context.getString(R.string.everyday)
@@ -33,12 +34,12 @@ object TimeConverter {
     }
 
     // todo lấy ra thứ tiếp theo có báo thức
-    fun nameDateOfWeek(context: Context,calendar: Calendar): String {
+    fun nameDateOfWeek(context: Context, calendar: Calendar): String {
         val dateOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         return when (dateOfWeek) {
             1 -> context.getString(R.string.sunday)
             2 -> context.getString(R.string.monday)
-            3 ->context.getString(R.string.tuesday)
+            3 -> context.getString(R.string.tuesday)
             4 -> context.getString(R.string.wednesday)
             5 -> context.getString(R.string.thursday)
             6 -> context.getString(R.string.friday)
@@ -62,4 +63,18 @@ object TimeConverter {
         )
     }
 
+    fun stopWatchFormatTime(millis: Long): String {
+        val hours = millis / 1000 / 3600
+        val minutes = (millis / 1000 % 3600) / 60
+        val seconds = (millis / 1000 % 60)
+        val ms = (millis % 1000) / 10
+        return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, ms)
+    }
+
+    fun timerFormatTime(millis: Long): String {
+        val h = TimeUnit.MILLISECONDS.toHours(millis)
+        val m = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
+        val s = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
+        return String.format("%02d:%02d:%02d", h, m, s)
+    }
 }

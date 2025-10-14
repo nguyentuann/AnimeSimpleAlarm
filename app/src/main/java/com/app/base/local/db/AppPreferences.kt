@@ -13,7 +13,11 @@ class AppPreferences(context: Context) {
         private const val APP_THEME = "app_theme"
         private const val APP_CHARACTER = "app_character"
         private const val KEY_END_TIME = "end_time"
-        private const val KEY_IS_RUNNING = "is_running"
+        private const val TIMER_IS_RUNNING = "is_running"
+
+        private const val KEY_START_TIME = "stopwatch_start_time"
+        private const val STOPWATCH_IS_RUNNING = "stopwatch_is_running"
+
     }
 
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -35,18 +39,36 @@ class AppPreferences(context: Context) {
     fun saveTimer(endTime: Long, isRunning: Boolean) {
         prefs.edit {
             putLong(KEY_END_TIME, endTime)
-                .putBoolean(KEY_IS_RUNNING, isRunning)
+                .putBoolean(TIMER_IS_RUNNING, isRunning)
         }
     }
 
     fun clearTimer() {
         prefs.edit {
             remove(KEY_END_TIME)
-                .remove(KEY_IS_RUNNING)
+                .remove(TIMER_IS_RUNNING)
         }
     }
 
     fun getEndTime(): Long = prefs.getLong(KEY_END_TIME, 0L)
-    fun isRunning(): Boolean = prefs.getBoolean(KEY_IS_RUNNING, false)
+    fun isRunning(): Boolean = prefs.getBoolean(TIMER_IS_RUNNING, false)
+
+
+    fun saveStopwatchState(startTime: Long, isRunning: Boolean) {
+        prefs.edit {
+            putLong(KEY_START_TIME, startTime)
+            putBoolean(STOPWATCH_IS_RUNNING, isRunning)
+        }
+    }
+
+    fun getStartTime(): Long = prefs.getLong(KEY_START_TIME, 0L)
+    fun isStopwatchRunning(): Boolean = prefs.getBoolean(STOPWATCH_IS_RUNNING, false)
+
+    fun clearStopwatch() {
+        prefs.edit {
+            remove(KEY_START_TIME)
+            remove(STOPWATCH_IS_RUNNING)
+        }
+    }
 }
 
