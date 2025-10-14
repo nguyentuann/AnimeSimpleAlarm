@@ -13,6 +13,7 @@ import com.app.base.helpers.NotificationHelper
 import com.app.base.utils.AppConstants
 import java.util.concurrent.TimeUnit
 import com.app.base.R
+import com.app.base.utils.TimeConverter
 
 class TimerService : Service() {
 
@@ -70,7 +71,7 @@ class TimerService : Service() {
 
         val pendingIntent = PendingIntent.getActivity(
             this,
-            0,
+            200,
             openIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
@@ -81,16 +82,11 @@ class TimerService : Service() {
             pendingIntent,
             R.drawable.ic_timer,
             "Timer Running",
-            "Time left: " + formatTime(millis)
+            "Time left: " + TimeConverter.timerFormatTime(millis)
         )
     }
 
-    private fun formatTime(millis: Long): String {
-        val h = TimeUnit.MILLISECONDS.toHours(millis)
-        val m = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
-        val s = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
-        return String.format("%02d:%02d:%02d", h, m, s)
-    }
+
 
     override fun onDestroy() {
         super.onDestroy()

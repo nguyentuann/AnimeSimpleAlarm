@@ -90,11 +90,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         checkOpenTimer(intent)
+        checkOpenStopWatch(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         checkOpenTimer(intent)
+        checkOpenStopWatch(intent)
     }
 
     private fun checkOpenTimer(intent: Intent?) {
@@ -119,6 +121,31 @@ class MainActivity : AppCompatActivity() {
             // todo cập nhật lại trạng thái chọn trên BottomNavigationView
             val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
             bottomNav.selectedItemId = R.id.timerFragment
+        }
+    }
+
+    private fun checkOpenStopWatch(intent: Intent?) {
+        LogUtil.log("vao checkOpenStopWatch")
+
+        if (intent?.getBooleanExtra("OPEN_STOPWATCH", false) == true) {
+            // todo xóa extra để tránh gọi lại nhiều lần
+            intent.removeExtra("OPEN_STOPWATCH")
+
+            // todo điều hướng bằng NavController
+            if (::navController.isInitialized) {
+                navController.navigate(R.id.stopwatchFragment)
+            } else {
+                // todo trường hợp hiếm: navController chưa kịp khởi tạo
+                Handler(Looper.getMainLooper()).post {
+                    val navHostFragment =
+                        supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                    navHostFragment.navController.navigate(R.id.stopwatchFragment)
+                }
+            }
+
+            // todo cập nhật lại trạng thái chọn trên BottomNavigationView
+            val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+            bottomNav.selectedItemId = R.id.stopwatchFragment
         }
     }
 

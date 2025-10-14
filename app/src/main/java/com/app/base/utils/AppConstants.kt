@@ -7,6 +7,9 @@ object AppConstants {
     const val TIMER_CHANNEL_ID = "timer_channel"
     const val TIMER_NAME = "Timer Channel"
 
+    const val STOPWATCH_CHANNEL_ID = "stopwatch_channel"
+    const val STOPWATCH_NAME = "Stopwatch Channel"
+
     const val ALARM_CHANNEL_ID = "alarm_channel"
     const val ALARM_NAME = "Alarm Channel"
 
