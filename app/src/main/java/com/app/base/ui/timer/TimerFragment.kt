@@ -106,6 +106,7 @@ class TimerFragment : Fragment() {
             .forEach { (picker, max) ->
                 picker.apply {
                     textSize = 60f
+                    textColor = ContextCompat.getColor(requireContext(), R.color.secondary)
                     minValue = 0
                     maxValue = max
                     setFormatter(formatter)
