@@ -1,27 +1,14 @@
 package com.app.base.ui.stopwatch
 
 import android.annotation.SuppressLint
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.app.base.databinding.LapItemBinding
+import com.brally.mobile.base.adapter.BaseListAdapter
 
-class LapListAdapter(private val laps: List<String>) :
-    RecyclerView.Adapter<LapListAdapter.LapViewHolder>() {
-
-    inner class LapViewHolder(val binding: LapItemBinding) :
-        RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LapViewHolder {
-        val binding = LapItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return LapViewHolder(binding)
-    }
+class LapListAdapter : BaseListAdapter<String, LapItemBinding>() {
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: LapViewHolder, position: Int) {
-        holder.binding.lapItem.text = laps[position]
-        holder.binding.lapIndex.text = (position + 1).toString()
+    override fun bindData(binding: LapItemBinding, item: String, position: Int) {
+        binding.lapIndex.text = (position + 1).toString()
+        binding.lapItem.text = item
     }
-
-    override fun getItemCount() = laps.size
 }

@@ -23,7 +23,6 @@ import com.brally.mobile.utils.trackingScreen
 import com.braly.analytics.event.BralyTracking
 import java.lang.reflect.ParameterizedType
 
-@Suppress("unused")
 abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment(),
     View.OnClickListener, DefaultLifecycleObserver {
 

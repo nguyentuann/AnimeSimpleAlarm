@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingHorizontal="@dimen/dp_16">
 
     <include
         android:id="@+id/stopwatch_toolbar"
@@ -14,61 +14,66 @@
         android:id="@+id/tvStopwatch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00:00.000"
-        android:textSize="48sp"
+        android:paddingVertical="@dimen/dp_24"
+        android:text="00:00:00.00"
+        android:textSize="@dimen/sp_48"
+        android:textColor="@color/secondary"
         android:textStyle="bold" />
 
     <!-- Buttons -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dp_16"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_lap"
-            style="@style/btnNormal"
-            android:backgroundTint="@color/primary"
+            style="@style/btnCircle"
             android:text="@string/lap" />
 
-        <Button
+        <Space
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="0dp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_start_stopwatch"
-            style="@style/btnNormal"
-            android:backgroundTint="@color/primary"
+            style="@style/btnCircle"
             android:text="@string/start" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        >
+        android:paddingTop="@dimen/dp_24">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semi_bold"
             android:text="@string/index"
             android:textAlignment="center"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_18" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="36dp"
+            android:layout_marginEnd="@dimen/dp_36"
             android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semi_bold"
             android:text="@string/time"
             android:textAlignment="center"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_18" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lap_list"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="32dp"
+        android:layout_marginVertical="@dimen/dp_32"
         android:layout_weight="1" />
 
 </LinearLayout>

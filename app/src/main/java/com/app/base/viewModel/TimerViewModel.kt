@@ -1,19 +1,17 @@
 package com.app.base.viewModel
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.app.base.local.db.AppPreferences
 import com.app.base.ui.timer.TimerService
+import com.brally.mobile.base.viewmodel.BaseViewModel
 
 class TimerViewModel(
     private val prefs: AppPreferences,
-    private val context: Context,
-) : ViewModel() {
+) : BaseViewModel() {
 
     private var countDownTimer: CountDownTimer? = null
     private var remainingTime = 0L

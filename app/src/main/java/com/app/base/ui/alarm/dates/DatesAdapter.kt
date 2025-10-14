@@ -1,6 +1,5 @@
 package com.app.base.ui.alarm.dates
 
-import android.annotation.SuppressLint
 import android.view.View
 import com.app.base.databinding.DateItemBinding
 import com.app.base.utils.LogUtil
