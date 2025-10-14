@@ -1,13 +1,18 @@
 package com.app.base.viewModel
 
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.base.local.db.AppPreferences
+import com.app.base.ui.timer.TimerService
 
 class TimerViewModel(
-    private val prefs: AppPreferences
+    private val prefs: AppPreferences,
+    private val context: Context,
 ) : ViewModel() {
 
     private var countDownTimer: CountDownTimer? = null
@@ -24,6 +29,7 @@ class TimerViewModel(
         prefs.saveTimer(endTime, true)
 
         startCountdown(durationMillis)
+        startService(durationMillis)
     }
 
     private fun startCountdown(durationMillis: Long) {
@@ -38,6 +44,7 @@ class TimerViewModel(
                 _isRunning.value = false
                 _timeLeft.value = 0
                 prefs.clearTimer()
+                stopService()
             }
         }.start()
 
@@ -49,6 +56,7 @@ class TimerViewModel(
         if (prefs.isRunning() && endTime > System.currentTimeMillis()) {
             val remaining = endTime - System.currentTimeMillis()
             startCountdown(remaining)
+            startService(remaining)
         } else {
             _isRunning.value = false
             _timeLeft.value = 0
@@ -59,6 +67,7 @@ class TimerViewModel(
         countDownTimer?.cancel()
         prefs.saveTimer(System.currentTimeMillis() + remainingTime, false)
         _isRunning.value = false
+        stopService()
     }
 
     fun resetTimer() {
@@ -66,5 +75,22 @@ class TimerViewModel(
         prefs.clearTimer()
         _isRunning.value = false
         _timeLeft.value = 0
+        stopService()
+    }
+
+    // todo TimerService helper methods
+    private fun startService(durationMillis: Long) {
+        val intent = Intent(context, TimerService::class.java).apply {
+            putExtra("TIME_IN_MILLIS", durationMillis)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            context.startForegroundService(intent)
+        else
+            context.startService(intent)
+    }
+
+    fun stopService() {
+        val intent = Intent(context, TimerService::class.java)
+        context.stopService(intent)
     }
 }

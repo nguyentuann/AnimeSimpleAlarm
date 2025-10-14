@@ -3,6 +3,13 @@ package com.app.base.utils
 import com.app.base.R
 
 object AppConstants {
+
+    const val TIMER_CHANNEL_ID = "timer_channel"
+    const val TIMER_NAME = "Timer Channel"
+
+    const val ALARM_CHANNEL_ID = "alarm_channel"
+    const val ALARM_NAME = "Alarm Channel"
+
     val characters = mapOf<String, Int>(
         "Naruto" to R.drawable.img_naruto,
         "Luffy" to R.drawable.img_luffy,
@@ -40,7 +47,6 @@ object AppConstants {
         // Nếu có nhu cầu ngược lại — từ tên sang id nhân vật
         return characters[name] ?: R.drawable.img_naruto
     }
-
 
     fun getAllCharacters(): List<Int> {
         return characters.values.toList()

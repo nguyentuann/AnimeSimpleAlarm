@@ -1,12 +1,14 @@
 package com.app.base.ui.timer
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -14,7 +16,6 @@ import androidx.fragment.app.Fragment
 import com.app.base.R
 import com.app.base.databinding.FragmentTimerBinding
 import com.app.base.viewModel.TimerViewModel
-import com.language_onboard.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -24,6 +25,17 @@ class TimerFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: TimerViewModel by viewModel()
+
+    // Gom tất cả nút nhanh vào 1 map
+    private val quickButtons by lazy {
+        mapOf(
+            binding.btn5 to 5,
+            binding.btn10 to 10,
+            binding.btn15 to 15,
+            binding.btn30 to 30,
+            binding.btn45 to 45
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +49,7 @@ class TimerFragment : Fragment() {
     @SuppressLint("DefaultLocale")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setUpToolbar()
         setUpPickers()
         setUpQuickButtons()
@@ -52,6 +65,7 @@ class TimerFragment : Fragment() {
             binding.btnStartTimer.text =
                 if (running) getString(R.string.pause) else getString(R.string.start)
             updateResetButtonState(running)
+            updateUIState(running)
         }
 
         binding.btnStartTimer.setOnClickListener {
@@ -60,15 +74,13 @@ class TimerFragment : Fragment() {
                 viewModel.pauseTimer()
             } else {
                 val totalMillis = getPickerMillis()
-                if (totalMillis > 0) {
-                    viewModel.startTimer(totalMillis)
-                }
+                if (totalMillis > 0) viewModel.startTimer(totalMillis)
             }
         }
 
         binding.btnResetTimer.setOnClickListener {
             viewModel.resetTimer()
-            updatePickers(0, 0, 0)
+            updatePickers(0, 5, 0)
         }
 
         viewModel.resumeIfRunning()
@@ -81,32 +93,35 @@ class TimerFragment : Fragment() {
         return ((h * 3600) + (m * 60) + s) * 1000L
     }
 
-    private fun setUpToolbar() {
-        binding.timerToolbar.toolBar.navigationIcon = null
-        binding.timerToolbar.ivToolbarAction.isVisible = false
-        binding.timerToolbar.tvToolbarTitle.setText(R.string.timer)
+    private fun setUpToolbar() = with(binding.timerToolbar) {
+        toolBar.navigationIcon = null
+        ivToolbarAction.isVisible = false
+        tvToolbarTitle.setText(R.string.timer)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun setUpPickers() {
-        val formatter = android.widget.NumberPicker.Formatter { i -> String.format("%02d", i) }
-        binding.pickerHours.apply {
-            textSize = 60f;
-            minValue = 0;
-            maxValue = 23;
-            setFormatter(formatter)
-        }
-        binding.pickerMinutes.apply {
-            textSize = 60f;
-            minValue = 0;
-            maxValue = 59;
-            setFormatter(formatter)
-        }
-        binding.pickerSeconds.apply {
-            textSize = 60f;
-            minValue = 0;
-            maxValue = 59;
-            setFormatter(formatter)
+        val formatter = NumberPicker.Formatter { i -> String.format("%02d", i) }
+        listOf(binding.pickerHours to 23, binding.pickerMinutes to 59, binding.pickerSeconds to 59)
+            .forEach { (picker, max) ->
+                picker.apply {
+                    textSize = 60f
+                    minValue = 0
+                    maxValue = max
+                    setFormatter(formatter)
+                }
+            }
+    }
+
+    private fun setUpQuickButtons() {
+        quickButtons.forEach { (button, minutes) ->
+            button.setOnClickListener {
+                val total = minutes * 60 * 1000L
+                val h = (total / 3600000).toInt()
+                val m = (total / 60000 % 60).toInt()
+                val s = (total / 1000 % 60).toInt()
+                updatePickers(h, m, s)
+            }
         }
     }
 
@@ -116,25 +131,6 @@ class TimerFragment : Fragment() {
         binding.pickerSeconds.value = s
     }
 
-    private fun setUpQuickButtons() {
-        val timeButtons = mapOf(
-            binding.btn5 to 5,
-            binding.btn10 to 10,
-            binding.btn15 to 15,
-            binding.btn30 to 30,
-            binding.btn45 to 45
-        )
-        timeButtons.forEach { (button, minutes) ->
-            button.setOnClickListener {
-                val total = minutes * 60 * 1000L
-                val h = (total / 1000 / 3600).toInt()
-                val m = (total / 1000 / 60 % 60).toInt()
-                val s = (total / 1000 % 60).toInt()
-                updatePickers(h, m, s)
-            }
-        }
-    }
-
     private fun updateResetButtonState(isRunning: Boolean) {
         binding.btnResetTimer.isEnabled = !isRunning
         val color = if (isRunning) R.color.surface else R.color.primary
@@ -142,9 +138,43 @@ class TimerFragment : Fragment() {
             ColorStateList.valueOf(ContextCompat.getColor(requireContext(), color))
     }
 
+    private fun updateUIState(isRunning: Boolean) {
+        val pickers = listOf(
+            binding.pickerHours,
+            binding.pickerMinutes,
+            binding.pickerSeconds
+        )
+
+        (pickers + quickButtons.keys).forEach { it.isEnabled = !isRunning }
+
+        val color = if (isRunning) R.color.surface else R.color.primary
+        quickButtons.keys.forEach {
+            it.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), color))
+        }
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        if (viewModel.isRunning.value == true && (viewModel.timeLeft.value ?: 0L) > 0) {
+            val intent = Intent(requireContext(), TimerService::class.java).apply {
+                putExtra("TIME_IN_MILLIS", viewModel.timeLeft.value ?: 0L)
+            }
+            requireContext().startService(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val intent = Intent(requireContext(), TimerService::class.java)
+        requireContext().stopService(intent)
+    }
+
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-
