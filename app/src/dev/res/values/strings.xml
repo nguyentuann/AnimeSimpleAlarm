@@ -93,6 +93,11 @@
     <string name="time_left">Time left: </string>
     
     <string name="stopwatch_running">Stopwatch is running</string>
+    <string name="policy">Policy</string>
+    <string name="feed_back">Feedback</string>
+    <string name="share_app">Share App</string>
+    <string name="developing">This feature is under development.</string>
+    <string name="no_alarm_choosen">Please select time</string>
 
 
 </resources>

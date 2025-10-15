@@ -10,6 +10,7 @@ import com.app.base.di.alarmModule
 import com.app.base.di.appModule
 import com.app.base.di.repositoryModule
 import com.app.base.di.viewModelModule
+import com.app.base.helpers.NotificationHelper
 import com.brally.mobile.base.application.BaseApplication
 import com.brally.mobile.data.model.AppInfo
 import com.brally.mobile.service.firebase.AppRemoteConfig
@@ -62,20 +63,12 @@ class MainApplication : BaseApplication() {
             )
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                "alarm_channel",
-                "Alarm Notifications",
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                setSound(null, null)
-                description = "Channel for alarm notifications"
-                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-            }
-
-            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel)
-        }
+        NotificationHelper.createChannels(
+            this,
+            "alarm_channel",
+            "Alarm Notifications",
+            "Channel for alarm notifications"
+        )
 
         initKoin()
     }

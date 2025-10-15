@@ -3,12 +3,14 @@ package com.app.base.local.db
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
-import com.app.base.R
 
 class AppPreferences(context: Context) {
 
     companion object {
         private const val PREFS_NAME = "app_settings"
+
+        private const val IS_FIRST_LAUNCH = "is_first_launch"
+
         private const val LANG_KEY = "app_language"
         private const val APP_THEME = "app_theme"
         private const val APP_CHARACTER = "app_character"
@@ -32,9 +34,10 @@ class AppPreferences(context: Context) {
         get() = prefs.getInt(APP_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         set(value) = prefs.edit { putInt(APP_THEME, value) }
 
-    var appCharacter: Int
-        get() = prefs.getInt(APP_CHARACTER, R.raw.doraemon)
-        set(value) = prefs.edit { putInt(APP_CHARACTER, value) }
+
+    var isFirstLaunch: Boolean
+        get() = prefs.getBoolean(IS_FIRST_LAUNCH, true)
+        set(value) = prefs.edit { putBoolean(IS_FIRST_LAUNCH, value) }
 
     fun saveTimer(endTime: Long, isRunning: Boolean) {
         prefs.edit {
@@ -52,7 +55,6 @@ class AppPreferences(context: Context) {
 
     fun getEndTime(): Long = prefs.getLong(KEY_END_TIME, 0L)
     fun isRunning(): Boolean = prefs.getBoolean(TIMER_IS_RUNNING, false)
-
 
     fun saveStopwatchState(startTime: Long, isRunning: Boolean) {
         prefs.edit {

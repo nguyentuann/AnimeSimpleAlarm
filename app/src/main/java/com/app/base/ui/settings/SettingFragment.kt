@@ -1,63 +1,87 @@
 package com.app.base.ui.settings
 
-import android.app.Dialog
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
+import android.graphics.drawable.Icon
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
-import com.airbnb.lottie.LottieAnimationView
-import com.app.base.components.CommonComponents
-import com.app.base.databinding.FragmentSettingBinding
-import com.app.base.local.db.AppPreferences
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
+import com.app.base.components.CommonComponents
+import com.app.base.data.model.SettingModel
+import com.app.base.databinding.FragmentSettingBinding
 import com.app.base.helpers.setAppLocale
+import com.app.base.local.db.AppPreferences
+import com.language_onboard.ui.BaseFragment
 import org.koin.android.ext.android.inject
 
-class SettingFragment : Fragment() {
+class SettingFragment : BaseFragment<FragmentSettingBinding>() {
 
     private val appPrefs: AppPreferences by inject()
+    private lateinit var settingAdapter: SettingAdapter
 
-    private var _binding: FragmentSettingBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var settingList: List<SettingModel>
 
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSettingBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getViewBinding(): FragmentSettingBinding {
+        return FragmentSettingBinding.inflate(layoutInflater)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView() {
+        super.initView()
+        setUpToolbar()
 
-        // Language selection
-        binding.btnLanguage.setOnClickListener {
-            showLanguageDialog()
+        settingList = listOf(
+            SettingModel(
+                title = getString(R.string.language),
+                icon = Icon.createWithResource(requireContext(), R.drawable.ic_language),
+                action = { showLanguageDialog() }
+            ),
+            SettingModel(
+                title = getString(R.string.theme),
+                icon = Icon.createWithResource(requireContext(), R.drawable.ic_theme),
+                action = { showThemeDialog() }
+            ),
+            SettingModel(
+                title = getString(R.string.policy),
+                icon = Icon.createWithResource(requireContext(), R.drawable.ic_policy),
+                action = {
+                    developing()
+                }
+            ),
+            SettingModel(
+                title = getString(R.string.share_app),
+                icon = Icon.createWithResource(requireContext(), R.drawable.ic_share),
+                action = {
+                    developing()
+                }
+            ),
+            SettingModel(
+                title = getString(R.string.feed_back),
+                icon = Icon.createWithResource(requireContext(), R.drawable.ic_feedback),
+                action = {
+                    developing()
+                }
+            )
+        )
+
+        settingAdapter = SettingAdapter()
+        binding.settingRecyclerView.apply {
+            adapter = settingAdapter
+            layoutManager = LinearLayoutManager(requireContext())
         }
 
-        binding.btnTheme.setOnClickListener {
-            showThemeDialog()
-        }
+        settingAdapter.submitList(settingList)
+    }
 
-        binding.btnCharacter.setOnClickListener {
-            showCharacterDialog()
-        }
+    private fun developing() {
+        CommonComponents.toastText(
+            context = requireContext(),
+            message = getString(R.string.developing)
+        )
+    }
 
-        binding.settingToolbar.toolBar.setNavigationOnClickListener {
-            if (parentFragmentManager.backStackEntryCount > 0) {
-                parentFragmentManager.popBackStack()
-            } else {
-                requireActivity().finish()
-            }
-        }
-
+    private fun setUpToolbar() = with(binding.settingToolbar) {
+        toolBar.navigationIcon = null
+        ivToolbarAction.isVisible = false
+        tvToolbarTitle.text = getString(R.string.settings)
     }
 
     private fun showLanguageDialog() {
@@ -66,22 +90,24 @@ class SettingFragment : Fragment() {
         val currentLang = appPrefs.appLanguage
         val selectedIndex = codes.indexOf(currentLang)
 
-        AlertDialog.Builder(requireContext())
-            .setTitle(R.string.language)
-            .setSingleChoiceItems(
-                languages, selectedIndex
-            ) { dialog, which ->
-                requireContext().setAppLocale(codes[which])
-                appPrefs.appLanguage = codes[which]
+        CommonComponents.showSingleChoiceDialog(
+            requireContext(),
+            title = getString(R.string.language),
+            options = languages,
+            selectedIndex = selectedIndex.takeIf { it >= 0 } ?: 0,
+            onSelected = { which ->
+                val selectedCode = codes[which]
+                requireContext().setAppLocale(selectedCode)
+                appPrefs.appLanguage = selectedCode
                 requireActivity().recreate()
-                dialog.dismiss()
+
                 CommonComponents.toastText(
-                    context = requireContext(),
-                    message = getString(R.string.change_language)
+                    requireContext(),
+                    getString(R.string.change_language)
                 )
-            }
-            .setNegativeButton(getString(R.string.cancel), null)
-            .show()
+            },
+            cancel = getString(R.string.cancel)
+        )
     }
 
     private fun showThemeDialog() {
@@ -97,76 +123,24 @@ class SettingFragment : Fragment() {
         val currentTheme = appPrefs.appTheme
         val selectedIndex = codes.indexOf(currentTheme).takeIf { it >= 0 } ?: 2
 
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.theme))
-            .setSingleChoiceItems(
-                themes, selectedIndex
-            ) { dialog, which ->
+        CommonComponents.showSingleChoiceDialog(
+            requireContext(),
+            title = getString(R.string.theme),
+            options = themes,
+            selectedIndex = selectedIndex,
+            onSelected = { which ->
                 val newTheme = codes[which]
                 appPrefs.appTheme = newTheme
                 AppCompatDelegate.setDefaultNightMode(newTheme)
                 requireActivity().recreate()
-                dialog.dismiss()
 
                 CommonComponents.toastText(
-                    context = requireContext(),
-                    message = getString(R.string.change_theme)
+                    requireContext(),
+                    getString(R.string.change_theme)
                 )
-            }
-            .setNegativeButton(getString(R.string.cancel), null)
-            .show()
-    }
-
-    private fun showCharacterDialog() {
-        // Map tên nhân vật -> file Lottie JSON (res/raw)
-        val characters = mapOf(
-            "Doraemon" to R.raw.doraemon,
-            "Naruto" to R.raw.naruto,
-            "Spideman" to R.raw.spiderman,
-            "Superman" to R.raw.superman,
-            "Chachan" to R.raw.chachan
+            },
+            cancel = getString(R.string.cancel)
         )
-
-        val characterNames = characters.keys.toTypedArray()
-        val currentCharacterRes = appPrefs.appCharacter
-        val selectedIndex = characters.values.indexOf(currentCharacterRes)
-            .takeIf { it >= 0 } ?: 0
-
-        var tempSelectedRes = currentCharacterRes
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(R.string.character)
-            .setSingleChoiceItems(characterNames, selectedIndex) { _, which ->
-                val selectedCharacterName = characterNames[which]
-                tempSelectedRes = characters[selectedCharacterName] ?: R.raw.doraemon
-
-                showLottiePopup(tempSelectedRes)
-
-            }
-            .setPositiveButton("OK") { dialog, _ ->
-
-
-                // Lưu resource ID vào appPrefs
-                appPrefs.appCharacter = tempSelectedRes
-
-                dialog.dismiss()
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
-    }
-
-    private fun showLottiePopup(lottieRes: Int) {
-        val lottieDialog = Dialog(requireContext())
-        lottieDialog.setContentView(R.layout.dialog_lottie) // layout chứa LottieAnimationView
-        val lottieView = lottieDialog.findViewById<LottieAnimationView>(R.id.lottieView)
-        lottieView.setAnimation(lottieRes)
-        lottieView.loop(true)
-        lottieView.playAnimation()
-
-        lottieDialog.show()
-
-        // Tự động đóng sau 3 giây
-        lottieView.postDelayed({ lottieDialog.dismiss() }, 3000)
     }
 
     override fun onDestroyView() {
