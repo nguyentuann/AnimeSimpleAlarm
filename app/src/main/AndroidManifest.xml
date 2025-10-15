@@ -10,15 +10,11 @@
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
@@ -36,6 +32,13 @@
         android:theme="@style/Theme.SimpleAlarmAndroid"
         tools:ignore="ForegroundServicePermission"
         tools:replace="android:fullBackupContent, theme">
+        <activity
+            android:name=".ui.splash.OnboardingActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
 
         <activity
             android:name=".ui.alarm.AlarmReceiverActivity"
@@ -48,8 +51,9 @@
             android:taskAffinity=""
             android:turnScreenOn="true" />
 
+
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing"
@@ -60,8 +64,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- todo update id later-->
-        <!-- sample ca-app-pub-3940256099942544~3347511713-->
+
+
+        <!-- todo update id later -->
+        <!-- sample ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~1234567899" />
@@ -84,23 +90,20 @@
             android:enabled="true"
             android:exported="true" />
 
-
         <service
             android:name=".ui.alarm.sound.AlarmSoundService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback"
             tools:ignore="ForegroundServicePermission" />
-
         <service
             android:name=".ui.timer.TimerService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
-
         <service
             android:name=".ui.stopwatch.StopWatchService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
-
     </application>
+
 </manifest>

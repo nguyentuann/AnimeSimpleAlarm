@@ -87,6 +87,7 @@
     <string name="feed_back">Phản hồi</string>
     <string name="share_app">Chia sẻ</string>
     <string name="developing">Tính năng đang phát triển</string>
+    <string name="no_alarm_choosen">Vui lòng chọn thời gian</string>
 
 
 </resources>

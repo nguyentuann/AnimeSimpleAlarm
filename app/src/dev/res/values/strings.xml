@@ -97,6 +97,7 @@
     <string name="feed_back">Feedback</string>
     <string name="share_app">Share App</string>
     <string name="developing">This feature is under development.</string>
+    <string name="no_alarm_choosen">Please select time</string>
 
 
 </resources>

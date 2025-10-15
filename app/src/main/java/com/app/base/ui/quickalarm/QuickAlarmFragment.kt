@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.app.base.R
+import com.app.base.components.CommonComponents
 import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentQuickAlarmBinding
 import com.app.base.viewModel.ListAlarmViewModel
@@ -50,14 +51,16 @@ class QuickAlarmFragment : Fragment() {
         binding.quickToolbar.tvToolbarTitle.setText(R.string.quick_alarm)
         binding.quickToolbar.ivToolbarAction.setOnClickListener {
             saveAlarm()
-           findNavController().navigate(R.id.action_to_home)
         }
     }
 
     private fun saveAlarm() {
         val minutes = selectedMinutes
         if (minutes == null) {
-            Toast.makeText(requireContext(), "Hãy chọn thời gian trước!", Toast.LENGTH_SHORT).show()
+            CommonComponents.toastText(
+                requireContext(),
+                getString(R.string.no_alarm_choosen),
+            )
         } else {
             val calendar = Calendar.getInstance()
             calendar.add(Calendar.MINUTE, minutes)
@@ -72,6 +75,8 @@ class QuickAlarmFragment : Fragment() {
                 date = calendar.timeInMillis,
             )
             listAlarmViewModel.saveAlarm(alarm)
+            findNavController().navigate(R.id.action_to_home)
+
         }
     }
 

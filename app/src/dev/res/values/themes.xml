@@ -2,9 +2,10 @@
 <resources>
 
     <style name="Theme.SimpleAlarmAndroid" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:statusBarColor">@color/background</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
 
     <style name="RedTimePickerDialog" parent="android:Theme.Holo.Light.Dialog">
         <!-- Màu cho spinner selector và nút OK/Cancel -->
