@@ -88,6 +88,11 @@
     <string name="sound">Sound</string>
     <string name="never">Never</string>
     <string name="default_character">Default Character</string>
+    
+    <string name="timer_running">Timer is running</string>
+    <string name="time_left">Time left: </string>
+    
+    <string name="stopwatch_running">Stopwatch is running</string>
 
 
 </resources>
