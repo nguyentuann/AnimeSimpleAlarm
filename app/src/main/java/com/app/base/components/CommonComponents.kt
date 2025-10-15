@@ -1,4 +1,5 @@
 package com.app.base.components
+
 import android.app.AlertDialog
 import android.content.Context
 import android.widget.Toast
@@ -24,4 +25,23 @@ object CommonComponents {
             context, message, Toast.LENGTH_SHORT
         ).show()
     }
+
+    fun showSingleChoiceDialog(
+        context: Context,
+        title: String,
+        options: Array<String>,
+        selectedIndex: Int,
+        onSelected: (index: Int) -> Unit,
+        cancel: String
+    ) {
+        AlertDialog.Builder(context)
+            .setTitle(title)
+            .setSingleChoiceItems(options, selectedIndex) { dialog, which ->
+                onSelected(which)
+                dialog.dismiss()
+            }
+            .setNegativeButton(cancel, null)
+            .show()
+    }
+
 }

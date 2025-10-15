@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,105 +10,13 @@
         android:id="@+id/setting_toolbar"
         layout="@layout/toolbar_common" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="16dp"
-        app:dividerColor="@color/surface" />
-
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/setting_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/language"
-            android:textColor="@color/text"
-            android:textSize="18sp" />
-
-        <ImageButton
-            android:id="@+id/btn_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
-            android:contentDescription="@string/noDescription"
-            android:paddingVertical="0dp"
-            android:src="@drawable/ic_right"
-            app:tint="@color/text" />
+        android:paddingHorizontal="8dp"
+        android:clipToPadding="false" />
 
 
-    </LinearLayout>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="16dp"
-        app:dividerColor="@color/surface" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/theme"
-            android:textColor="@color/text"
-            android:textSize="18sp" />
-
-        <ImageButton
-            android:id="@+id/btn_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
-            android:contentDescription="@string/noDescription"
-            android:paddingVertical="0dp"
-            android:src="@drawable/ic_right"
-            app:tint="@color/text" />
-    </LinearLayout>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="16dp"
-        app:dividerColor="@color/surface" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/character"
-            android:textColor="@color/text"
-            android:textSize="18sp" />
-
-        <ImageButton
-            android:id="@+id/btn_character"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
-            android:contentDescription="@string/noDescription"
-            android:paddingVertical="0dp"
-            android:src="@drawable/ic_right"
-            app:tint="@color/text" />
-    </LinearLayout>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="16dp"
-        app:dividerColor="@color/surface" />
 
 </LinearLayout>
