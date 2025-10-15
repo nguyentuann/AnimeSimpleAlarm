@@ -9,10 +9,9 @@ import android.content.Intent
 import android.os.CountDownTimer
 import android.os.IBinder
 import com.app.base.MainActivity
+import com.app.base.R
 import com.app.base.helpers.NotificationHelper
 import com.app.base.utils.AppConstants
-import java.util.concurrent.TimeUnit
-import com.app.base.R
 import com.app.base.utils.TimeConverter
 
 class TimerService : Service() {
@@ -81,12 +80,10 @@ class TimerService : Service() {
             AppConstants.TIMER_CHANNEL_ID,
             pendingIntent,
             R.drawable.ic_timer,
-            "Timer Running",
-            "Time left: " + TimeConverter.timerFormatTime(millis)
+            getString(R.string.timer_running),
+            getString(R.string.time_left) + TimeConverter.timerFormatTime(millis)
         )
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()

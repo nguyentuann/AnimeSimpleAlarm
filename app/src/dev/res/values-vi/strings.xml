@@ -80,6 +80,9 @@
     <string name="sound">Âm thanh</string>
     <string name="never">Không bao giờ</string>
     <string name="default_character">Nhân vật mặc định</string>
+    <string name="timer_running">Đếm giờ đang chạy</string>
+    <string name="time_left">"Thời gian còn lại "</string>
+    <string name="stopwatch_running">Bấm giờ đang chạy</string>
 
 
 </resources>

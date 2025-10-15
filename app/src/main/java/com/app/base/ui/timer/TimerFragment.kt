@@ -4,25 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import com.app.base.R
 import com.app.base.databinding.FragmentTimerBinding
 import com.app.base.viewModel.TimerViewModel
+import com.language_onboard.ui.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
-class TimerFragment : Fragment() {
-
-    private var _binding: FragmentTimerBinding? = null
-    private val binding get() = _binding!!
+class TimerFragment : BaseFragment<FragmentTimerBinding>() {
 
     private val viewModel: TimerViewModel by viewModel()
 
@@ -37,36 +30,19 @@ class TimerFragment : Fragment() {
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentTimerBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getViewBinding(): FragmentTimerBinding {
+        return FragmentTimerBinding.inflate(layoutInflater)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    @SuppressLint("DefaultLocale")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView() {
+        super.initView()
+
+        viewModel.resumeIfRunning()
 
         setUpToolbar()
         setUpPickers()
         setUpQuickButtons()
-
-        viewModel.timeLeft.observe(viewLifecycleOwner) { millis ->
-            val h = TimeUnit.MILLISECONDS.toHours(millis)
-            val m = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
-            val s = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
-            updatePickers(h.toInt(), m.toInt(), s.toInt())
-        }
-
-        viewModel.isRunning.observe(viewLifecycleOwner) { running ->
-            binding.btnStartTimer.text =
-                if (running) getString(R.string.pause) else getString(R.string.start)
-            updateResetButtonState(running)
-            updateUIState(running)
-        }
 
         binding.btnStartTimer.setOnClickListener {
             val running = viewModel.isRunning.value ?: false
@@ -82,8 +58,25 @@ class TimerFragment : Fragment() {
             viewModel.resetTimer()
             updatePickers(0, 5, 0)
         }
+    }
 
-        viewModel.resumeIfRunning()
+    override fun initObserver() {
+        super.initObserver()
+
+        viewModel.timeLeft.observe(viewLifecycleOwner) { millis ->
+            val h = TimeUnit.MILLISECONDS.toHours(millis)
+            val m = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
+            val s = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
+            updatePickers(h.toInt(), m.toInt(), s.toInt())
+        }
+
+        viewModel.isRunning.observe(viewLifecycleOwner) { running ->
+            binding.btnStartTimer.text =
+                if (running) getString(R.string.pause) else getString(R.string.start)
+            updateResetButtonState(running)
+            updateUIState(running)
+        }
+
     }
 
     private fun getPickerMillis(): Long {
@@ -99,6 +92,7 @@ class TimerFragment : Fragment() {
         tvToolbarTitle.setText(R.string.timer)
     }
 
+    @SuppressLint("DefaultLocale")
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun setUpPickers() {
         val formatter = NumberPicker.Formatter { i -> String.format("%02d", i) }
@@ -155,7 +149,6 @@ class TimerFragment : Fragment() {
         }
     }
 
-
     override fun onPause() {
         super.onPause()
         if (viewModel.isRunning.value == true && (viewModel.timeLeft.value ?: 0L) > 0) {
@@ -171,8 +164,6 @@ class TimerFragment : Fragment() {
         val intent = Intent(requireContext(), TimerService::class.java)
         requireContext().stopService(intent)
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

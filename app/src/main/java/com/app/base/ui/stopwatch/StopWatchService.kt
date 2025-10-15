@@ -4,7 +4,6 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
@@ -34,7 +33,8 @@ class StopWatchService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startTime = intent?.getLongExtra("START_TIME", System.currentTimeMillis()) ?: System.currentTimeMillis()
+        startTime = intent?.getLongExtra("START_TIME", System.currentTimeMillis())
+            ?: System.currentTimeMillis()
 
         // Tạo channel (Android 8+)
         NotificationHelper.createChannels(
@@ -72,7 +72,7 @@ class StopWatchService : Service() {
             AppConstants.STOPWATCH_CHANNEL_ID,
             pendingIntent,
             R.drawable.ic_stopwatch,
-            "Stopwatch Running",
+            getString(R.string.stopwatch_running),
             TimeConverter.stopWatchFormatTime(elapsed)
         )
     }
@@ -82,7 +82,6 @@ class StopWatchService : Service() {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(NOTIFICATION_ID, notification)
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
