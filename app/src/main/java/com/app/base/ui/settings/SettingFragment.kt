@@ -79,7 +79,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
     }
 
     private fun setUpToolbar() = with(binding.settingToolbar) {
-        toolBar.navigationIcon = null
+        toolBar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
         ivToolbarAction.isVisible = false
         tvToolbarTitle.text = getString(R.string.settings)
     }
