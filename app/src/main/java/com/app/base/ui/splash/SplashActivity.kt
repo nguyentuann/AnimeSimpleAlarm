@@ -15,7 +15,6 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        appPrefs.isFirstLaunch = true
         if (appPrefs.isFirstLaunch) {
             startActivity(Intent(this, OnboardingActivity::class.java))
         } else {

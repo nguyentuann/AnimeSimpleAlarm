@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -62,6 +63,23 @@ class MainActivity : AppCompatActivity() {
         // 🔹 Kết nối với BottomNavigationView
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.newAlarmFragment,
+                R.id.settingFragment,
+                R.id.characterFragment,
+                R.id.soundFragment,
+                R.id.datesFragment
+                    -> {
+                    bottomNav.visibility = View.GONE
+                }
+
+                else -> {
+                    bottomNav.visibility = View.VISIBLE
+                }
+            }
+        }
 
         // 🔹 Nếu muốn xử lý logic tùy chọn menu
         bottomNav.setOnItemSelectedListener { item ->
