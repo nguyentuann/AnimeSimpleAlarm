@@ -97,7 +97,7 @@
                 android:backgroundTint="@color/surface"
                 android:paddingHorizontal="@dimen/dp_32"
                 android:text="@string/create"
-                android:textColor="@color/secondary"
+                android:textColor="@color/primary"
                 android:textSize="@dimen/sp_18" />
         </LinearLayout>
     </LinearLayout>

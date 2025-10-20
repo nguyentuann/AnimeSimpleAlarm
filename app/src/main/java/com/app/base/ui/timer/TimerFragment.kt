@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
+import android.view.ContextThemeWrapper
 import android.widget.NumberPicker
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -29,6 +30,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>() {
             binding.btn45 to 45
         )
     }
+
+    override fun getStatusBarColor() =
+        requireContext().getColor(R.color.background)
+
+    override fun getNavigationBarColor() =
+        requireContext().getColor(R.color.background)
 
     override fun getViewBinding(): FragmentTimerBinding {
         return FragmentTimerBinding.inflate(layoutInflater)
@@ -99,8 +106,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>() {
         listOf(binding.pickerHours to 23, binding.pickerMinutes to 59, binding.pickerSeconds to 59)
             .forEach { (picker, max) ->
                 picker.apply {
-                    textSize = 60f
-                    textColor = ContextCompat.getColor(requireContext(), R.color.secondary)
+                    textSize = 100f
                     minValue = 0
                     maxValue = max
                     setFormatter(formatter)
@@ -128,7 +134,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>() {
 
     private fun updateResetButtonState(isRunning: Boolean) {
         binding.btnResetTimer.isEnabled = !isRunning
-        val color = if (isRunning) R.color.surface else R.color.primary
+        val color = if (isRunning) R.color.dark_surface else R.color.light_surface
         binding.btnResetTimer.backgroundTintList =
             ColorStateList.valueOf(ContextCompat.getColor(requireContext(), color))
     }
@@ -142,7 +148,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>() {
 
         (pickers + quickButtons.keys).forEach { it.isEnabled = !isRunning }
 
-        val color = if (isRunning) R.color.surface else R.color.primary
+        val color = if (isRunning) R.color.dark_surface else R.color.light_surface
         quickButtons.keys.forEach {
             it.backgroundTintList =
                 ColorStateList.valueOf(ContextCompat.getColor(requireContext(), color))

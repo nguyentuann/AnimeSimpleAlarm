@@ -12,8 +12,6 @@ class AppPreferences(context: Context) {
         private const val IS_FIRST_LAUNCH = "is_first_launch"
 
         private const val LANG_KEY = "app_language"
-        private const val APP_THEME = "app_theme"
-        private const val APP_CHARACTER = "app_character"
         private const val KEY_END_TIME = "end_time"
         private const val TIMER_IS_RUNNING = "is_running"
 
@@ -29,11 +27,6 @@ class AppPreferences(context: Context) {
         set(value) {
             prefs.edit { putString(LANG_KEY, value) }
         }
-
-    var appTheme: Int
-        get() = prefs.getInt(APP_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        set(value) = prefs.edit { putInt(APP_THEME, value) }
-
 
     var isFirstLaunch: Boolean
         get() = prefs.getBoolean(IS_FIRST_LAUNCH, true)

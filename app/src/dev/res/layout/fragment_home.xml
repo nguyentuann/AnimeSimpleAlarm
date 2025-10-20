@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp_16"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/tool_bar">
 
         <!--todo don't have alarm-->
         <androidx.cardview.widget.CardView
@@ -40,8 +40,9 @@
                     android:layout_height="@dimen/dp_56"
                     android:background="@drawable/btn_circle"
                     android:contentDescription="@string/add"
+                    android:backgroundTint="@color/primary"
                     android:src="@drawable/ic_add"
-                    app:tint="@color/background" />
+                    app:tint="@color/white" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -60,7 +61,7 @@
             android:id="@+id/alarm_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/dp_64"
+            android:paddingBottom="@dimen/dp_64"
             android:visibility="gone" />
 
     </FrameLayout>

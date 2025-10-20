@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="btnNormal" parent="Widget.Material3.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/dp_60</item>
         <item name="android:textColor">@color/text</item>
-        <item name="android:backgroundTint">@color/surface</item>
+        <item name="android:backgroundTint">@color/light_surface</item>
         <item name="android:textSize">@dimen/sp_14</item>
         <item name="android:layout_marginLeft">@dimen/dp_4</item>
         <item name="android:paddingHorizontal">@dimen/dp_12</item>
@@ -21,7 +21,7 @@
         <item name="android:background">@drawable/btn_circle</item>
 
         <!-- Màu nền và text -->
-        <item name="backgroundTint">@color/primary</item>
+        <item name="backgroundTint">@color/light_surface</item>
         <item name="android:textColor">@color/text</item>
 
         <!-- Cỡ chữ -->
@@ -33,12 +33,15 @@
         <item name="android:padding">0dp</item>
     </style>
 
-    <style name="NumberPickerDark" parent="ThemeOverlay.MaterialComponents">
-        <item name="android:textColorPrimary">@color/text</item>
-        <item name="android:textColorSecondary">@color/surface</item>
-        <item name="android:colorBackground">@color/surface</item>
+    <style name="btnCircle.Start" parent="btnCircle">
+        <item name="backgroundTint">@color/dark_green</item>
+        <item name="android:textColor">@color/green</item>
     </style>
 
+    <style name="NumberPickerDark" parent="ThemeOverlay.MaterialComponents">
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/transparent</item>
+    </style>
 
 
     <style name="AddAlarmConstraintLayoutStyle">
@@ -59,34 +62,37 @@
     <!-- res/values/styles.xml -->
     <style name="TimePickerDialogStyle" parent="ThemeOverlay.Material3.MaterialTimePicker">
         <!-- Màu chính -->
-        <item name="colorPrimaryContainer">@color/secondary</item>
-        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorOnPrimaryContainer">@color/primary</item>
 
-        <item name="colorPrimary">@color/secondary</item>
+        <item name="android:backgroundTint">@color/dark_surface</item>
 
-        <item name="colorTertiaryContainer">@color/secondary</item>
-        <item name="colorOnTertiaryContainer">@color/white</item>
+        <item name="colorPrimary">@color/primary</item>
+
+        <item name="colorOnTertiaryContainer">@color/primary</item>
+
 
         <!-- Nền của dialog -->
         <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
+        <item name="colorOnSurface">@color/light_surface</item>
 
         <!-- Màu chữ nút OK/Cancel -->
         <item name="buttonStyle">@style/TimePickerTextButtonStyle</item>
     </style>
 
+
     <style name="DatePickerDialogStyle" parent="ThemeOverlay.Material3.MaterialCalendar">
         <!-- Màu chính -->
-        <item name="colorPrimary">@color/secondary</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/primary</item>
+
+        <item name="android:backgroundTint">@color/dark_surface</item>
 
         <!-- Màu cho ngày được chọn -->
         <item name="colorTertiaryContainer">@color/secondary</item>
         <item name="colorOnTertiaryContainer">@color/white</item>
 
         <!-- Nền -->
-        <item name="colorSurface">@color/secondary</item>
-        <item name="colorOnSurface">@color/black</item>
+        <item name="colorOnSurface">@color/white</item>
 
         <!-- Nút -->
         <item name="buttonStyle">@style/TimePickerTextButtonStyle</item>
@@ -98,22 +104,36 @@
     </style>
 
 
+    <style name="CustomAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <!-- Màu chính -->
+        <item name="colorPrimary">@color/primary</item>
 
-    <style name="CustomAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <!-- màu chữ cho list item -->
-        <item name="android:textColorPrimary">@color/text</item>
-        <item name="android:textSize">16sp</item>
+        <!-- Tùy chỉnh typography -->
+        <item name="materialAlertDialogTitleTextStyle">@style/AlertDialogTitleText</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/AlertDialogMessageText</item>
+
+        <!-- Nút -->
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogButtonText</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogButtonText</item>
     </style>
 
-    <style name="TimeButtonStyle">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:backgroundTint">@color/primary</item>
-        <item name="android:textColor">@color/text</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/open_sans_medium</item>
-        <item name="android:padding">8dp</item>
+    <style name="RoundedAlertDialogShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/dp_32</item>
+    </style>
+
+    <style name="AlertDialogTitleText" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textSize">@dimen/sp_22</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AlertDialogMessageText" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:textSize">@dimen/sp_18</item>
+    </style>
+
+    <style name="AlertDialogButtonText" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:textColor">@color/primary</item>
     </style>
 
     <style name="NoActiveIndicator">

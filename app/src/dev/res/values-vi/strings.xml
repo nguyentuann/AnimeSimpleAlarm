@@ -25,6 +25,8 @@
     <string name="stop">Dừng</string>
     <string name="this_string">Lại</string>
     <string name="alarm">Báo thức</string>
+    <string name="snooze">Báo lại</string>
+    <string name="snooze_for_5_minutes">Báo thức lại sau 5 phút</string>
     <string name="noDescription">Không có mô tả</string>
     <string name="title_select_date">Chọn ngày trong tương lai cho báo thức này</string>
     <string name="timer_stopwatch"><![CDATA[Hẹn giờ & Đồng hồ bấm giờ]]></string>
@@ -89,6 +91,9 @@
     <string name="developing">Tính năng đang phát triển</string>
     <string name="no_alarm_choosen">Vui lòng chọn thời gian</string>
     <string name="Repeat">Lặp lại</string>
+    <string name="hours">Giờ</string>
+    <string name="minutes">Phút</string>
+    <string name="seconds">Giây</string>
 
 
 </resources>

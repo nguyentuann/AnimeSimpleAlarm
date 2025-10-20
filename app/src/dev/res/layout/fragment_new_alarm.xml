@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="@color/text">
+        app:navigationIconTint="@color/primary">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/text"
+                app:tint="@color/primary"
                 tools:ignore="ContentDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -59,7 +59,7 @@
             android:id="@+id/card_view_edit_time"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:backgroundTint="@color/secondary"
+            android:backgroundTint="@color/surface"
             app:cardCornerRadius="@dimen/dp_16">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -196,6 +196,7 @@
                 android:id="@+id/tf_message"
                 style="@style/CustomEditTextStyle"
                 android:autofillHints="name"
+                android:backgroundTint="@null"
                 android:hint="@string/message_placeholder"
                 android:inputType="text"
                 android:text=""
@@ -225,9 +226,12 @@
                 android:id="@+id/btn_character"
                 style="@style/CustomEditTextStyle"
                 android:autofillHints="name"
+                android:backgroundTint="@null"
                 android:text="@string/default_character"
                 android:textColor="@color/text"
                 android:textSize="18sp"
+                app:drawableEndCompat="@drawable/ic_right"
+                app:drawableTint="@color/text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/character"
@@ -255,9 +259,12 @@
                 android:id="@+id/btn_sound"
                 style="@style/CustomEditTextStyle"
                 android:autofillHints="name"
+                android:backgroundTint="@null"
                 android:text="@string/default_tone"
                 android:textColor="@color/text"
                 android:textSize="18sp"
+                app:drawableEndCompat="@drawable/ic_right"
+                app:drawableTint="@color/text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/sound"
@@ -273,7 +280,7 @@
             android:layout_marginTop="@dimen/dp_50"
             android:backgroundTint="@color/surface"
             android:text="@string/save"
-            android:textColor="@color/secondary"
+            android:textColor="@color/primary"
             android:textSize="@dimen/sp_18" />
     </LinearLayout>
 

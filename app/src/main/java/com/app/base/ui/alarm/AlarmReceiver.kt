@@ -79,18 +79,18 @@ class AlarmReceiver() : BroadcastReceiver() {
         }
 
 
-        if (!days.isNullOrEmpty()) {
-            // todo lên lịch cho lần tiếp theo
-            val nextAlarm = AlarmModel(
-                id!!,
-                hour,
-                minute,
-                true,
-                message,
-                sound,
-                days
-            )
-            alarmScheduler.scheduleAlarm(nextAlarm)
-        }
+//        if (!days.isNullOrEmpty()) {
+//            // todo lên lịch cho lần tiếp theo
+//            val nextAlarm = AlarmModel(
+//                id!!,
+//                hour,
+//                minute,
+//                true,
+//                message,
+//                sound,
+//                days
+//            )
+//            alarmScheduler.scheduleAlarm(nextAlarm)
+//        }
     }
 }

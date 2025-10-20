@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:contentDescription="@string/noDescription"
         android:scaleType="centerCrop"
-        android:src="@drawable/img_conan"
+        android:src="@drawable/img_luffy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         android:id="@+id/overlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#80000000"
+        android:background="#70000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,47 +71,33 @@
         android:text="Message"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="@dimen/sp_38"
         app:layout_constraintTop_toBottomOf="@+id/layout_time" />
 
-    <Space
-        android:id="@+id/space"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        app:layout_constraintTop_toBottomOf="@+id/message" />
-
-    <LinearLayout
-        android:id="@+id/layout_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_snooze"
+        style="@style/btnNormal"
+        android:backgroundTint="@color/secondary"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="80dp"
+        android:layout_marginTop="72dp"
+        android:text="@string/snooze"
+        android:textSize="@dimen/sp_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/space">
+        app:layout_constraintTop_toBottomOf="@id/message" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_stop"
-            style="@style/btnNormal"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="@dimen/dp_4"
-            android:layout_marginStart="@dimen/dp_4"
-            android:text="@string/stop" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_stop"
+        style="@style/btnNormal"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="80dp"
+        android:layout_marginBottom="72dp"
+        android:text="@string/stop"
+        android:textSize="@dimen/sp_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_this"
-            style="@style/btnNormal"
-            android:layout_height="80dp"
-            android:layout_marginEnd="@dimen/dp_4"
-            android:layout_weight="1"
-            android:text="@string/this_string" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_alarm"
-            style="@style/btnNormal"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="@dimen/dp_4"
-            android:text="@string/alarm" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

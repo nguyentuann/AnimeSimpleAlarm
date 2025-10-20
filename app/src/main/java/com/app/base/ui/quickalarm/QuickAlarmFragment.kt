@@ -99,7 +99,7 @@ class QuickAlarmFragment : Fragment() {
 
         fun resetButtonColors() {
             buttonsWithTime.keys.forEach { button ->
-                button.setBackgroundColor(resources.getColor(R.color.surface))
+                button.setBackgroundColor(resources.getColor(R.color.light_surface))
             }
         }
 

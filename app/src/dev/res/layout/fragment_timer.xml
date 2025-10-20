@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Hours"
+            android:text="@string/hours"
+            android:textColor="@color/text"
             android:textSize="@dimen/sp_18" />
 
         <TextView
@@ -33,7 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Minutes"
+            android:text="@string/minutes"
+
+            android:textColor="@color/text"
             android:textSize="@dimen/sp_18" />
 
         <TextView
@@ -41,7 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Seconds"
+            android:text="@string/seconds"
+            android:textColor="@color/text"
             android:textSize="@dimen/sp_18" />
     </LinearLayout>
 
@@ -50,8 +54,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingHorizontal="@dimen/sp_16"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/sp_16">
 
         <NumberPicker
             android:id="@+id/picker_hours"
@@ -91,29 +95,29 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn5"
             style="@style/btnNormal"
-            android:backgroundTint="@color/primary"
             android:layout_weight="1"
+            android:backgroundTint="@color/primary"
             android:text="@string/_5m" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn10"
             style="@style/btnNormal"
-            android:backgroundTint="@color/primary"
             android:layout_weight="1"
+            android:backgroundTint="@color/primary"
             android:text="@string/_10m" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn15"
-            android:backgroundTint="@color/primary"
             style="@style/btnNormal"
             android:layout_weight="1"
+            android:backgroundTint="@color/primary"
             android:text="@string/_15m" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn30"
             style="@style/btnNormal"
-            android:backgroundTint="@color/primary"
             android:layout_weight="1"
+            android:backgroundTint="@color/primary"
             android:text="@string/_30m" />
 
         <com.google.android.material.button.MaterialButton
@@ -133,6 +137,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_reset_timer"
+            android:backgroundTint="@color/primary"
             style="@style/btnCircle"
             android:text="@string/reset" />
 
@@ -142,7 +147,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_start_timer"
-            style="@style/btnCircle"
+            style="@style/btnCircle.Start"
             android:text="@string/start" />
 
     </LinearLayout>

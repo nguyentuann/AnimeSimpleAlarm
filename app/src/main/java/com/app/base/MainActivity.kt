@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        AppCompatDelegate.setDefaultNightMode(appPrefs.appTheme)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setAppLocale(appPrefs.appLanguage)
 
         setContentView(R.layout.activity_main)

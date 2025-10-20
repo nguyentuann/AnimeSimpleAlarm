@@ -7,7 +7,7 @@
     android:background="?attr/colorSurface"
     app:contentInsetStartWithNavigation="0dp"
     app:navigationIcon="@drawable/ic_back"
-    app:navigationIconTint="@color/text"
+    app:navigationIconTint="@color/primary"
     app:titleCentered="true">
 
     <LinearLayout
@@ -38,7 +38,7 @@
             android:contentDescription="@string/add"
             android:padding="12dp"
             android:src="@drawable/ic_save"
-            app:tint="@color/text" />
+            app:tint="@color/primary" />
     </LinearLayout>
 
 

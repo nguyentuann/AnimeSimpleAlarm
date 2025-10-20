@@ -15,6 +15,12 @@ class StopWatchFragment : BaseFragment<FragmentStopWatchBinding>() {
 
     private lateinit var lapAdapter: LapListAdapter
 
+    override fun getStatusBarColor() =
+        requireContext().getColor(R.color.background)
+
+    override fun getNavigationBarColor() =
+        requireContext().getColor(R.color.background)
+
     override fun getViewBinding(): FragmentStopWatchBinding =
         FragmentStopWatchBinding.inflate(layoutInflater)
 
@@ -47,7 +53,7 @@ class StopWatchFragment : BaseFragment<FragmentStopWatchBinding>() {
         // Quan sát danh sách laps
         viewModel.laps.observe(viewLifecycleOwner) { laps ->
             lapAdapter.submitList(laps.toList())
-            binding.lapList.scrollToPosition(laps.size - 1)
+            binding.lapList.scrollToPosition(0)
         }
     }
 

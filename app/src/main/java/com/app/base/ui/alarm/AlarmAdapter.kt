@@ -18,6 +18,10 @@ class AlarmAdapter(
         val context = binding.root.context
 
         with(binding) {
+            if (!item.message.isNullOrEmpty()) {
+                tvMessage.text = item.message
+            }
+
             tvTime.text = TimeConverter.convertTimeToString(item.hour, item.minute)
             tvDates.text = TimeConverter.convertListDateToString(context, item.dateOfWeek)
             nextAlarm.text = nextDateOfAlarm(context, item)

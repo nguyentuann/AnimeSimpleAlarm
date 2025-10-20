@@ -26,6 +26,8 @@
     <string name="stop">Stop</string>
     <string name="this_string">This</string>
     <string name="alarm">Alarm</string>
+    <string name="snooze">Snooze</string>
+    <string name="snooze_for_5_minutes">Snooze for 5 minutes</string>
 
 
     <string name="noDescription">No description</string>
@@ -99,6 +101,9 @@
     <string name="developing">This feature is under development.</string>
     <string name="no_alarm_choosen">Please select time</string>
     <string name="Repeat">Repeat</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="seconds">Seconds</string>
 
 
 </resources>
