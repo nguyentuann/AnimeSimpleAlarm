@@ -55,7 +55,7 @@ class AlarmScheduler(
             getPendingIntent(alarm)
         )
 
-        LogUtil.log("Lên lịch")
+        LogUtil.log("Lên lịch cho id ${alarm.id}")
 
     }
 

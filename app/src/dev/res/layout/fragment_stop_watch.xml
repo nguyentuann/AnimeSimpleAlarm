@@ -17,7 +17,7 @@
         android:paddingVertical="@dimen/dp_24"
         android:text="00:00:00.00"
         android:textSize="@dimen/sp_48"
-        android:textColor="@color/secondary"
+        android:textColor="@color/text"
         android:textStyle="bold" />
 
     <!-- Buttons -->
@@ -39,7 +39,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_start_stopwatch"
-            style="@style/btnCircle"
+            style="@style/btnCircle.Start"
             android:text="@string/start" />
     </LinearLayout>
 

@@ -20,6 +20,12 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
 
     private lateinit var settingList: List<SettingModel>
 
+    override fun getStatusBarColor() =
+        requireContext().getColor(R.color.background)
+
+    override fun getNavigationBarColor() =
+        requireContext().getColor(R.color.background)
+
     override fun getViewBinding(): FragmentSettingBinding {
         return FragmentSettingBinding.inflate(layoutInflater)
     }
@@ -34,11 +40,11 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
                 icon = Icon.createWithResource(requireContext(), R.drawable.ic_language),
                 action = { showLanguageDialog() }
             ),
-            SettingModel(
-                title = getString(R.string.theme),
-                icon = Icon.createWithResource(requireContext(), R.drawable.ic_theme),
-                action = { showThemeDialog() }
-            ),
+//            SettingModel(
+//                title = getString(R.string.theme),
+//                icon = Icon.createWithResource(requireContext(), R.drawable.ic_theme),
+//                action = { showThemeDialog() }
+//            ),
             SettingModel(
                 title = getString(R.string.policy),
                 icon = Icon.createWithResource(requireContext(), R.drawable.ic_policy),
@@ -79,7 +85,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
     }
 
     private fun setUpToolbar() = with(binding.settingToolbar) {
-        toolBar.navigationIcon = null
+        toolBar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
         ivToolbarAction.isVisible = false
         tvToolbarTitle.text = getString(R.string.settings)
     }
@@ -110,38 +118,38 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
         )
     }
 
-    private fun showThemeDialog() {
-        val themes = arrayOf(
-            getString(R.string.light),
-            getString(R.string.dark),
-        )
-        val codes = arrayOf(
-            AppCompatDelegate.MODE_NIGHT_NO,        // Light
-            AppCompatDelegate.MODE_NIGHT_YES,       // Dark
-        )
-
-        val currentTheme = appPrefs.appTheme
-        val selectedIndex = codes.indexOf(currentTheme).takeIf { it >= 0 } ?: 2
-
-        CommonComponents.showSingleChoiceDialog(
-            requireContext(),
-            title = getString(R.string.theme),
-            options = themes,
-            selectedIndex = selectedIndex,
-            onSelected = { which ->
-                val newTheme = codes[which]
-                appPrefs.appTheme = newTheme
-                AppCompatDelegate.setDefaultNightMode(newTheme)
-                requireActivity().recreate()
-
-                CommonComponents.toastText(
-                    requireContext(),
-                    getString(R.string.change_theme)
-                )
-            },
-            cancel = getString(R.string.cancel)
-        )
-    }
+//    private fun showThemeDialog() {
+//        val themes = arrayOf(
+//            getString(R.string.light),
+//            getString(R.string.dark),
+//        )
+//        val codes = arrayOf(
+//            AppCompatDelegate.MODE_NIGHT_NO,        // Light
+//            AppCompatDelegate.MODE_NIGHT_YES,       // Dark
+//        )
+//
+//        val currentTheme = appPrefs.appTheme
+//        val selectedIndex = codes.indexOf(currentTheme).takeIf { it >= 0 } ?: 2
+//
+//        CommonComponents.showSingleChoiceDialog(
+//            requireContext(),
+//            title = getString(R.string.theme),
+//            options = themes,
+//            selectedIndex = selectedIndex,
+//            onSelected = { which ->
+//                val newTheme = codes[which]
+//                appPrefs.appTheme = newTheme
+//                AppCompatDelegate.setDefaultNightMode(newTheme)
+//                requireActivity().recreate()
+//
+//                CommonComponents.toastText(
+//                    requireContext(),
+//                    getString(R.string.change_theme)
+//                )
+//            },
+//            cancel = getString(R.string.cancel)
+//        )
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

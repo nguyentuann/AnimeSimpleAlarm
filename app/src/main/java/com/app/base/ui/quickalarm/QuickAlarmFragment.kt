@@ -12,6 +12,7 @@ import com.app.base.R
 import com.app.base.components.CommonComponents
 import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentQuickAlarmBinding
+import com.app.base.utils.LogUtil
 import com.app.base.viewModel.ListAlarmViewModel
 import java.util.Calendar
 import java.util.UUID
@@ -55,6 +56,7 @@ class QuickAlarmFragment : Fragment() {
     }
 
     private fun saveAlarm() {
+        LogUtil.log("Call quick alarm save")
         val minutes = selectedMinutes
         if (minutes == null) {
             CommonComponents.toastText(
@@ -74,6 +76,7 @@ class QuickAlarmFragment : Fragment() {
                 dateOfWeek = null,
                 date = calendar.timeInMillis,
             )
+            LogUtil.log("Quick alarm to save: $alarm")
             listAlarmViewModel.saveAlarm(alarm)
             findNavController().navigate(R.id.action_to_home)
 
@@ -96,7 +99,7 @@ class QuickAlarmFragment : Fragment() {
 
         fun resetButtonColors() {
             buttonsWithTime.keys.forEach { button ->
-                button.setBackgroundColor(resources.getColor(R.color.surface))
+                button.setBackgroundColor(resources.getColor(R.color.light_surface))
             }
         }
 

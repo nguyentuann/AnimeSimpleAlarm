@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Light theme -->
-    <color name="primary">#7195FF</color>
+    <!-- Dark theme (pink) -->
+    <color name="primary">#E05101</color>
 
-    <color name="secondary">#374E8E</color>
 
-    <color name="background">#FFFFFF</color>
+    <color name="secondary">#FF7627</color>
 
-    <color name="surface">#DFDFDF</color>
-    <color name="dark_surface">#B5B5B5</color>
 
+    <color name="background">#121212</color>
+
+    <color name="light_surface">#7E7E7E</color>
+    <color name="surface">#333333</color>
+    <color name="dark_surface">#1B1B1B</color>
 
     <color name="error">#FF0000</color>
 
-    <color name="text">#000000</color>
-    
-    <color name="transparent">#00000000</color>
+    <color name="text">#FFFFFF</color>
 
+    <color name="green">#6CD86B</color>
+    <color name="dark_green">#132B14</color>
+
+    <color name="transparent">#00000000</color>
 </resources>

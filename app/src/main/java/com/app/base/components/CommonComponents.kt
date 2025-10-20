@@ -2,12 +2,13 @@ package com.app.base.components
 
 import android.app.AlertDialog
 import android.content.Context
+import android.view.ContextThemeWrapper
 import android.widget.Toast
 import com.app.base.R
 
 object CommonComponents {
     fun confirmDialog(context: Context, title: String, message: String, onConfirm: () -> Unit) {
-        AlertDialog.Builder(context).apply {
+        AlertDialog.Builder(ContextThemeWrapper(context, R.style.CustomAlertDialog)).apply {
             setTitle(title)
             setMessage(message)
             setPositiveButton(R.string.confirm) { dialog, _ ->

@@ -49,7 +49,7 @@ class DatesFragment : Fragment() {
     }
 
     private fun initListener() {
-        binding.characterToolbar.tvToolbarTitle.setText(R.string.character)
+        binding.characterToolbar.tvToolbarTitle.setText(R.string.Repeat)
         binding.characterToolbar.toolBar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }

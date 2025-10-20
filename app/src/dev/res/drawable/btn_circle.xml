@@ -2,7 +2,6 @@
     android:shape="rectangle">
     <!-- Màu nền bên trong -->
     <solid android:color="@color/primary" />
-
-    <corners android:radius="5000dp" />
+    <corners android:radius="50000dp" />
 
 </shape>
