@@ -104,6 +104,12 @@
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
     <string name="seconds">Seconds</string>
+    
+    <string name="feedback_for_us">Feedback for us</string>
+    <string name="enter_feedback">Enter your feedback</string>
+    <string name="send">Send</string>
+    <string name="select_star">Please select number of stars</string>
+    <string name="thank_feedback">Thank you for your feedback</string>
 
 
 </resources>

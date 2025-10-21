@@ -3,8 +3,13 @@ package com.app.base.components
 import android.app.AlertDialog
 import android.content.Context
 import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RatingBar
 import android.widget.Toast
 import com.app.base.R
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 object CommonComponents {
     fun confirmDialog(context: Context, title: String, message: String, onConfirm: () -> Unit) {
@@ -45,4 +50,28 @@ object CommonComponents {
             .show()
     }
 
+    fun showRatingDialog(context: Context, onSubmit: (rating: Int, feedback: String) -> Unit) {
+        val dialog = BottomSheetDialog(context)
+        val view = LayoutInflater.from(context).inflate(R.layout.feed_back_dialog, null)
+        dialog.setContentView(view)
+
+        val ratingBar = view.findViewById<RatingBar>(R.id.ratingBar)
+        val etFeedback = view.findViewById<EditText>(R.id.feedback)
+        val btnSubmit = view.findViewById<Button>(R.id.btnSend)
+
+        btnSubmit.setOnClickListener {
+            val rating = ratingBar.rating.toInt()
+            val feedback = etFeedback.text.toString().trim()
+
+            if (rating == 0) {
+                Toast.makeText(context, R.string.select_star, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            onSubmit(rating, feedback)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
 }

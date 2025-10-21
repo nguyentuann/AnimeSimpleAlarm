@@ -1,16 +1,12 @@
 package com.app.base
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
 import androidx.core.content.ContextCompat
 import com.app.base.di.alarmModule
 import com.app.base.di.appModule
 import com.app.base.di.repositoryModule
 import com.app.base.di.viewModelModule
 import com.app.base.helpers.NotificationHelper
+import com.app.base.ui.home.HomeFragment
 import com.brally.mobile.base.application.BaseApplication
 import com.brally.mobile.data.model.AppInfo
 import com.brally.mobile.service.firebase.AppRemoteConfig
@@ -25,7 +21,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.logger.Level
 import org.koin.dsl.module
-import com.app.base.ui.home.HomeFragment
 
 class MainApplication : BaseApplication() {
     override val appInfo: AppInfo by lazy {

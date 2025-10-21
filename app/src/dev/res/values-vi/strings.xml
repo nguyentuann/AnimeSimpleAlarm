@@ -94,6 +94,11 @@
     <string name="hours">Giờ</string>
     <string name="minutes">Phút</string>
     <string name="seconds">Giây</string>
+    <string name="feedback_for_us">Phản hồi cho chúng tôi</string>
+    <string name="enter_feedback">Nhập phản hồi của bạn</string>
+    <string name="send">"Gửi "</string>
+    <string name="select_star">Vui lòng chọn số sao</string>
+    <string name="thank_feedback">Cảm ơn vì phản hồi của bạn</string>
 
 
 </resources>
