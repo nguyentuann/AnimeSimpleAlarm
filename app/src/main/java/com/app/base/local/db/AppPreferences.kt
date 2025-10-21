@@ -18,6 +18,8 @@ class AppPreferences(context: Context) {
         private const val KEY_START_TIME = "stopwatch_start_time"
         private const val STOPWATCH_IS_RUNNING = "stopwatch_is_running"
 
+        private const val NOTIFICATION = "notification"
+
     }
 
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -31,6 +33,13 @@ class AppPreferences(context: Context) {
     var isFirstLaunch: Boolean
         get() = prefs.getBoolean(IS_FIRST_LAUNCH, true)
         set(value) = prefs.edit { putBoolean(IS_FIRST_LAUNCH, value) }
+
+
+
+    var hasNotificationPermission: Boolean
+        get() = prefs.getBoolean(NOTIFICATION, false)
+        set(value) = prefs.edit { putBoolean(NOTIFICATION, value) }
+
 
     fun saveTimer(endTime: Long, isRunning: Boolean) {
         prefs.edit {

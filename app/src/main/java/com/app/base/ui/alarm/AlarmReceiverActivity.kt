@@ -27,8 +27,15 @@ class AlarmReceiverActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAlarmReceiverBinding
     private var mediaPlayer: MediaPlayer? = null
 
-    val alarmScheduler: AlarmScheduler = getKoin().get()
+    private val alarmScheduler: AlarmScheduler = getKoin().get()
     private val listAlarmViewModel by viewModel<ListAlarmViewModel>()
+    private var id: String? = null
+    private var message: String? = null
+    private var hour: Int = 0
+    private var minute: Int = 0
+    private var character: Int = 0
+    private var sound: Int = 0
+    private var days: List<Int>? = null
 
     @SuppressLint("ImplicitSamInstance")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,13 +45,13 @@ class AlarmReceiverActivity : AppCompatActivity() {
         binding = ActivityAlarmReceiverBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val id = intent.getStringExtra("ALARM_ID")
-        val message = intent.getStringExtra("ALARM_MESSAGE")
-        val hour = intent.getIntExtra("ALARM_HOUR", 0)
-        val minute = intent.getIntExtra("ALARM_MINUTE", 0)
-        val character = intent.getIntExtra("CHARACTER", R.drawable.img_naruto)
-        val sound = intent.getIntExtra("ALARM_SOUND", 0)
-        val days = intent.getIntArrayExtra("DAYS")?.toList()
+        id = intent.getStringExtra("ALARM_ID")
+        message = intent.getStringExtra("ALARM_MESSAGE")
+        hour = intent.getIntExtra("ALARM_HOUR", 0)
+        minute = intent.getIntExtra("ALARM_MINUTE", 0)
+        character = intent.getIntExtra("CHARACTER", R.drawable.img_naruto)
+        sound = intent.getIntExtra("ALARM_SOUND", 0)
+        days = intent.getIntArrayExtra("DAYS")?.toList()
 
 
         binding.icon
@@ -55,38 +62,23 @@ class AlarmReceiverActivity : AppCompatActivity() {
 
         binding.message.text = message ?: "Alarm"
 
+        binding.bgImage.setImageResource(character)
 
-        setStopListener(
-            setNextAlarm = {
-                if (!days.isNullOrEmpty()) {
-                    // todo lên lịch cho lần tiếp theo
-                    val nextAlarm = AlarmModel(
-                        id!!,
-                        hour,
-                        minute,
-                        true,
-                        message,
-                        sound,
-                        days
-                    )
-                    alarmScheduler.scheduleAlarm(nextAlarm)
-                } else {
-                    listAlarmViewModel.delete(
-                        AlarmModel(
-                            id!!,
-                            hour,
-                            minute,
-                            true,
-                            message,
-                            sound,
-                            days
-                        )
-                    )
-                }
-            }
-        )
+        binding.btnStop.setOnClickListener {
+            handleStopOrSnooze(false)
+        }
 
         binding.btnSnooze.setOnClickListener {
+            handleStopOrSnooze(true)
+        }
+
+    }
+
+    // todo xử lý snooze & stop
+    @SuppressLint("ImplicitSamInstance")
+    private fun handleStopOrSnooze(isSnooze: Boolean = false) {
+        if (isSnooze) {
+            // 👉 Tính giờ báo lại sau 5 phút
             var newHour = hour
             var newMinute = minute + 5
 
@@ -94,29 +86,51 @@ class AlarmReceiverActivity : AppCompatActivity() {
                 newMinute %= 60
                 newHour = (newHour + 1) % 24
             }
+
             val snoozeAlarm = AlarmModel(
-                "snooze_$id",
-                newHour,
-                newMinute,
-                true,
-                message,
-                sound,
+                id = "snooze_$id",
+                hour = newHour,
+                minute = newMinute,
+                isOn = true,
+                message = message,
+                sound = sound,
                 character = character,
                 date = AlarmHelper.getNearestTime(newHour, newMinute),
                 dateOfWeek = null
             )
-            LogUtil.log("Đánh thức lại sau 5 phút vào $newHour:$newMinute với id snooze_$id")
+
             alarmScheduler.scheduleAlarm(snoozeAlarm)
+            LogUtil.log("🔁 Báo lại sau 5 phút vào $newHour:$newMinute (id = snooze_$id)")
+
             CommonComponents.toastText(
                 this,
                 getString(R.string.snooze_for_5_minutes)
             )
-            stopService(Intent(this, AlarmSoundService::class.java))
-            finish()
         }
 
-        binding.bgImage.setImageResource(character)
+        val alarm = AlarmModel(
+            id = id!!,
+            hour = hour,
+            minute = minute,
+            isOn = true,
+            message = message,
+            sound = sound,
+            character = character,
+            date = null,
+            dateOfWeek = days,
+        )
+        // 👉 Luôn đảm bảo lịch gốc được duy trì (nếu là alarm lặp)
+        if (!days.isNullOrEmpty()) {
+            alarmScheduler.scheduleAlarm(alarm)
+            LogUtil.log("lên lịch mới vì days không null")
+        } else {
+            listAlarmViewModel.delete(alarm)
+            LogUtil.log("xóa alarm vì không lặp lại")
+        }
 
+        // 👉 Dừng service & thoát màn hình
+        stopService(Intent(this, AlarmSoundService::class.java))
+        finish()
     }
 
     private fun showOnLockScreen() {
@@ -136,15 +150,6 @@ class AlarmReceiverActivity : AppCompatActivity() {
         }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-    }
-
-    @SuppressLint("ImplicitSamInstance")
-    fun setStopListener(setNextAlarm: () -> Unit = {}) {
-        binding.btnStop.setOnClickListener {
-            setNextAlarm()
-            stopService(Intent(this, AlarmSoundService::class.java))
-            finish()
-        }
     }
 
     override fun onDestroy() {
