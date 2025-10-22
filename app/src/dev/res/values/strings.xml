@@ -35,6 +35,7 @@
 
     <string name="timer_stopwatch"><![CDATA[Timer & Stopwatch]]></string>
     <string name="stopwatch">Stopwatch</string>
+    <string name="short_stopwatch">Stopwatch</string>
     <string name="start">START</string>
     <string name="lap">LAP</string>
     <string name="_5m">5m</string>

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingVertical="@dimen/dp_32"
+    android:paddingTop="@dimen/dp_16"
+    android:paddingHorizontal="@dimen/dp_16"
     android:layout_height="wrap_content">
 
     <TextView
@@ -43,6 +44,8 @@
         android:layout_width="match_parent"
         android:textColor="@color/secondary"
         android:paddingVertical="@dimen/dp_12"
+        android:backgroundTint="@color/surface"
         android:textSize="@dimen/sp_20"
+        android:layout_marginBottom="@dimen/dp_32"
         android:layout_height="wrap_content" />
 </LinearLayout>
