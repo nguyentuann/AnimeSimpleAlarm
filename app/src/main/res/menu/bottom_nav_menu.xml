@@ -18,7 +18,7 @@
     <item
         android:id="@+id/stopwatchFragment"
         android:icon="@drawable/ic_stopwatch"
-        android:title="@string/stopwatch" />
+        android:title="@string/short_stopwatch" />
 
 
 </menu>

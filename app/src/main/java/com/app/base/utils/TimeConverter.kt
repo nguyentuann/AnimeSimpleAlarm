@@ -16,9 +16,10 @@ object TimeConverter {
     }
 
     fun convertListDateToString(context: Context, days: List<Int>?): String {
+        val sortDays = days?.sorted()
 
-        if (days == null || days.isEmpty()) return context.getString(R.string.once)
-        if (days.size == 7) return context.getString(R.string.everyday)
+        if (sortDays == null || sortDays.isEmpty()) return context.getString(R.string.once)
+        if (sortDays.size == 7) return context.getString(R.string.everyday)
         val dayNames = listOf(
             context.getString(R.string.sun),
             context.getString(R.string.mon),
@@ -28,7 +29,7 @@ object TimeConverter {
             context.getString(R.string.fri),
             context.getString(R.string.sat),
         )
-        val selectedDayNames = days.map { e -> dayNames[(e - 1) % 7] }
+        val selectedDayNames = sortDays.map { e -> dayNames[(e - 1) % 7] }
         return selectedDayNames.joinToString(", ")
 
     }

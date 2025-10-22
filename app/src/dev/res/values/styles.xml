@@ -102,11 +102,17 @@
     <style name="TimePickerTextButtonStyle" parent="Widget.Material3.Button.TextButton">
         <item name="android:textColor">@color/secondary</item>
     </style>
+    
+    <style name="CustomBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="android:backgroundTint">@color/dark_surface</item>
+    </style>
 
 
-    <style name="CustomAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <style name="CustomAlertDialog" parent="MaterialAlertDialog.Material3">
         <!-- Màu chính -->
         <item name="colorPrimary">@color/primary</item>
+        <item name="background">@drawable/bg_dialog_rounded</item>
+        <item name="android:backgroundTint">@color/surface</item>
 
         <!-- Tùy chỉnh typography -->
         <item name="materialAlertDialogTitleTextStyle">@style/AlertDialogTitleText</item>
@@ -115,11 +121,6 @@
         <!-- Nút -->
         <item name="buttonBarPositiveButtonStyle">@style/AlertDialogButtonText</item>
         <item name="buttonBarNegativeButtonStyle">@style/AlertDialogButtonText</item>
-    </style>
-
-    <style name="RoundedAlertDialogShape">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/dp_32</item>
     </style>
 
     <style name="AlertDialogTitleText" parent="MaterialAlertDialog.Material3.Title.Text">
