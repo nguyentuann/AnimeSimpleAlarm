@@ -169,9 +169,4 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>() {
         val intent = Intent(requireContext(), TimerService::class.java)
         requireContext().stopService(intent)
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

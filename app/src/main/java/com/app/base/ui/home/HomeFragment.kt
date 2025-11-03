@@ -1,11 +1,8 @@
 package com.app.base.ui.home
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
@@ -14,84 +11,70 @@ import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentHomeBinding
 import com.app.base.ui.alarm.AlarmAdapter
 import com.app.base.viewModel.ListAlarmViewModel
+import com.language_onboard.ui.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class HomeFragment : Fragment() {
-    private var _homeFragment: FragmentHomeBinding? = null
-    private val homeFragment get() = _homeFragment!!
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val listAlarmViewModel by activityViewModel<ListAlarmViewModel>()
 
-    // todo giữ adapter như property để dùng lại
-    private lateinit var alarmAdapter: AlarmAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _homeFragment = FragmentHomeBinding.inflate(inflater, container, false)
-        return homeFragment.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // init adapter 1 lần
-        alarmAdapter = AlarmAdapter(
+    private val alarmAdapter by lazy {
+        AlarmAdapter(
             { alarm -> deleteAlarm(alarm) },
             { alarm -> editAlarm(alarm) },
             { alarm -> enableAlarm(alarm) }
         )
-        initListener()
+    }
 
+    override fun getViewBinding(): FragmentHomeBinding {
+        return FragmentHomeBinding.inflate(layoutInflater)
+    }
 
-        homeFragment.alarmList.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = alarmAdapter
-        }
+    override fun initView() {
+        setupRecyclerView()
+        setupListeners()
+    }
 
-        // quan sát dữ liệu
+    override fun initObserver() {
         listAlarmViewModel.alarmList.observe(viewLifecycleOwner) { alarms ->
-            if (!alarms.isNullOrEmpty()) {
-                alarmAdapter.submitList(alarms)
-                homeFragment.alarmList.visibility = View.VISIBLE
-                homeFragment.addAlarmCard.visibility = View.GONE
+            if (alarms.isNullOrEmpty()) {
+                binding.alarmList.isVisible = false
+                binding.addAlarmCard.isVisible = true
             } else {
-                homeFragment.alarmList.visibility = View.GONE
-                homeFragment.addAlarmCard.visibility = View.VISIBLE
+                binding.alarmList.isVisible = true
+                binding.addAlarmCard.isVisible = false
+                alarmAdapter.submitList(alarms)
             }
         }
     }
 
-    private fun initListener() {
-        homeFragment.addAlarmCard.setOnClickListener {
+    private fun setupRecyclerView() = with(binding.alarmList) {
+        layoutManager = LinearLayoutManager(requireContext())
+        adapter = alarmAdapter
+    }
+
+    private fun setupListeners() = with(binding) {
+        addAlarmCard.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_newAlarm)
         }
-
-        homeFragment.floatBtnAdd.setOnClickListener {
+        floatBtnAdd.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_newAlarm)
         }
-
-        homeFragment.toolBar.toolBarSetting.setOnClickListener {
+        toolBar.toolBarSetting.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_setting)
         }
-
     }
 
     private fun deleteAlarm(alarm: AlarmModel) {
         CommonComponents.confirmDialog(
-            requireContext(),
-            getString(R.string.delete_alarm),
-            getString(R.string.delete_alarm_message),
-            onConfirm = {
-                listAlarmViewModel.delete(alarm)
-            },
+            context = requireContext(),
+            title = getString(R.string.delete_alarm),
+            message = getString(R.string.delete_alarm_message),
+            onConfirm = { listAlarmViewModel.delete(alarm) }
         )
     }
 
     private fun editAlarm(alarmId: String) {
-        // Sửa: truyền alarm_id
         val bundle = bundleOf("alarm_id" to alarmId)
         findNavController().navigate(R.id.action_home_to_newAlarm, bundle)
     }
@@ -100,8 +83,9 @@ class HomeFragment : Fragment() {
         listAlarmViewModel.active(alarm, alarm.isOn)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _homeFragment = null
-    }
+    override fun getStatusBarColor() =
+        requireContext().getColor(R.color.background)
+
+    override fun getNavigationBarColor() =
+        requireContext().getColor(R.color.background)
 }

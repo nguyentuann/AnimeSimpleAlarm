@@ -23,26 +23,20 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.language_onboard.ui.BaseFragment
 import java.util.Calendar
 
-class NewAlarmFragment : Fragment() {
+class NewAlarmFragment : BaseFragment<FragmentNewAlarmBinding>() {
 
-    private var _binding: FragmentNewAlarmBinding? = null
-    private val binding get() = _binding!!
 
     private val newAlarmViewModel by activityViewModels<NewAlarmViewModel>()
     private val listAlarmViewModel by activityViewModels<ListAlarmViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) =
-        FragmentNewAlarmBinding.inflate(inflater, container, false).also { _binding = it }.root
+    override fun getViewBinding(): FragmentNewAlarmBinding {
+        return FragmentNewAlarmBinding.inflate(layoutInflater)
+    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initView() {
         val alarmId = arguments?.getString("alarm_id")
 
         if (alarmId == null) {
@@ -64,41 +58,10 @@ class NewAlarmFragment : Fragment() {
 
         setupToolbar()
         setupButtons()
-        observeViewModel()
         setupMessageWatcher()
     }
 
-    private fun setupToolbar() {
-        binding.toolBarNewAlarm.setNavigationOnClickListener {
-            checkDiscardChanges()
-        }
-    }
-
-    private fun setupButtons() {
-        binding.btnEdit.setOnClickListener {
-            popUpTimePicker()
-        }
-
-        binding.btnCalendar.setOnClickListener { popUpDatePicker() }
-
-        val bundle = Bundle()
-        binding.btnSave.setOnClickListener { saveAlarm() }
-        binding.icSave.setOnClickListener { saveAlarm() }
-
-        binding.btnCharacter.setOnClickListener {
-            findNavController().navigate(R.id.action_new_to_character, bundle)
-        }
-
-        binding.btnSound.setOnClickListener {
-            findNavController().navigate(R.id.action_new_to_sound, bundle)
-        }
-
-        binding.btnDates.setOnClickListener {
-            findNavController().navigate(R.id.action_new_to_dates, bundle)
-        }
-    }
-
-    private fun observeViewModel() {
+    override fun initObserver() {
         newAlarmViewModel.newAlarm.observe(viewLifecycleOwner) { alarm ->
 
             if (alarm == null) return@observe
@@ -138,6 +101,45 @@ class NewAlarmFragment : Fragment() {
                     binding.tfMessage.setText(alarm.message)
                 }
             }
+        }
+    }
+
+    override fun getStatusBarColor() =
+        requireContext().getColor(R.color.background)
+
+    override fun getNavigationBarColor() =
+        requireContext().getColor(R.color.background)
+
+
+    // todo các hàm tự định nghĩa
+
+    private fun setupToolbar() {
+        binding.toolBarNewAlarm.setNavigationOnClickListener {
+            checkDiscardChanges()
+        }
+    }
+
+    private fun setupButtons() {
+        binding.btnEdit.setOnClickListener {
+            popUpTimePicker()
+        }
+
+        binding.btnCalendar.setOnClickListener { popUpDatePicker() }
+
+        val bundle = Bundle()
+        binding.btnSave.setOnClickListener { saveAlarm() }
+        binding.icSave.setOnClickListener { saveAlarm() }
+
+        binding.btnCharacter.setOnClickListener {
+            findNavController().navigate(R.id.action_new_to_character, bundle)
+        }
+
+        binding.btnSound.setOnClickListener {
+            findNavController().navigate(R.id.action_new_to_sound, bundle)
+        }
+
+        binding.btnDates.setOnClickListener {
+            findNavController().navigate(R.id.action_new_to_dates, bundle)
         }
     }
 
@@ -239,12 +241,4 @@ class NewAlarmFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
