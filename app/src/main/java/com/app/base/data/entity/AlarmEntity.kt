@@ -4,7 +4,7 @@ import androidx.room.PrimaryKey
 import com.app.base.data.model.AlarmModel
 import com.app.base.helpers.AlarmHelper
 
-@Entity(tableName = "alarm")
+@Entity(tableName = "alarms")
 class AlarmEntity(
     @PrimaryKey
     val id: String,

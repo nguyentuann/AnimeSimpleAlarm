@@ -18,7 +18,7 @@ import com.app.base.helpers.IconHelper
 import com.app.base.ui.alarm.sound.AlarmSoundService
 import com.app.base.utils.LogUtil
 import com.app.base.utils.TimeConverter
-import com.app.base.viewModel.ListAlarmViewModel
+import com.app.base.ui.home.ListAlarmViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent.getKoin
 

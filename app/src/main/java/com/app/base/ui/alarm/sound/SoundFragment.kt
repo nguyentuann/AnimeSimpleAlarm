@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
 import com.app.base.databinding.FragmentSoundBinding
 import com.app.base.utils.AppConstants
-import com.app.base.viewModel.NewAlarmViewModel
+import com.app.base.ui.alarm.NewAlarmViewModel
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class SoundFragment : Fragment() {

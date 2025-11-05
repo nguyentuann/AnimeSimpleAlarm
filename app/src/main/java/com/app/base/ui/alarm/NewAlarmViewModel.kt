@@ -1,4 +1,4 @@
-package com.app.base.viewModel
+package com.app.base.ui.alarm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

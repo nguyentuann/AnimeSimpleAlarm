@@ -59,11 +59,6 @@ object AppConstants {
         return sounds.entries.firstOrNull { it.value == id }?.key ?: R.string.default_tone
     }
 
-    fun getSoundIdByNameRes(nameRes: Int): Int {
-        // Nếu có nhu cầu ngược lại — từ tên sang id âm thanh
-        return sounds[nameRes] ?: R.raw.base
-    }
-
     fun getAllSoundIds(): List<Int> {
         return sounds.values.toList()
     }

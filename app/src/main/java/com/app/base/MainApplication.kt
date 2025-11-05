@@ -3,7 +3,6 @@ package com.app.base
 import androidx.core.content.ContextCompat
 import com.app.base.di.alarmModule
 import com.app.base.di.appModule
-import com.app.base.di.repositoryModule
 import com.app.base.di.viewModelModule
 import com.app.base.helpers.NotificationHelper
 import com.app.base.ui.home.HomeFragment
@@ -78,14 +77,12 @@ class MainApplication : BaseApplication() {
                 commonViewModelModule,
                 viewModelModule,
                 appModule,
-                repositoryModule,
                 alarmModule,
 
                 module {
                     single { CommonAppSharePref(get()) }
 
                 }
-
             )
         }
     }

@@ -61,8 +61,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
                     developing()
                 }
             ),
-
-            )
+        )
 
         settingAdapter = SettingAdapter()
         binding.settingRecyclerView.apply {

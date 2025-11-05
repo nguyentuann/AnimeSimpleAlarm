@@ -17,13 +17,16 @@ interface AppDAO {
     @Delete
     suspend fun deleteAlarm(alarm: AlarmEntity)
 
-    @Query("SELECT dateOfWeek FROM alarm WHERE id = :id")
+    @Query("SELECT dateOfWeek FROM alarms WHERE id = :id")
     suspend fun getDateOfWeek(id: Int): Int
 
-    @Query("SELECT * FROM alarm")
+    @Query("SELECT * FROM alarms")
     suspend fun getAllAlarms(): List<AlarmEntity>
 
     @Update
     suspend fun updateAlarm(alarm: AlarmEntity)
+
+    @Query("UPDATE alarms SET isOn = :isActive WHERE id = :id")
+    suspend fun updateAlarmActiveState(id: String, isActive: Boolean)
 
 }

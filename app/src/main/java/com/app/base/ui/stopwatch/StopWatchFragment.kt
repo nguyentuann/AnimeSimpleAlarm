@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
 import com.app.base.databinding.FragmentStopWatchBinding
 import com.app.base.utils.TimeConverter
-import com.app.base.viewModel.StopWatchViewModel
+import com.app.base.ui.stopwatch.StopWatchViewModel
 import com.language_onboard.ui.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 

@@ -1,13 +1,12 @@
 package com.app.base.ui.quickalarm
 
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.app.base.R
 import com.app.base.components.CommonComponents
 import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentQuickAlarmBinding
 import com.app.base.utils.LogUtil
-import com.app.base.viewModel.ListAlarmViewModel
+import com.app.base.ui.home.ListAlarmViewModel
 import com.language_onboard.ui.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.util.Calendar

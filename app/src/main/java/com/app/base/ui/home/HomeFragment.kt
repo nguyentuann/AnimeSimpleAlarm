@@ -2,7 +2,6 @@ package com.app.base.ui.home
 
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
@@ -10,7 +9,7 @@ import com.app.base.components.CommonComponents
 import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentHomeBinding
 import com.app.base.ui.alarm.AlarmAdapter
-import com.app.base.viewModel.ListAlarmViewModel
+import com.app.base.ui.home.ListAlarmViewModel
 import com.language_onboard.ui.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 

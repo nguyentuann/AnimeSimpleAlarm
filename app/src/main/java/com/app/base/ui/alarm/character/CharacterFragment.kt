@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.app.base.R
 import com.app.base.databinding.FragmentCharacterBinding
 import com.app.base.utils.AppConstants
-import com.app.base.viewModel.NewAlarmViewModel
+import com.app.base.ui.alarm.NewAlarmViewModel
 import com.language_onboard.ui.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 

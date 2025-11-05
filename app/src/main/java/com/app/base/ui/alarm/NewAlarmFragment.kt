@@ -1,11 +1,7 @@
 package com.app.base.ui.alarm
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.app.base.R
@@ -16,8 +12,7 @@ import com.app.base.helpers.AlarmHelper
 import com.app.base.utils.AppConstants
 import com.app.base.utils.LogUtil
 import com.app.base.utils.TimeConverter
-import com.app.base.viewModel.ListAlarmViewModel
-import com.app.base.viewModel.NewAlarmViewModel
+import com.app.base.ui.home.ListAlarmViewModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
