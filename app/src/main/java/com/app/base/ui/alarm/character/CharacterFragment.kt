@@ -1,67 +1,59 @@
 package com.app.base.ui.alarm.character
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.app.base.R
 import com.app.base.databinding.FragmentCharacterBinding
 import com.app.base.utils.AppConstants
-import com.app.base.viewModel.NewAlarmViewModel
+import com.app.base.ui.alarm.NewAlarmViewModel
+import com.language_onboard.ui.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class CharacterFragment : Fragment() {
+class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
 
-    private var _binding: FragmentCharacterBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var characterAdapter: CharacterAdapter
     private val newAlarmViewModel by activityViewModel<NewAlarmViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentCharacterBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initListener()
-
-        characterAdapter = CharacterAdapter(
+    private val characterAdapter: CharacterAdapter by lazy {
+        CharacterAdapter(
             selectedCharacter = newAlarmViewModel.newAlarm.value?.character
                 ?: R.drawable.img_naruto,
-            selectCharacter = { id -> selectCharacter(id) }
+            selectCharacter = ::selectCharacter
         )
-
-        binding.recyclerCharacters.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = characterAdapter
-        }
-
-        characterAdapter.submitList(
-            AppConstants.getAllCharacters()
-        )
-
     }
 
-    private fun initListener() {
-        binding.characterToolbar.tvToolbarTitle.setText(R.string.character)
-        binding.characterToolbar.toolBar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-        binding.characterToolbar.ivToolbarAction.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
 
+    override fun getViewBinding(): FragmentCharacterBinding {
+        return FragmentCharacterBinding.inflate(layoutInflater)
+    }
+
+    override fun initView() {
+        setupToolbar()
+        setupRecyclerView()
+    }
+
+    override fun getStatusBarColor() =
+        requireContext().getColor(R.color.background)
+
+    override fun getNavigationBarColor() =
+        requireContext().getColor(R.color.background)
+
+
+
+    private fun setupToolbar() = with(binding.characterToolbar) {
+        tvToolbarTitle.setText(R.string.character)
+        toolBar.setNavigationOnClickListener { back() }
+        ivToolbarAction.setOnClickListener { back() }
+    }
+
+    private fun setupRecyclerView() = with(binding.recyclerCharacters) {
+        layoutManager = GridLayoutManager(requireContext(), 2)
+        adapter = characterAdapter
+        characterAdapter.submitList(AppConstants.getAllCharacters())
     }
 
     private fun selectCharacter(id: Int) {
         newAlarmViewModel.updateCharacter(id)
     }
+
+    private fun back() = requireActivity().onBackPressedDispatcher.onBackPressed()
 }

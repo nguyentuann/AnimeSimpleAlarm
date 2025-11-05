@@ -32,13 +32,6 @@
         android:theme="@style/Theme.SimpleAlarmAndroid"
         tools:ignore="ForegroundServicePermission"
         tools:replace="android:fullBackupContent, theme">
-        <activity
-            android:name=".ui.splash.OnboardingActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
 
         <activity
             android:name=".ui.alarm.AlarmReceiverActivity"
@@ -53,7 +46,7 @@
 
 
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing"

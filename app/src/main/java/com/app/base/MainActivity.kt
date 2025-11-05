@@ -45,6 +45,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+
+        navGraph.setStartDestination(
+            if (appPrefs.isFirstLaunch) R.id.onboardingFragment
+            else R.id.homeFragment
+        )
+
+        navController.graph = navGraph
+
         // 🔹 Kết nối với BottomNavigationView
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNav.setupWithNavController(navController)
@@ -55,7 +64,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.settingFragment,
                 R.id.characterFragment,
                 R.id.soundFragment,
-                R.id.datesFragment
+                R.id.datesFragment,
+                R.id.onboardingFragment
                     -> {
                     bottomNav.visibility = View.GONE
                 }

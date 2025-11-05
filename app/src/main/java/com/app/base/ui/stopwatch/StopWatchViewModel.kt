@@ -1,4 +1,4 @@
-package com.app.base.viewModel
+package com.app.base.ui.stopwatch
 
 import android.content.Intent
 import android.os.Build
@@ -7,7 +7,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.app.base.local.db.AppPreferences
-import com.app.base.ui.stopwatch.StopWatchService
 import com.app.base.utils.TimeConverter
 import com.brally.mobile.base.viewmodel.BaseViewModel
 

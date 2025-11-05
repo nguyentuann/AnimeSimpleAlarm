@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.app.base.R
 import com.app.base.databinding.FragmentTimerBinding
-import com.app.base.viewModel.TimerViewModel
+import com.app.base.ui.timer.TimerViewModel
 import com.language_onboard.ui.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
@@ -168,10 +168,5 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>() {
         super.onResume()
         val intent = Intent(requireContext(), TimerService::class.java)
         requireContext().stopService(intent)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

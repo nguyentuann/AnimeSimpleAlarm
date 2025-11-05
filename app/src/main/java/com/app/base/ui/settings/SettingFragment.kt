@@ -61,8 +61,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
                     developing()
                 }
             ),
-
-            )
+        )
 
         settingAdapter = SettingAdapter()
         binding.settingRecyclerView.apply {
@@ -124,10 +123,5 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
             },
             cancel = getString(R.string.cancel)
         )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
