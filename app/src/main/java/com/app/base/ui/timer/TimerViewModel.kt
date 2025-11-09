@@ -8,9 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import com.app.base.local.db.AppPreferences
 import com.brally.mobile.base.viewmodel.BaseViewModel
 
-class TimerViewModel(
-    private val prefs: AppPreferences,
-) : BaseViewModel() {
+class TimerViewModel: BaseViewModel() {
+
+    private val prefs: AppPreferences by lazy {
+        AppPreferences(context)
+    }
 
     private var countDownTimer: CountDownTimer? = null
     private var remainingTime = 0L

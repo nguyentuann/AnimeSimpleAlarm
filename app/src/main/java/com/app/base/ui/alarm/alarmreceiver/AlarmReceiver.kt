@@ -1,23 +1,18 @@
-package com.app.base.ui.alarm
+package com.app.base.ui.alarm.alarmreceiver
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.app.base.R
-import com.app.base.data.model.AlarmModel
 import com.app.base.ui.alarm.sound.AlarmSoundService
 import com.app.base.utils.LogUtil
-import org.koin.java.KoinJavaComponent.getKoin
 
 class AlarmReceiver() : BroadcastReceiver() {
 
@@ -25,21 +20,13 @@ class AlarmReceiver() : BroadcastReceiver() {
 
         LogUtil.log("Nhận alarm")
 
-        val alarmScheduler: AlarmScheduler = getKoin().get()
-
         val id = intent.getStringExtra("ALARM_ID")
         val message = intent.getStringExtra("ALARM_MESSAGE")
-        val sound = intent.getIntExtra("ALARM_SOUND", 0)
-        val hour = intent.getIntExtra("ALARM_HOUR", 0)
-        val minute = intent.getIntExtra("ALARM_MINUTE", 0)
-        val days = intent.getIntArrayExtra("DAYS")?.toList()
-
 
         val serviceIntent = Intent(context, AlarmSoundService::class.java).apply {
             putExtras(intent)
         }
         ContextCompat.startForegroundService(context, serviceIntent)
-
 
         val activityIntent = Intent(context, AlarmReceiverActivity::class.java).apply {
             setFlags(
@@ -50,7 +37,6 @@ class AlarmReceiver() : BroadcastReceiver() {
             )
             putExtras(intent)
         }
-
 
         val fullScreenPendingIntent = PendingIntent.getActivity(
             context,
@@ -77,20 +63,5 @@ class AlarmReceiver() : BroadcastReceiver() {
                 notify(id.hashCode(), notification)
             }
         }
-
-
-//        if (!days.isNullOrEmpty()) {
-//            // todo lên lịch cho lần tiếp theo
-//            val nextAlarm = AlarmModel(
-//                id!!,
-//                hour,
-//                minute,
-//                true,
-//                message,
-//                sound,
-//                days
-//            )
-//            alarmScheduler.scheduleAlarm(nextAlarm)
-//        }
     }
 }

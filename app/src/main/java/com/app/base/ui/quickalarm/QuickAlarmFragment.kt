@@ -3,21 +3,15 @@ package com.app.base.ui.quickalarm
 import androidx.navigation.fragment.findNavController
 import com.app.base.R
 import com.app.base.components.CommonComponents
-import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentQuickAlarmBinding
-import com.app.base.utils.LogUtil
 import com.app.base.ui.home.ListAlarmViewModel
-import com.language_onboard.ui.BaseFragment
+import com.app.base.utils.LogUtil
+import com.brally.mobile.base.activity.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
-import java.util.Calendar
-import java.util.UUID
 
-class QuickAlarmFragment : BaseFragment<FragmentQuickAlarmBinding>() {
+class QuickAlarmFragment : BaseFragment<FragmentQuickAlarmBinding, QuickAlarmViewModel>() {
 
-    private var selectedMinutes: Int? = null
     private val listAlarmViewModel by activityViewModel<ListAlarmViewModel>()
-
-    override fun getViewBinding() = FragmentQuickAlarmBinding.inflate(layoutInflater)
 
     override fun initView() {
         setupToolbar()
@@ -25,11 +19,11 @@ class QuickAlarmFragment : BaseFragment<FragmentQuickAlarmBinding>() {
         setupCreateOwnButton()
     }
 
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
+    override fun initListener() {
+    }
 
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
+    override fun initData() {
+    }
 
     private fun setupToolbar() = with(binding.quickToolbar) {
         toolBar.navigationIcon = null
@@ -64,7 +58,7 @@ class QuickAlarmFragment : BaseFragment<FragmentQuickAlarmBinding>() {
 
         buttonsWithTime.forEach { (button, minutes) ->
             button.setOnClickListener {
-                selectedMinutes = minutes
+                viewModel.selectMinutes(minutes)
                 resetButtonColors()
                 button.setBackgroundColor(requireContext().getColor(R.color.primary))
             }
@@ -72,28 +66,12 @@ class QuickAlarmFragment : BaseFragment<FragmentQuickAlarmBinding>() {
     }
 
     private fun saveAlarm() {
-        val minutes = selectedMinutes
-        if (minutes == null) {
-            CommonComponents.toastText(
-                requireContext(),
-                getString(R.string.no_alarm_choosen)
-            )
+        val alarm = viewModel.createAlarm()
+
+        if (alarm == null) {
+            CommonComponents.toastText(requireContext(), getString(R.string.no_alarm_choosen))
             return
         }
-
-        val calendar = Calendar.getInstance().apply {
-            add(Calendar.MINUTE, minutes)
-        }
-
-        val alarm = AlarmModel(
-            id = UUID.randomUUID().toString(),
-            hour = calendar.get(Calendar.HOUR_OF_DAY),
-            minute = calendar.get(Calendar.MINUTE),
-            isOn = true,
-            message = "Quick Alarm",
-            dateOfWeek = null,
-            date = calendar.timeInMillis
-        )
 
         LogUtil.log("Quick alarm to save: $alarm")
         listAlarmViewModel.saveAlarm(alarm)

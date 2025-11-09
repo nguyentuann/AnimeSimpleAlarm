@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.alarm.AlarmReceiverActivity">
+    tools:context=".ui.alarm.alarmreceiver.AlarmReceiverActivity">
 
     <ImageView
         android:id="@+id/bg_image"

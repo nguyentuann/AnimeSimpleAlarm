@@ -77,7 +77,7 @@
 
     <fragment
         android:id="@+id/newAlarmFragment"
-        android:name="com.app.base.ui.alarm.NewAlarmFragment">
+        android:name="com.app.base.ui.alarm.AlarmFragment">
 
         <action
             android:id="@+id/action_new_to_character"

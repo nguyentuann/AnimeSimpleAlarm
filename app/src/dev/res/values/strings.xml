@@ -62,7 +62,7 @@
 
 
     <string name="discard_change">Discard changes?</string>
-    <string name="discard_change_message">You have unsaved changes. Are you sure you want to discard them?</string>
+    <string name="discard_change_message">Are you sure you want to exit?</string>
     <string name="delete_alarm">Delete Alarm</string>
     <string name="delete_alarm_message">Are you sure to delete this alarm?</string>
     <string name="cancel">Cancel</string>

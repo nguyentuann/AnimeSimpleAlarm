@@ -10,9 +10,11 @@ import com.app.base.local.db.AppPreferences
 import com.app.base.utils.TimeConverter
 import com.brally.mobile.base.viewmodel.BaseViewModel
 
-class StopWatchViewModel(
-    private val prefs: AppPreferences
-) : BaseViewModel() {
+class StopWatchViewModel : BaseViewModel() {
+
+    private val prefs: AppPreferences by lazy {
+        AppPreferences(context)
+    }
 
     private val handler = Handler(Looper.getMainLooper())
 

@@ -3,41 +3,38 @@ package com.app.base.ui.alarm.character
 import androidx.recyclerview.widget.GridLayoutManager
 import com.app.base.R
 import com.app.base.databinding.FragmentCharacterBinding
-import com.app.base.utils.AppConstants
-import com.app.base.ui.alarm.NewAlarmViewModel
-import com.language_onboard.ui.BaseFragment
+import com.app.base.ui.home.NewAlarmViewModel
+import com.brally.mobile.base.activity.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
+class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewModel>() {
 
     private val newAlarmViewModel by activityViewModel<NewAlarmViewModel>()
 
-
     private val characterAdapter: CharacterAdapter by lazy {
         CharacterAdapter(
-            selectedCharacter = newAlarmViewModel.newAlarm.value?.character
-                ?: R.drawable.img_naruto,
-            selectCharacter = ::selectCharacter
+            selectedCharacter = viewModel.selectedCharacter.value ?: R.drawable.img_naruto,
+            selectCharacter = viewModel::updateSelectedCharacter
         )
-    }
-
-
-    override fun getViewBinding(): FragmentCharacterBinding {
-        return FragmentCharacterBinding.inflate(layoutInflater)
     }
 
     override fun initView() {
         setupToolbar()
         setupRecyclerView()
+        viewModel.loadCharacters(newAlarmViewModel.newAlarm.value?.character)
     }
 
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
+    override fun initListener() {
+        viewModel.selectedCharacter.observe(viewLifecycleOwner) { id ->
+            newAlarmViewModel.updateCharacter(id)
+        }
+    }
 
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
-
-
+    override fun initData() {
+        viewModel.characters.observe(viewLifecycleOwner) { characters ->
+            characterAdapter.submitList(characters)
+        }
+    }
 
     private fun setupToolbar() = with(binding.characterToolbar) {
         tvToolbarTitle.setText(R.string.character)
@@ -48,11 +45,6 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
     private fun setupRecyclerView() = with(binding.recyclerCharacters) {
         layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = characterAdapter
-        characterAdapter.submitList(AppConstants.getAllCharacters())
-    }
-
-    private fun selectCharacter(id: Int) {
-        newAlarmViewModel.updateCharacter(id)
     }
 
     private fun back() = requireActivity().onBackPressedDispatcher.onBackPressed()

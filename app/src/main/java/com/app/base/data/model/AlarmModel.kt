@@ -7,11 +7,11 @@ data class AlarmModel(
     var isOn: Boolean = true,
     var message: String? = null,
     var sound: Int? = null,
-    var dateOfWeek: List<Int>? = null,
+    var datesOfWeek: List<Int>? = null,
     var date: Long? = null,
     var character: Int? = null
 )
 
 fun AlarmModel.toMyString(): String {
-    return "AlarmModel(id='$id', hour=$hour, minute=$minute, isOn=$isOn, message=$message, sound=$sound, dateOfWeek=$dateOfWeek, date=$date, character=$character)"
+    return "AlarmModel(id='$id', hour=$hour, minute=$minute, isOn=$isOn, message=$message, sound=$sound, dateOfWeek=$datesOfWeek, date=$date, character=$character)"
 }

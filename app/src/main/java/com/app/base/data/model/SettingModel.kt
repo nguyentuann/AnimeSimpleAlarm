@@ -4,6 +4,6 @@ import android.graphics.drawable.Icon
 
 data class SettingModel(
     val title: String,
-    val icon: Icon,
+    val iconRes: Int,
     val action: () -> Unit
 )

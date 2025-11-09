@@ -53,7 +53,7 @@
     <string name="character">Nhân vật</string>
 
     <string name="discard_change">Bỏ qua thay đổi?</string>
-    <string name="discard_change_message">Bạn có các thay đổi chưa được lưu. Bạn có chắc chắn muốn bỏ qua chúng không?</string>
+    <string name="discard_change_message">Bạn có chắc muốn thoát không?</string>
     <string name="delete_alarm">Xóa báo thức</string>
     <string name="delete_alarm_message">Bạn có chắc chắn muốn xóa báo thức này không?</string>
     <string name="cancel">Hủy</string>

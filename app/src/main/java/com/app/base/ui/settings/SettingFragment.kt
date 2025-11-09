@@ -1,67 +1,19 @@
 package com.app.base.ui.settings
 
-import android.graphics.drawable.Icon
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
 import com.app.base.components.CommonComponents
-import com.app.base.data.model.SettingModel
 import com.app.base.databinding.FragmentSettingBinding
 import com.app.base.helpers.setAppLocale
-import com.app.base.local.db.AppPreferences
-import com.language_onboard.ui.BaseFragment
-import org.koin.android.ext.android.inject
+import com.brally.mobile.base.activity.BaseFragment
 
-class SettingFragment : BaseFragment<FragmentSettingBinding>() {
+class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>() {
 
-    private val appPrefs: AppPreferences by inject()
     private lateinit var settingAdapter: SettingAdapter
 
-    private lateinit var settingList: List<SettingModel>
-
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
-
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
-
-    override fun getViewBinding(): FragmentSettingBinding {
-        return FragmentSettingBinding.inflate(layoutInflater)
-    }
-
     override fun initView() {
-        super.initView()
         setUpToolbar()
-
-        settingList = listOf(
-            SettingModel(
-                title = getString(R.string.language),
-                icon = Icon.createWithResource(requireContext(), R.drawable.ic_language),
-                action = { showLanguageDialog() }
-            ),
-
-            SettingModel(
-                title = getString(R.string.feed_back),
-                icon = Icon.createWithResource(requireContext(), R.drawable.ic_feedback),
-                action = {
-                    feedback()
-                }
-            ),
-            SettingModel(
-                title = getString(R.string.policy),
-                icon = Icon.createWithResource(requireContext(), R.drawable.ic_policy),
-                action = {
-                    developing()
-                }
-            ),
-            SettingModel(
-                title = getString(R.string.share_app),
-                icon = Icon.createWithResource(requireContext(), R.drawable.ic_share),
-                action = {
-                    developing()
-                }
-            ),
-        )
 
         settingAdapter = SettingAdapter()
         binding.settingRecyclerView.apply {
@@ -69,7 +21,34 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        settingAdapter.submitList(settingList)
+        viewModel.loadSettings()
+    }
+
+    override fun initListener() {
+        observeSettings()
+        observeEvents()
+    }
+
+    override fun initData() {}
+
+    private fun observeSettings() {
+        viewModel.settingList.observe(viewLifecycleOwner) { list ->
+            settingAdapter.submitList(list)
+        }
+    }
+
+    private fun observeEvents() {
+        viewModel.events.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { handleEvent(it) }
+        }
+    }
+
+    private fun handleEvent(event: SettingViewModel.SettingEvent) {
+        when (event) {
+            SettingViewModel.SettingEvent.ShowLanguageDialog -> showLanguageDialog()
+            SettingViewModel.SettingEvent.ShowFeedbackDialog -> feedback()
+            SettingViewModel.SettingEvent.ShowDevelopingToast -> developing()
+        }
     }
 
     private fun developing() {
@@ -82,7 +61,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
     private fun feedback() {
         CommonComponents.showRatingDialog(
             context = requireContext(),
-            onSubmit = { rating, feedback ->
+            onSubmit = { _, _ ->
                 CommonComponents.toastText(
                     requireContext(),
                     getString(R.string.thank_feedback)
@@ -102,18 +81,18 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
     private fun showLanguageDialog() {
         val languages = arrayOf("English", "Tiếng Việt")
         val codes = arrayOf("en", "vi")
-        val currentLang = appPrefs.appLanguage
-        val selectedIndex = codes.indexOf(currentLang)
+        val currentLang = viewModel.prefs.appLanguage
+        val selectedIndex = codes.indexOf(currentLang).takeIf { it >= 0 } ?: 0
 
         CommonComponents.showSingleChoiceDialog(
             requireContext(),
             title = getString(R.string.language),
             options = languages,
-            selectedIndex = selectedIndex.takeIf { it >= 0 } ?: 0,
+            selectedIndex = selectedIndex,
             onSelected = { which ->
                 val selectedCode = codes[which]
                 requireContext().setAppLocale(selectedCode)
-                appPrefs.appLanguage = selectedCode
+                viewModel.prefs.appLanguage = selectedCode
                 requireActivity().recreate()
 
                 CommonComponents.toastText(
