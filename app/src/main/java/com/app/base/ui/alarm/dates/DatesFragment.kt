@@ -1,40 +1,40 @@
 package com.app.base.ui.alarm.dates
 
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
 import com.app.base.databinding.FragmentCharacterBinding
-import com.app.base.utils.AppConstants
-import com.app.base.ui.alarm.NewAlarmViewModel
-import com.language_onboard.ui.BaseFragment
+import com.app.base.ui.home.NewAlarmViewModel
+import com.brally.mobile.base.activity.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class DatesFragment : BaseFragment<FragmentCharacterBinding>() {
+class DatesFragment : BaseFragment<FragmentCharacterBinding, DatesViewModel>() {
 
     private val newAlarmViewModel by activityViewModel<NewAlarmViewModel>()
 
     private val datesAdapter by lazy {
         DatesAdapter(
-            positions = newAlarmViewModel.newAlarm.value?.dateOfWeek ?: emptyList(),
-            selectDateOfWeek = ::onDateOfWeekSelected
+            positions = viewModel.selectedDateOfWeek.value ?: emptyList(),
+            selectDateOfWeek = viewModel::selectDateOfWeek
         )
-    }
-
-    override fun getViewBinding(): FragmentCharacterBinding {
-        return FragmentCharacterBinding.inflate(layoutInflater)
     }
 
     override fun initView() {
         setupToolbar()
         setupRecyclerView()
+        viewModel.loadDates(newAlarmViewModel.newAlarm.value?.datesOfWeek)
     }
 
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
+    override fun initListener() {
+        viewModel.selectedDateOfWeek.observe(viewLifecycleOwner) { dates ->
+            newAlarmViewModel.updateDatesOfWeek(dates)
+        }
+    }
 
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
-
+    override fun initData() {
+        viewModel.datesOfWeek.observe(viewLifecycleOwner) { dates ->
+            datesAdapter.submitList(dates)
+        }
+    }
 
     private fun setupToolbar() = with(binding.characterToolbar) {
         tvToolbarTitle.setText(R.string.Repeat)
@@ -45,12 +45,6 @@ class DatesFragment : BaseFragment<FragmentCharacterBinding>() {
     private fun setupRecyclerView() = with(binding.recyclerCharacters) {
         layoutManager = LinearLayoutManager(requireContext())
         adapter = datesAdapter
-        datesAdapter.submitList(AppConstants.getAllDates())
-    }
-
-    private fun onDateOfWeekSelected(dates: List<Int>) {
-        newAlarmViewModel.updateDateOfWeek(dates)
-        newAlarmViewModel.updateDate(null)
     }
 
     private fun back() = requireActivity().onBackPressedDispatcher.onBackPressed()

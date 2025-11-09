@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import com.app.base.data.model.AlarmModel
 import com.app.base.helpers.AlarmHelper
+import com.app.base.ui.alarm.alarmreceiver.AlarmReceiver
 import com.app.base.utils.LogUtil
 
 class AlarmScheduler(
@@ -21,7 +22,7 @@ class AlarmScheduler(
             putExtra("ALARM_SOUND", alarm.sound)
             putExtra("ALARM_HOUR", alarm.hour)
             putExtra("ALARM_MINUTE", alarm.minute)
-            putExtra("DAYS", alarm.dateOfWeek?.toIntArray())
+            putExtra("DATES", alarm.datesOfWeek?.toIntArray())
             putExtra("CHARACTER", alarm.character)
         }
 
@@ -36,12 +37,12 @@ class AlarmScheduler(
     fun scheduleAlarm(alarm: AlarmModel) {
         // todo schedule alarm with AlarmManager
         val triggerTime: Long = when {
-            alarm.dateOfWeek != null && alarm.date == null -> {
+            alarm.datesOfWeek != null && alarm.date == null -> {
                 // Tìm ngày gần nhất
                 AlarmHelper.getNextDayOfWeek(
                     alarm.hour,
                     alarm.minute,
-                    alarm.dateOfWeek!!
+                    alarm.datesOfWeek!!
                 ).timeInMillis
             }
 

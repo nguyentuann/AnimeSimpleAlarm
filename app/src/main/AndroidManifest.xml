@@ -34,7 +34,7 @@
         tools:replace="android:fullBackupContent, theme">
 
         <activity
-            android:name=".ui.alarm.AlarmReceiverActivity"
+            android:name=".ui.alarm.alarmreceiver.AlarmReceiverActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTop"
@@ -79,7 +79,7 @@
         </provider>
 
         <receiver
-            android:name=".ui.alarm.AlarmReceiver"
+            android:name=".ui.alarm.alarmreceiver.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
 

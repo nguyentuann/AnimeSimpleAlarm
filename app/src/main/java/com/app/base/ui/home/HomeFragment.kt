@@ -9,11 +9,10 @@ import com.app.base.components.CommonComponents
 import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.FragmentHomeBinding
 import com.app.base.ui.alarm.AlarmAdapter
-import com.app.base.ui.home.ListAlarmViewModel
-import com.language_onboard.ui.BaseFragment
+import com.brally.mobile.base.activity.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private val listAlarmViewModel by activityViewModel<ListAlarmViewModel>()
 
@@ -25,16 +24,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         )
     }
 
-    override fun getViewBinding(): FragmentHomeBinding {
-        return FragmentHomeBinding.inflate(layoutInflater)
-    }
-
     override fun initView() {
         setupRecyclerView()
+    }
+
+    override fun initListener() {
         setupListeners()
     }
 
-    override fun initObserver() {
+    override fun initData() {
+        setupObservers()
+    }
+
+    private fun setupObservers() {
         listAlarmViewModel.alarmList.observe(viewLifecycleOwner) { alarms ->
             if (alarms.isNullOrEmpty()) {
                 binding.alarmList.isVisible = false
@@ -69,7 +71,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             context = requireContext(),
             title = getString(R.string.delete_alarm),
             message = getString(R.string.delete_alarm_message),
-            onConfirm = { listAlarmViewModel.delete(alarm) }
+            onConfirm = {
+                listAlarmViewModel.delete(alarm)
+            }
         )
     }
 
@@ -81,10 +85,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun enableAlarm(alarm: AlarmModel) {
         listAlarmViewModel.active(alarm, alarm.isOn)
     }
-
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
-
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
 }

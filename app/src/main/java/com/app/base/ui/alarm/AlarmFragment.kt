@@ -2,34 +2,32 @@ package com.app.base.ui.alarm
 
 import android.os.Bundle
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.app.base.R
 import com.app.base.components.CommonComponents
 import com.app.base.data.model.toMyString
-import com.app.base.databinding.FragmentNewAlarmBinding
+import com.app.base.databinding.FragmentAlarmBinding
 import com.app.base.helpers.AlarmHelper
 import com.app.base.utils.AppConstants
 import com.app.base.utils.LogUtil
 import com.app.base.utils.TimeConverter
 import com.app.base.ui.home.ListAlarmViewModel
+import com.app.base.ui.home.NewAlarmViewModel
+import com.brally.mobile.base.activity.BaseFragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.language_onboard.ui.BaseFragment
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.util.Calendar
 
-class NewAlarmFragment : BaseFragment<FragmentNewAlarmBinding>() {
+class AlarmFragment : BaseFragment<FragmentAlarmBinding, AlarmViewModel>() {
 
 
-    private val newAlarmViewModel by activityViewModels<NewAlarmViewModel>()
-    private val listAlarmViewModel by activityViewModels<ListAlarmViewModel>()
+    private val newAlarmViewModel by activityViewModel<NewAlarmViewModel>()
+    private val listAlarmViewModel by activityViewModel<ListAlarmViewModel>()
 
-    override fun getViewBinding(): FragmentNewAlarmBinding {
-        return FragmentNewAlarmBinding.inflate(layoutInflater)
-    }
 
     override fun initView() {
         val alarmId = arguments?.getString("alarm_id")
@@ -53,10 +51,17 @@ class NewAlarmFragment : BaseFragment<FragmentNewAlarmBinding>() {
 
         setupToolbar()
         setupButtons()
+        initObserver()
+    }
+
+    override fun initListener() {
         setupMessageWatcher()
     }
 
-    override fun initObserver() {
+    override fun initData() {
+    }
+
+    private fun initObserver() {
         newAlarmViewModel.newAlarm.observe(viewLifecycleOwner) { alarm ->
 
             if (alarm == null) return@observe
@@ -72,9 +77,9 @@ class NewAlarmFragment : BaseFragment<FragmentNewAlarmBinding>() {
                 binding.scheduleAlarm.text = getString(R.string.schedule)
             }
 
-            if (alarm.dateOfWeek != null) {
+            if (alarm.datesOfWeek != null) {
                 binding.dates.text =
-                    TimeConverter.convertListDateToString(requireContext(), alarm.dateOfWeek!!)
+                    TimeConverter.convertListDateToString(requireContext(), alarm.datesOfWeek!!)
             } else {
                 binding.dates.text = getString(R.string.never)
             }
@@ -98,13 +103,6 @@ class NewAlarmFragment : BaseFragment<FragmentNewAlarmBinding>() {
             }
         }
     }
-
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
-
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
-
 
     // todo các hàm tự định nghĩa
 
@@ -193,7 +191,7 @@ class NewAlarmFragment : BaseFragment<FragmentNewAlarmBinding>() {
 
             //todo update date
             newAlarmViewModel.updateDate(AlarmHelper.getCalendarFromDate(y, m, d))
-            newAlarmViewModel.updateDateOfWeek(null)
+            newAlarmViewModel.updateDatesOfWeek(null)
         }
 
         picker.show(parentFragmentManager, "DatePicker")
@@ -214,7 +212,7 @@ class NewAlarmFragment : BaseFragment<FragmentNewAlarmBinding>() {
         }
 
         newAlarmViewModel.clearAlarm()
-        activity?.onBackPressedDispatcher?.onBackPressed()
+        back()
     }
 
     private fun checkDiscardChanges() {
@@ -226,14 +224,16 @@ class NewAlarmFragment : BaseFragment<FragmentNewAlarmBinding>() {
                 getString(R.string.discard_change),
                 getString(R.string.discard_change_message),
                 onConfirm = {
-                    activity?.onBackPressedDispatcher?.onBackPressed()
+                    back()
                     newAlarmViewModel.clearAlarm()
                 }
             )
         } else {
-            activity?.onBackPressedDispatcher?.onBackPressed()
+            back()
             newAlarmViewModel.clearAlarm()
         }
     }
+
+    private fun back() = requireActivity().onBackPressedDispatcher.onBackPressed()
 
 }

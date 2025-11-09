@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:flow_horizontalAlign="center"
-    tools:context=".ui.alarm.NewAlarmFragment">
+    tools:context=".ui.alarm.AlarmFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/tool_bar_new_alarm"

@@ -1,4 +1,4 @@
-package com.app.base.ui.alarm
+package com.app.base.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,7 +24,7 @@ class NewAlarmViewModel : BaseViewModel() {
                 isOn = true,
                 message = null,
                 sound = null,
-                dateOfWeek = null,
+                datesOfWeek = null,
                 date = null,
                 character = null
             )
@@ -60,8 +60,8 @@ class NewAlarmViewModel : BaseViewModel() {
         _newAlarm.value = _newAlarm.value?.copy(sound = sound)
     }
 
-    fun updateDateOfWeek(dateOfWeek: List<Int>?) {
-        _newAlarm.value = _newAlarm.value?.copy(dateOfWeek = dateOfWeek)
+    fun updateDatesOfWeek(dateOfWeek: List<Int>?) {
+        _newAlarm.value = _newAlarm.value?.copy(datesOfWeek = dateOfWeek)
     }
 
     fun updateCharacter(character: Int?) {
@@ -70,7 +70,7 @@ class NewAlarmViewModel : BaseViewModel() {
 
     fun isNoDateChoose() {
         val alarm = _newAlarm.value ?: return
-        if (alarm.dateOfWeek == null && alarm.date == null) {
+        if (alarm.datesOfWeek == null && alarm.date == null) {
             LogUtil.log("ca 2 null")
             updateDate(AlarmHelper.getNearestTime(alarm.hour, alarm.minute))
         }
@@ -84,7 +84,7 @@ class NewAlarmViewModel : BaseViewModel() {
             isOn = true,
             message = null,
             sound = null,
-            dateOfWeek = null,
+            datesOfWeek = null,
             date = null,
             character = null
         )

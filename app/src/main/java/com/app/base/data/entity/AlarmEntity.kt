@@ -26,7 +26,7 @@ fun AlarmEntity.toAlarmModel(): AlarmModel {
         isOn = isOn,
         message = message,
         sound = sound,
-        dateOfWeek = if (dateOfWeek == null) null else AlarmHelper.fromBitToList(dateOfWeek),
+        datesOfWeek = if (dateOfWeek == null) null else AlarmHelper.fromBitToList(dateOfWeek),
         date = date,
         character = character
     )
@@ -40,7 +40,7 @@ fun AlarmModel.toAlarmEntity(): AlarmEntity {
         isOn = isOn,
         message = message,
         sound = sound,
-        dateOfWeek = if (dateOfWeek == null) null else AlarmHelper.fromListToBit(dateOfWeek!!),
+        dateOfWeek = if (datesOfWeek == null) null else AlarmHelper.fromListToBit(datesOfWeek!!),
         date = date,
         character = character
     )

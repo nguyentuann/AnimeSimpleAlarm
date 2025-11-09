@@ -1,4 +1,4 @@
-package com.app.base.ui.alarm
+package com.app.base.ui.alarm.alarmreceiver
 
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
@@ -15,27 +15,25 @@ import com.app.base.data.model.AlarmModel
 import com.app.base.databinding.ActivityAlarmReceiverBinding
 import com.app.base.helpers.AlarmHelper
 import com.app.base.helpers.IconHelper
+import com.app.base.ui.alarm.AlarmScheduler
 import com.app.base.ui.alarm.sound.AlarmSoundService
 import com.app.base.utils.LogUtil
 import com.app.base.utils.TimeConverter
-import com.app.base.ui.home.ListAlarmViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.java.KoinJavaComponent.getKoin
+import org.koin.java.KoinJavaComponent
 
 class AlarmReceiverActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAlarmReceiverBinding
     private var mediaPlayer: MediaPlayer? = null
 
-    private val alarmScheduler: AlarmScheduler = getKoin().get()
-    private val listAlarmViewModel by viewModel<ListAlarmViewModel>()
+    private val alarmScheduler: AlarmScheduler = KoinJavaComponent.getKoin().get()
     private var id: String? = null
     private var message: String? = null
     private var hour: Int = 0
     private var minute: Int = 0
     private var character: Int = 0
     private var sound: Int = 0
-    private var days: List<Int>? = null
+    private var dates: List<Int>? = null
 
     @SuppressLint("ImplicitSamInstance")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +49,7 @@ class AlarmReceiverActivity : AppCompatActivity() {
         minute = intent.getIntExtra("ALARM_MINUTE", 0)
         character = intent.getIntExtra("CHARACTER", R.drawable.img_naruto)
         sound = intent.getIntExtra("ALARM_SOUND", 0)
-        days = intent.getIntArrayExtra("DAYS")?.toList()
+        dates = intent.getIntArrayExtra("DATES")?.toList()
 
 
         binding.icon
@@ -96,7 +94,7 @@ class AlarmReceiverActivity : AppCompatActivity() {
                 sound = sound,
                 character = character,
                 date = AlarmHelper.getNearestTime(newHour, newMinute),
-                dateOfWeek = null
+                datesOfWeek = null
             )
 
             alarmScheduler.scheduleAlarm(snoozeAlarm)
@@ -117,18 +115,11 @@ class AlarmReceiverActivity : AppCompatActivity() {
             sound = sound,
             character = character,
             date = null,
-            dateOfWeek = days,
+            datesOfWeek = dates,
         )
-        // 👉 Luôn đảm bảo lịch gốc được duy trì (nếu là alarm lặp)
-        if (!days.isNullOrEmpty()) {
-            alarmScheduler.scheduleAlarm(alarm)
-            LogUtil.log("lên lịch mới vì days không null")
-        } else {
-            listAlarmViewModel.delete(alarm)
-            LogUtil.log("xóa alarm vì không lặp lại")
-        }
 
-        // 👉 Dừng service & thoát màn hình
+        alarmScheduler.scheduleAlarm(alarm)
+
         stopService(Intent(this, AlarmSoundService::class.java))
         finish()
     }

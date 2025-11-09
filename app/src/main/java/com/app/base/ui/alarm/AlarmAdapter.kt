@@ -23,7 +23,7 @@ class AlarmAdapter(
             }
 
             tvTime.text = TimeConverter.convertTimeToString(item.hour, item.minute)
-            tvDates.text = TimeConverter.convertListDateToString(context, item.dateOfWeek)
+            tvDates.text = TimeConverter.convertListDateToString(context, item.datesOfWeek)
             nextAlarm.text = nextDateOfAlarm(context, item)
 
             dayOrNight.setImageResource(IconHelper.getIconResourceForAlarm(item.hour))
@@ -49,10 +49,10 @@ class AlarmAdapter(
     }
 
     private fun nextDateOfAlarm(context: Context, item: AlarmModel): String {
-        return if (!item.dateOfWeek.isNullOrEmpty()) {
+        return if (!item.datesOfWeek.isNullOrEmpty()) {
             TimeConverter.nameDateOfWeek(
                 context,
-                AlarmHelper.getNextDayOfWeek(item.hour, item.minute, item.dateOfWeek!!)
+                AlarmHelper.getNextDayOfWeek(item.hour, item.minute, item.datesOfWeek!!)
             )
         } else if (item.date != null) {
             TimeConverter.dayMonthYearFormatFromCalendar(item.date!!)

@@ -3,64 +3,48 @@ package com.app.base.ui.splash
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.app.base.R
-import com.app.base.data.model.OnBoardingModel
 import com.app.base.databinding.FragmentOnBoardingBinding
-import com.app.base.local.db.AppPreferences
-import com.language_onboard.ui.BaseFragment
-import org.koin.android.ext.android.inject
+import com.brally.mobile.base.activity.BaseFragment
 
-class OnboardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
+class OnboardingFragment : BaseFragment<FragmentOnBoardingBinding, SplashViewModel>() {
 
-    private val appPrefs: AppPreferences by inject()
-
-    override fun getViewBinding(): FragmentOnBoardingBinding =
-        FragmentOnBoardingBinding.inflate(layoutInflater)
+    private lateinit var adapter: OnBoardingAdapter
 
     override fun initView() {
-        val items = listOf(
-            OnBoardingModel(
-                R.drawable.onboarding1,
-                "Chào mừng",
-                "Ứng dụng báo thức thông minh giúp bạn quản lý thời gian hiệu quả."
-            ),
-            OnBoardingModel(
-                R.drawable.onboarding2,
-                "Tuỳ chỉnh dễ dàng",
-                "Tạo và quản lý báo thức theo cách bạn muốn."
-            ),
-        )
+        adapter = OnBoardingAdapter()
+        binding.viewPager.adapter = adapter
 
-        val adapter = OnBoardingAdapter().apply { submitList(items) }
+        viewModel.items.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
 
-        with(binding) {
-            viewPager.adapter = adapter
+        viewModel.currentPage.observe(viewLifecycleOwner) { position ->
+            binding.viewPager.currentItem = position
+            binding.btnNext.text = if (position == (viewModel.items.value?.size ?: 1) - 1)
+                "Start now" else "Continue"
+        }
 
-            btnNext.setOnClickListener {
-                if (viewPager.currentItem < items.size - 1) {
-                    viewPager.currentItem += 1
-                } else {
-                    // Lưu là đã xem xong
-                    appPrefs.isFirstLaunch = false
-                    navigateToHome()
-                }
+        viewModel.navigateToHome.observe(viewLifecycleOwner) { navigate ->
+            if (navigate == true) {
+                findNavController().navigate(R.id.action_to_home)
+                viewModel.doneNavigating()
             }
-
-            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    btnNext.text = if (position == items.size - 1) "Bắt đầu ngay" else "Tiếp theo"
-                }
-            })
         }
     }
 
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
+    override fun initListener() {
+        binding.btnNext.setOnClickListener {
+            viewModel.onNextClicked()
+        }
 
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
-
-    private fun navigateToHome() {
-        findNavController().navigate(R.id.action_to_home)
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.onPageChanged(position)
+            }
+        })
     }
+
+    override fun initData() {}
 }
+

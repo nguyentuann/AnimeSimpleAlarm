@@ -10,14 +10,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.app.base.R
 import com.app.base.databinding.FragmentTimerBinding
-import com.app.base.ui.timer.TimerViewModel
-import com.language_onboard.ui.BaseFragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.brally.mobile.base.activity.BaseFragment
 import java.util.concurrent.TimeUnit
 
-class TimerFragment : BaseFragment<FragmentTimerBinding>() {
-
-    private val viewModel: TimerViewModel by viewModel()
+class TimerFragment : BaseFragment<FragmentTimerBinding, TimerViewModel>() {
 
     // Gom tất cả nút nhanh vào 1 map
     private val quickButtons by lazy {
@@ -30,26 +26,18 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>() {
         )
     }
 
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
-
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
-
-    override fun getViewBinding(): FragmentTimerBinding {
-        return FragmentTimerBinding.inflate(layoutInflater)
-    }
-
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun initView() {
-        super.initView()
 
         viewModel.resumeIfRunning()
 
         setUpToolbar()
         setUpPickers()
         setUpQuickButtons()
+        initObserver()
+    }
 
+    override fun initListener() {
         binding.btnStartTimer.setOnClickListener {
             val running = viewModel.isRunning.value ?: false
             if (running) {
@@ -66,9 +54,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>() {
         }
     }
 
-    override fun initObserver() {
-        super.initObserver()
+    override fun initData() {}
 
+
+    private fun initObserver() {
         viewModel.timeLeft.observe(viewLifecycleOwner) { millis ->
             val h = TimeUnit.MILLISECONDS.toHours(millis)
             val m = TimeUnit.MILLISECONDS.toMinutes(millis) % 60

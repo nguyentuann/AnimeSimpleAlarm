@@ -5,24 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
 import com.app.base.databinding.FragmentStopWatchBinding
 import com.app.base.utils.TimeConverter
-import com.app.base.ui.stopwatch.StopWatchViewModel
-import com.language_onboard.ui.BaseFragment
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import com.brally.mobile.base.activity.BaseFragment
 
-class StopWatchFragment : BaseFragment<FragmentStopWatchBinding>() {
-
-    private val viewModel: StopWatchViewModel by activityViewModel() // Koin inject
+class StopWatchFragment : BaseFragment<FragmentStopWatchBinding, StopWatchViewModel>() {
 
     private lateinit var lapAdapter: LapListAdapter
-
-    override fun getStatusBarColor() =
-        requireContext().getColor(R.color.background)
-
-    override fun getNavigationBarColor() =
-        requireContext().getColor(R.color.background)
-
-    override fun getViewBinding(): FragmentStopWatchBinding =
-        FragmentStopWatchBinding.inflate(layoutInflater)
 
     override fun initView() {
         setUpToolbar()
@@ -34,9 +21,24 @@ class StopWatchFragment : BaseFragment<FragmentStopWatchBinding>() {
         }
         initListener()
         viewModel.restoreState()
+        initObserver()
     }
 
-    override fun initObserver() {
+    override fun initListener() {
+        binding.btnStartStopwatch.setOnClickListener {
+            if (viewModel.isRunning.value == true) viewModel.pause()
+            else viewModel.start()
+        }
+
+        binding.btnLap.setOnClickListener {
+            if (viewModel.isRunning.value == true) viewModel.addLap()
+            else viewModel.reset()
+        }
+    }
+
+    override fun initData() {}
+
+    private fun initObserver() {
         // Quan sát thời gian
         viewModel.elapsedMillis.observe(viewLifecycleOwner) { elapsed ->
             binding.tvStopwatch.text = TimeConverter.stopWatchFormatTime(elapsed)
@@ -54,18 +56,6 @@ class StopWatchFragment : BaseFragment<FragmentStopWatchBinding>() {
         viewModel.laps.observe(viewLifecycleOwner) { laps ->
             lapAdapter.submitList(laps.toList())
             binding.lapList.scrollToPosition(0)
-        }
-    }
-
-    fun initListener() {
-        binding.btnStartStopwatch.setOnClickListener {
-            if (viewModel.isRunning.value == true) viewModel.pause()
-            else viewModel.start()
-        }
-
-        binding.btnLap.setOnClickListener {
-            if (viewModel.isRunning.value == true) viewModel.addLap()
-            else viewModel.reset()
         }
     }
 

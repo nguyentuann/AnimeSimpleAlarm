@@ -3,80 +3,90 @@ package com.app.base
 import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.app.base.databinding.ActivityMainBinding
 import com.app.base.helpers.PermissionHelper
 import com.app.base.helpers.setAppLocale
-import com.app.base.local.db.AppPreferences
-import com.app.base.utils.LogUtil
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.koin.android.ext.android.inject
+import com.brally.mobile.ui.features.main.BaseMainActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
-    private val appPrefs: AppPreferences by inject()
-    private lateinit var navController: NavController
+class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override val viewModel: MainViewModel by viewModel()
+
+    override val graphResId: Int
+        get() = R.navigation.nav_graph
+
+    override fun initView() {
+        super.initView() // Gọi BaseMainActivity để inflate nav graph
 
         PermissionHelper.requestNotificationPermission(this)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        setAppLocale(viewModel.getAppLanguage())
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            if (!getSystemService(NotificationManager::class.java).canUseFullScreenIntent()) {
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            if (!notificationManager.canUseFullScreenIntent()) {
                 startActivity(Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT))
             }
         }
 
+        // Thiết lập start destination động
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+        navController?.let { controller ->
+            val navGraph = controller.navInflater.inflate(R.navigation.nav_graph)
+            navGraph.setStartDestination(
+                viewModel.getStartDestination()
+            )
+            controller.graph = navGraph
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        setAppLocale(appPrefs.appLanguage)
+            setupBottomNavigation(controller)
+            handleIntent(intent)
+        }
+    }
 
-        setContentView(R.layout.activity_main)
+    override fun initListener() {
+    }
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+    override fun initData() {
+    }
 
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
 
-        navGraph.setStartDestination(
-            if (appPrefs.isFirstLaunch) R.id.onboardingFragment
-            else R.id.homeFragment
-        )
+    override fun onFlowFinished() {
+        viewModel.markFirstLaunchCompleted()
+    }
 
-        navController.graph = navGraph
-
-        // 🔹 Kết nối với BottomNavigationView
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+    private fun setupBottomNavigation(navController: NavController) {
+        val bottomNav = binding.bottomNav
         bottomNav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
+            bottomNav.isVisible = when (destination.id) {
                 R.id.newAlarmFragment,
                 R.id.settingFragment,
                 R.id.characterFragment,
                 R.id.soundFragment,
                 R.id.datesFragment,
-                R.id.onboardingFragment
-                    -> {
-                    bottomNav.visibility = View.GONE
-                }
+                R.id.onboardingFragment -> false
 
-                else -> {
-                    bottomNav.visibility = View.VISIBLE
-                }
+                else -> true
             }
         }
 
-        // 🔹 Nếu muốn xử lý logic tùy chọn menu
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeFragment -> {
@@ -102,65 +112,50 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        checkOpenTimer(intent)
-        checkOpenStopWatch(intent)
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        checkOpenTimer(intent)
-        checkOpenStopWatch(intent)
+    private fun handleIntent(intent: Intent?) {
+        viewModel.getDestinationFromIntent(intent)?.let { destination ->
+            navController?.navigate(destination)
+            // Cập nhật BottomNavigationView tương ứng
+            binding.bottomNav.selectedItemId = when (destination) {
+                R.id.timerFragment -> R.id.timerFragment
+                R.id.stopwatchFragment -> R.id.stopwatchFragment
+                else -> binding.bottomNav.selectedItemId
+            }
+            // Xóa extra để tránh navigate lại
+            viewModel.consumeIntent(intent)
+        }
     }
 
     private fun checkOpenTimer(intent: Intent?) {
-        LogUtil.log("vao checkOpenTimer")
-
         if (intent?.getBooleanExtra("OPEN_TIMER", false) == true) {
-            // todo xóa extra để tránh gọi lại nhiều lần
             intent.removeExtra("OPEN_TIMER")
-
-            // todo điều hướng bằng NavController
-            if (::navController.isInitialized) {
-                navController.navigate(R.id.timerFragment)
+            val controller = navController
+            if (controller != null) {
+                controller.navigate(R.id.timerFragment)
             } else {
-                // todo trường hợp hiếm: navController chưa kịp khởi tạo
                 Handler(Looper.getMainLooper()).post {
-                    val navHostFragment =
-                        supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                    navHostFragment.navController.navigate(R.id.timerFragment)
+                    navController?.navigate(R.id.timerFragment)
                 }
             }
-
-            // todo cập nhật lại trạng thái chọn trên BottomNavigationView
-            val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-            bottomNav.selectedItemId = R.id.timerFragment
+            binding.bottomNav.selectedItemId = R.id.timerFragment
         }
     }
 
     private fun checkOpenStopWatch(intent: Intent?) {
-        LogUtil.log("vao checkOpenStopWatch")
-
         if (intent?.getBooleanExtra("OPEN_STOPWATCH", false) == true) {
-            // todo xóa extra để tránh gọi lại nhiều lần
             intent.removeExtra("OPEN_STOPWATCH")
-
-            // todo điều hướng bằng NavController
-            if (::navController.isInitialized) {
-                navController.navigate(R.id.stopwatchFragment)
+            val controller = navController
+            if (controller != null) {
+                controller.navigate(R.id.stopwatchFragment)
             } else {
-                // todo trường hợp hiếm: navController chưa kịp khởi tạo
                 Handler(Looper.getMainLooper()).post {
-                    val navHostFragment =
-                        supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                    navHostFragment.navController.navigate(R.id.stopwatchFragment)
+                    navController?.navigate(R.id.stopwatchFragment)
                 }
             }
-
-            // todo cập nhật lại trạng thái chọn trên BottomNavigationView
-            val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-            bottomNav.selectedItemId = R.id.stopwatchFragment
+            binding.bottomNav.selectedItemId = R.id.stopwatchFragment
         }
     }
-
 }
 

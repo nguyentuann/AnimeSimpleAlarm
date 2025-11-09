@@ -28,11 +28,11 @@ class SoundAdapter(
 
             val baseColor = ContextCompat.getColor(context, R.color.secondary)
             val backgroundColor = if (selectedPosition == position)
-                ColorUtils.setAlphaComponent(baseColor, 100)
+                ColorUtils.setAlphaComponent(baseColor, 255)
             else
-                ContextCompat.getColor(context, R.color.transparent)
+                ContextCompat.getColor(context, R.color.light_surface)
 
-            cardSound.setCardBackgroundColor(backgroundColor)
+            cardSound.strokeColor = backgroundColor
 
             // Cập nhật icon play/pause
             val iconRes = if (selectedPosition == position && isPlaying)
@@ -91,4 +91,5 @@ class SoundAdapter(
         mediaPlayer?.release()
         mediaPlayer = null
     }
+
 }
