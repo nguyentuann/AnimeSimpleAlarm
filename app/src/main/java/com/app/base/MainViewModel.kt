@@ -2,6 +2,7 @@ package com.app.base
 
 import android.content.Intent
 import com.app.base.local.db.AppPreferences
+import com.app.base.utils.LogUtil
 import com.brally.mobile.base.viewmodel.BaseViewModel
 
 class MainViewModel(
@@ -13,11 +14,20 @@ class MainViewModel(
     fun isFirstLaunch(): Boolean = appPrefs.isFirstLaunch
 
     fun markFirstLaunchCompleted() {
+        LogUtil.log("chạy vào markFirstLaunchCompleted")
         appPrefs.isFirstLaunch = false
     }
 
-    fun getStartDestination(): Int =
-        if (isFirstLaunch()) R.id.onboardingFragment else R.id.homeFragment
+    fun getStartDestination(): Int  {
+
+        if(isFirstLaunch()) {
+            LogUtil.log("chạy vào start destinaion là splash")
+            return R.id.splashFragment
+        } else {
+            LogUtil.log("chạy vào start destinaion là home")
+            return R.id.homeFragment
+        }
+    }
 
     fun getDestinationFromIntent(intent: Intent?): Int? = when {
         intent?.getBooleanExtra("OPEN_TIMER", false) == true -> R.id.timerFragment

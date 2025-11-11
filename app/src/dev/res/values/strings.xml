@@ -112,5 +112,8 @@
     <string name="select_star">Please select number of stars</string>
     <string name="thank_feedback">Thank you for your feedback</string>
 
+    <string name="this_action_may_contain_ads">This action may contain ads..</string>
+    <string name= "continue_text">Continue</string>
+
 
 </resources>

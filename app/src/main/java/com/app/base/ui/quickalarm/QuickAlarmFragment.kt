@@ -7,6 +7,7 @@ import com.app.base.databinding.FragmentQuickAlarmBinding
 import com.app.base.ui.home.ListAlarmViewModel
 import com.app.base.utils.LogUtil
 import com.brally.mobile.base.activity.BaseFragment
+import com.brally.mobile.base.activity.navigate
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class QuickAlarmFragment : BaseFragment<FragmentQuickAlarmBinding, QuickAlarmViewModel>() {
@@ -33,7 +34,7 @@ class QuickAlarmFragment : BaseFragment<FragmentQuickAlarmBinding, QuickAlarmVie
 
     private fun setupCreateOwnButton() {
         binding.btnCreateMyOwn.setOnClickListener {
-            findNavController().navigate(R.id.action_quick_to_newAlarm)
+            navigate(R.id.action_quick_to_newAlarm)
         }
     }
 
@@ -75,7 +76,7 @@ class QuickAlarmFragment : BaseFragment<FragmentQuickAlarmBinding, QuickAlarmVie
 
         LogUtil.log("Quick alarm to save: $alarm")
         listAlarmViewModel.saveAlarm(alarm)
-        findNavController().navigate(R.id.action_to_home)
+        navigate(R.id.action_to_home)
     }
 }
 

@@ -3,8 +3,6 @@ package com.app.base
 import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
@@ -14,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.app.base.databinding.ActivityMainBinding
 import com.app.base.helpers.PermissionHelper
 import com.app.base.helpers.setAppLocale
+import com.brally.mobile.base.activity.navigate
 import com.brally.mobile.ui.features.main.BaseMainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,8 +40,6 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         // Thiết lập start destination động
-        navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
         navController?.let { controller ->
             val navGraph = controller.navInflater.inflate(R.navigation.nav_graph)
             navGraph.setStartDestination(
@@ -51,7 +48,10 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
             controller.graph = navGraph
 
             setupBottomNavigation(controller)
-            handleIntent(intent)
+
+            if (!viewModel.isFirstLaunch()) {
+                handleIntent(intent)
+            }
         }
     }
 
@@ -81,31 +81,36 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
                 R.id.characterFragment,
                 R.id.soundFragment,
                 R.id.datesFragment,
-                R.id.onboardingFragment -> false
+                R.id.splashFragment -> false
 
                 else -> true
             }
         }
 
         bottomNav.setOnItemSelectedListener { item ->
+            navController.currentDestination?.id?.let { currentId ->
+                if (currentId == item.itemId) {
+                    return@setOnItemSelectedListener true
+                }
+            }
             when (item.itemId) {
                 R.id.homeFragment -> {
-                    navController.navigate(R.id.homeFragment)
+                    navigate(R.id.homeFragment)
                     true
                 }
 
                 R.id.quickAlarmFragment -> {
-                    navController.navigate(R.id.quickAlarmFragment)
+                    navigate(R.id.quickAlarmFragment)
                     true
                 }
 
                 R.id.timerFragment -> {
-                    navController.navigate(R.id.timerFragment)
+                    navigate(R.id.timerFragment)
                     true
                 }
 
                 R.id.stopwatchFragment -> {
-                    navController.navigate(R.id.stopwatchFragment)
+                    navigate(R.id.stopwatchFragment)
                     true
                 }
 
@@ -125,36 +130,6 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
             }
             // Xóa extra để tránh navigate lại
             viewModel.consumeIntent(intent)
-        }
-    }
-
-    private fun checkOpenTimer(intent: Intent?) {
-        if (intent?.getBooleanExtra("OPEN_TIMER", false) == true) {
-            intent.removeExtra("OPEN_TIMER")
-            val controller = navController
-            if (controller != null) {
-                controller.navigate(R.id.timerFragment)
-            } else {
-                Handler(Looper.getMainLooper()).post {
-                    navController?.navigate(R.id.timerFragment)
-                }
-            }
-            binding.bottomNav.selectedItemId = R.id.timerFragment
-        }
-    }
-
-    private fun checkOpenStopWatch(intent: Intent?) {
-        if (intent?.getBooleanExtra("OPEN_STOPWATCH", false) == true) {
-            intent.removeExtra("OPEN_STOPWATCH")
-            val controller = navController
-            if (controller != null) {
-                controller.navigate(R.id.stopwatchFragment)
-            } else {
-                Handler(Looper.getMainLooper()).post {
-                    navController?.navigate(R.id.stopwatchFragment)
-                }
-            }
-            binding.bottomNav.selectedItemId = R.id.stopwatchFragment
         }
     }
 }

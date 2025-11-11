@@ -14,6 +14,7 @@ import com.app.base.utils.TimeConverter
 import com.app.base.ui.home.ListAlarmViewModel
 import com.app.base.ui.home.NewAlarmViewModel
 import com.brally.mobile.base.activity.BaseFragment
+import com.brally.mobile.base.activity.navigate
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -124,15 +125,15 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding, AlarmViewModel>() {
         binding.icSave.setOnClickListener { saveAlarm() }
 
         binding.btnCharacter.setOnClickListener {
-            findNavController().navigate(R.id.action_new_to_character, bundle)
+            navigate(R.id.action_new_to_character, bundle)
         }
 
         binding.btnSound.setOnClickListener {
-            findNavController().navigate(R.id.action_new_to_sound, bundle)
+            navigate(R.id.action_new_to_sound, bundle)
         }
 
         binding.btnDates.setOnClickListener {
-            findNavController().navigate(R.id.action_new_to_dates, bundle)
+            navigate(R.id.action_new_to_dates, bundle)
         }
     }
 
