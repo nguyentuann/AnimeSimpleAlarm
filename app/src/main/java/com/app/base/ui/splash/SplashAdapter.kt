@@ -1,12 +1,12 @@
 package com.app.base.ui.splash
 
 import com.app.base.data.model.OnBoardingModel
-import com.app.base.databinding.OnboardingItemBinding
+import com.app.base.databinding.SplashItemBinding
 import com.brally.mobile.base.adapter.BaseListAdapter
 
-class OnBoardingAdapter : BaseListAdapter<OnBoardingModel, OnboardingItemBinding>() {
+class SplashAdapter : BaseListAdapter<OnBoardingModel, SplashItemBinding>() {
     override fun bindData(
-        binding: OnboardingItemBinding,
+        binding: SplashItemBinding,
         item: OnBoardingModel,
         position: Int
     ) {

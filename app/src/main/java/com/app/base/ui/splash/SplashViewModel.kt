@@ -52,8 +52,4 @@ class SplashViewModel: BaseViewModel() {
             _navigateToHome.value = true
         }
     }
-
-    fun doneNavigating() {
-        _navigateToHome.value = false
-    }
 }

@@ -101,5 +101,8 @@
     <string name="select_star">Vui lòng chọn số sao</string>
     <string name="thank_feedback">Cảm ơn vì phản hồi của bạn</string>
 
+    <string name="this_action_may_contain_ads">Hành động này có thể chứa quảng cáo..</string>
+    <string name= "continue_text">Tiếp tục</string>
+
 
 </resources>

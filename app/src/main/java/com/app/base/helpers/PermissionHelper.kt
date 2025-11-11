@@ -25,37 +25,23 @@ object PermissionHelper {
         val permission = Manifest.permission.POST_NOTIFICATIONS
 
         when {
-            // ✅ Đã có quyền
-            ContextCompat.checkSelfPermission(
-                activity,
-                permission
-            ) == PackageManager.PERMISSION_GRANTED -> {
+            ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED -> {
                 LogUtil.log("✅ Đã có quyền POST_NOTIFICATIONS")
                 appPrefs.hasNotificationPermission = true
             }
 
-            // ❌ Từng từ chối, nhưng chưa chọn “Don’t ask again”
             ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) -> {
-                ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(permission),
-                    REQUEST_CODE_NOTIFICATION
-                )
+                ActivityCompat.requestPermissions(activity, arrayOf(permission), REQUEST_CODE_NOTIFICATION)
             }
 
             else -> {
-                // ⚙️ Kiểm tra xem đã xin quyền lần đầu chưa
-                if (!appPrefs.hasNotificationPermission) {
-                    // 👉 Lần đầu: xin quyền
-                    ActivityCompat.requestPermissions(
-                        activity,
-                        arrayOf(permission),
-                        REQUEST_CODE_NOTIFICATION
-                    )
-                    appPrefs.hasNotificationPermission = true // đánh dấu đã hỏi rồi
-                } else {
-                    // 👉 Đã hỏi rồi mà vẫn chưa có quyền → user chọn “Don’t ask again”
+                // Chỉ show custom dialog nếu đã hỏi trước đó và vẫn chưa có quyền
+                if (appPrefs.hasNotificationPermission) {
                     showEnableNotificationDialog(activity)
+                } else {
+                    // Lần đầu tiên: xin quyền hệ thống
+                    ActivityCompat.requestPermissions(activity, arrayOf(permission), REQUEST_CODE_NOTIFICATION)
+                    // KHÔNG đánh dấu hasNotificationPermission ở đây
                 }
             }
         }
