@@ -1,7 +1,9 @@
 package com.app.base
 
 import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatDelegate
@@ -12,9 +14,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.app.base.databinding.ActivityMainBinding
 import com.app.base.helpers.PermissionHelper
 import com.app.base.helpers.setAppLocale
+import com.app.base.local.db.AppPreferences
 import com.brally.mobile.base.activity.navigate
 import com.brally.mobile.ui.features.main.BaseMainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -28,9 +32,6 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
 
         PermissionHelper.requestNotificationPermission(this)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        setAppLocale(viewModel.getAppLanguage())
-
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             val notificationManager = getSystemService(NotificationManager::class.java)
@@ -54,6 +55,18 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
     }
+
+    override fun attachBaseContext(newBase: Context) {
+        val prefs = AppPreferences(newBase)
+        val locale = Locale(prefs.appLanguage)
+
+        val config = Configuration(newBase.resources.configuration)
+        config.setLocale(locale)
+
+        val newContext = newBase.createConfigurationContext(config)
+        super.attachBaseContext(newContext)
+    }
+
 
     override fun initListener() {
     }

@@ -12,7 +12,8 @@ class SettingAdapter() : BaseListAdapter<SettingModel, SettingItemBinding>() {
         position: Int
     ) {
         with(binding) {
-            tvTitle.text = item.title
+            tvTitle.text  = binding.root.context.getString(item.titleRes)
+
             icLeft.setImageResource(item.iconRes)
             root.setOnClickListener {
                 item.action()
