@@ -18,8 +18,8 @@ class SplashFragment : BaseSplashFragment<FragmentSplashBinding, SplashViewModel
     }
 
     override fun openHome() {
-        if(!canNavigateHome) return
-       navigate(R.id.homeFragment)
+        if (!canNavigateHome) return
+        navigate(R.id.homeFragment)
     }
 
     override fun initView() = with(binding) {
@@ -29,7 +29,6 @@ class SplashFragment : BaseSplashFragment<FragmentSplashBinding, SplashViewModel
 
     override fun initListener() = with(binding) {
         btnNext.setOnClickListener {
-            canNavigateHome = true
             viewModel.onNextClicked()
         }
 
@@ -47,7 +46,11 @@ class SplashFragment : BaseSplashFragment<FragmentSplashBinding, SplashViewModel
         currentPage.observe(viewLifecycleOwner) { position ->
             binding.viewPager.currentItem = position
             val isLastPage = position == (items.value?.size ?: 1) - 1
-            binding.btnNext.text = if (isLastPage)  getString(R.string.start) else  getString(R.string.continue_text)
+            if (isLastPage) {
+                canNavigateHome = true
+            }
+            binding.btnNext.text =
+                if (isLastPage) getString(R.string.start) else getString(R.string.continue_text)
         }
 
         navigateToHome.observe(viewLifecycleOwner) {
