@@ -21,22 +21,22 @@ class SettingViewModel(
     fun loadSettings() {
         val list = listOf(
             SettingModel(
-                title = getString(R.string.language),
+                titleRes = R.string.language,
                 iconRes = R.drawable.ic_language,
                 action = ::onLanguageClicked
             ),
             SettingModel(
-                title = getString(R.string.feed_back),
+                titleRes = R.string.feed_back,
                 iconRes = R.drawable.ic_feedback,
                 action = ::onFeedbackClicked
             ),
             SettingModel(
-                title = getString(R.string.policy),
+                titleRes = R.string.policy,
                 iconRes = R.drawable.ic_policy,
                 action = ::onPolicyClicked
             ),
             SettingModel(
-                title = getString(R.string.share_app),
+                titleRes = R.string.share_app,
                 iconRes = R.drawable.ic_share,
                 action = ::onShareClicked
             ),

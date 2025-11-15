@@ -55,9 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun setupListeners() = with(binding) {
         addAlarmCard.setOnClickListener {
-            navigate(
-                R.id.action_home_to_newAlarm
-            )
+            navigate(R.id.action_home_to_newAlarm)
         }
         floatBtnAdd.setOnClickListener {
             navigate(R.id.action_home_to_newAlarm)

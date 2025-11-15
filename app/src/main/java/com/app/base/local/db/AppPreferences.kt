@@ -25,7 +25,7 @@ class AppPreferences(context: Context) {
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     var appLanguage: String
-        get() = prefs.getString(LANG_KEY, "en") ?: "en"
+        get() = prefs.getString(LANG_KEY, null) ?: "en"
         set(value) {
             prefs.edit { putString(LANG_KEY, value) }
         }
