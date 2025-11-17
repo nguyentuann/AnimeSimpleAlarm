@@ -10,6 +10,7 @@ import com.app.base.databinding.FragmentHomeBinding
 import com.app.base.ui.alarm.AlarmAdapter
 import com.brally.mobile.base.activity.BaseFragment
 import com.brally.mobile.base.activity.navigate
+import com.brally.mobile.base.activity.onBackPressed
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
@@ -55,13 +56,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun setupListeners() = with(binding) {
         addAlarmCard.setOnClickListener {
-            navigate(R.id.action_home_to_newAlarm)
+            navigate(R.id.newAlarmFragment)
         }
         floatBtnAdd.setOnClickListener {
-            navigate(R.id.action_home_to_newAlarm)
+            navigate(R.id.newAlarmFragment)
         }
         toolBar.toolBarSetting.setOnClickListener {
-            navigate(R.id.action_home_to_setting)
+            navigate(R.id.settingFragment)
         }
     }
 
@@ -78,7 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun editAlarm(alarmId: String) {
         val bundle = bundleOf("alarm_id" to alarmId)
-        navigate(R.id.action_home_to_newAlarm, bundle)
+        navigate(R.id.newAlarmFragment, bundle)
     }
 
     private fun enableAlarm(alarm: AlarmModel) {

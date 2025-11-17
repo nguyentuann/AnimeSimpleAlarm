@@ -91,13 +91,13 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
             selectedIndex = selectedIndex,
             onSelected = { which ->
                 val selectedCode = codes[which]
-                requireContext().setAppLocale(selectedCode)
+                val newContext = requireContext().setAppLocale(selectedCode)
                 viewModel.prefs.appLanguage = selectedCode
                 requireActivity().recreate()
 
                 CommonComponents.toastText(
-                    requireContext(),
-                    getString(R.string.change_language)
+                    newContext,
+                    newContext.getString(R.string.change_language)
                 )
             },
             cancel = getString(R.string.cancel)

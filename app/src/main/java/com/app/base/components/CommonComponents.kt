@@ -1,10 +1,7 @@
 package com.app.base.components
 
-import android.app.AlertDialog
 import android.content.Context
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar

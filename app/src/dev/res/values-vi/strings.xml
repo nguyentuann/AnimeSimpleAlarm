@@ -103,6 +103,7 @@
 
     <string name="this_action_may_contain_ads">Hành động này có thể chứa quảng cáo..</string>
     <string name= "continue_text">Tiếp tục</string>
+    <string name="exit">Nhấn lần nữa để thoát</string>
 
 
 </resources>

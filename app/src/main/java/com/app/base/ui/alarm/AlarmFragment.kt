@@ -125,15 +125,15 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding, AlarmViewModel>() {
         binding.icSave.setOnClickListener { saveAlarm() }
 
         binding.btnCharacter.setOnClickListener {
-            navigate(R.id.action_new_to_character, bundle)
+            navigate(R.id.characterFragment, bundle)
         }
 
         binding.btnSound.setOnClickListener {
-            navigate(R.id.action_new_to_sound, bundle)
+            navigate(R.id.soundFragment, bundle)
         }
 
         binding.btnDates.setOnClickListener {
-            navigate(R.id.action_new_to_dates, bundle)
+            navigate(R.id.datesFragment, bundle)
         }
     }
 
