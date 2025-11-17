@@ -1,11 +1,9 @@
 package com.app.base.ui.settings
 
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
 import com.app.base.components.CommonComponents
-import com.app.base.components.CommonComponents.toastText
 import com.app.base.databinding.FragmentSettingBinding
 import com.app.base.helpers.setAppLocale
 import com.brally.mobile.base.activity.BaseFragment
@@ -93,17 +91,14 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
             selectedIndex = selectedIndex,
             onSelected = { which ->
                 val selectedCode = codes[which]
-                val contextWithNewLocale = requireContext().setAppLocale(selectedCode)
-
-                Toast.makeText(
-                    contextWithNewLocale,
-                    contextWithNewLocale.getString(R.string.change_language),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-
+                val newContext = requireContext().setAppLocale(selectedCode)
                 viewModel.prefs.appLanguage = selectedCode
                 requireActivity().recreate()
+
+                CommonComponents.toastText(
+                    newContext,
+                    newContext.getString(R.string.change_language)
+                )
             },
             cancel = getString(R.string.cancel)
         )

@@ -1,19 +1,20 @@
 package com.app.base
 
+import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.provider.Settings
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.app.base.databinding.ActivityMainBinding
 import com.app.base.helpers.PermissionHelper
-import com.app.base.helpers.setAppLocale
 import com.app.base.local.db.AppPreferences
 import com.brally.mobile.base.activity.navigate
 import com.brally.mobile.ui.features.main.BaseMainActivity
@@ -21,6 +22,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
 class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
+
+    private var lastBackPress = 0L
 
     override val viewModel: MainViewModel by viewModel()
 
@@ -50,10 +53,46 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
 
             setupBottomNavigation(controller)
 
+            setupBackPressHandler(controller)
+
             if (!viewModel.isFirstLaunch()) {
                 handleIntent(intent)
             }
         }
+    }
+
+    private fun setupBackPressHandler(navController: NavController) {
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                @SuppressLint("RestrictedApi")
+                override fun handleOnBackPressed() {
+
+                    // Entry 0 = graph, entry 1 = fragment hiện tại
+                    val backStack = navController.currentBackStack.value
+                    val isRoot = backStack.size <= 2
+
+                    if (!isRoot) {
+                        navController.popBackStack()
+                        return
+                    }
+
+                    val now = System.currentTimeMillis()
+
+                    if (now - lastBackPress < 2000) {
+                        // Thoát app
+                        finish()
+                    } else {
+                        lastBackPress = now
+                        Toast.makeText(
+                            this@MainActivity,
+                            R.string.exit,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        )
     }
 
     override fun attachBaseContext(newBase: Context) {
@@ -66,7 +105,6 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
         val newContext = newBase.createConfigurationContext(config)
         super.attachBaseContext(newContext)
     }
-
 
     override fun initListener() {
     }
@@ -89,14 +127,12 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             bottomNav.isVisible = when (destination.id) {
-                R.id.newAlarmFragment,
-                R.id.settingFragment,
-                R.id.characterFragment,
-                R.id.soundFragment,
-                R.id.datesFragment,
-                R.id.splashFragment -> false
+                R.id.homeFragment,
+                R.id.quickAlarmFragment,
+                R.id.timerFragment,
+                R.id.stopwatchFragment -> true
 
-                else -> true
+                else -> false
             }
         }
 

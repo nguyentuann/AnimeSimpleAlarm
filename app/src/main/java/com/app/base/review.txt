@@ -1,0 +1,18 @@
+Khi run,  gặp lỗi không navigate được ở bomNav
+và dữ liệu không cập nhật sau khi back hoặc thêm báo thức.
+B nên đọc lại base phần này, hàm initData() chỉ chạy 1 lần.
+
+
+Với dữ liệu UI thay đổi liên tục (như alarmList),
+observer nên đặt ở initView(), còn dữ liệu load 1 lần mới để ở initData()
+
+
+Trong base đã có sẵn extension navigate()
+được viết trong Nav.kt có tích hợp hiệu ứng chuyển cảnh (animation)
+và logic pop stack an toàn, bnên ưu tiên sử dụng hàm navigate()
+này thay vì gọi trực tiếp navController.navigate(...)
+
+
+Mình xem code thì thấy b đã xoá màn SplashFragment,
+nên sửa lại nhé, từ base code a Tuấn gửi thì
+chỉ bắt đầu code từ màn homeFragment và không xoá các màn có sẵn
