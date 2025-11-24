@@ -1,73 +1,131 @@
 package com.app.base.ui.settings
 
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.base.R
-import com.app.base.components.CommonComponents
+import com.app.base.components.RateAppBottomDialog
 import com.app.base.databinding.FragmentSettingBinding
-import com.app.base.helpers.setAppLocale
+import com.bg.common.Common
 import com.brally.mobile.base.activity.BaseFragment
+import com.brally.mobile.base.activity.isCmpRequired
+import com.brally.mobile.base.activity.navigate
+import com.brally.mobile.base.activity.showDialog
+import com.brally.mobile.base.activity.showPrivacyOptionForm
+import com.brally.mobile.base.application.appInfo
+import com.brally.mobile.service.event.CMP_MESSAGE_SHOW
+import com.brally.mobile.service.event.CONSENT_ALL_FAILED
+import com.brally.mobile.service.event.CONSENT_ALL_SUCCESS
+import com.brally.mobile.service.event.CONSENT_SOME_OPTIONS
+import com.brally.mobile.service.event.PURPOSE_AMOUNT
+import com.brally.mobile.service.event.SETTING_CLICK_CMP
+import com.brally.mobile.service.event.SETTING_CLICK_FEEDBACK
+import com.brally.mobile.service.event.SETTING_CLICK_LANGUAGE
+import com.brally.mobile.service.event.SETTING_CLICK_POLICY
+import com.brally.mobile.service.event.SETTING_CLICK_RATE
+import com.brally.mobile.service.event.SETTING_CLICK_SHARE
+import com.brally.mobile.service.event.SETTING_CLICK_TERM
+import com.brally.mobile.service.event.SETTING_SHOW
+import com.brally.mobile.service.event.VENDORS_AMOUNT
+import com.brally.mobile.service.firebase.AppRemoteConfig
+import com.brally.mobile.service.session.isMusic
+import com.brally.mobile.service.session.isSound
+import com.brally.mobile.service.session.isVibrate
+import com.brally.mobile.service.sound.AppMusicPlayer
+import com.brally.mobile.utils.singleClick
+import com.braly.ads.ads.interf.BralyResultConsentForm
+import com.google.android.ump.FormError
+import com.language_onboard.utils.tracking
 
-class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>() {
-
-    private lateinit var settingAdapter: SettingAdapter
+class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>(),
+    BralyResultConsentForm {
 
     override fun initView() {
+        tracking(SETTING_SHOW)
+//        adjustInsetsForBottomNavigation(binding.clToolbar)
         setUpToolbar()
-
-        settingAdapter = SettingAdapter()
-        binding.settingRecyclerView.apply {
-            adapter = settingAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-
-        viewModel.loadSettings()
     }
 
     override fun initListener() {
-        observeSettings()
-        observeEvents()
-    }
 
-    override fun initData() {}
-
-    private fun observeSettings() {
-        viewModel.settingList.observe(viewLifecycleOwner) { list ->
-            settingAdapter.submitList(list)
+        binding.llLanguage.singleClick {
+            tracking(SETTING_CLICK_LANGUAGE)
+            navigate(R.id.languageAppFragment)
         }
-    }
-
-    private fun observeEvents() {
-        viewModel.events.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { handleEvent(it) }
-        }
-    }
-
-    private fun handleEvent(event: SettingViewModel.SettingEvent) {
-        when (event) {
-            SettingViewModel.SettingEvent.ShowLanguageDialog -> showLanguageDialog()
-            SettingViewModel.SettingEvent.ShowFeedbackDialog -> feedback()
-            SettingViewModel.SettingEvent.ShowDevelopingToast -> developing()
-        }
-    }
-
-    private fun developing() {
-        CommonComponents.toastText(
-            context = requireContext(),
-            message = getString(R.string.developing)
-        )
-    }
-
-    private fun feedback() {
-        CommonComponents.showRatingDialog(
-            context = requireContext(),
-            onSubmit = { _, _ ->
-                CommonComponents.toastText(
-                    requireContext(),
-                    getString(R.string.thank_feedback)
-                )
+        binding.llShare.singleClick {
+            tracking(SETTING_CLICK_SHARE)
+            activity?.let {
+                Common.shareApp(it, getString(R.string.app_name))
             }
+        }
+        binding.llRate.singleClick {
+            tracking(SETTING_CLICK_RATE)
+            showDialog(RateAppBottomDialog.getInstance(), RateAppBottomDialog::class.java.name)
+        }
+        binding.llFeedback.singleClick {
+            tracking(SETTING_CLICK_FEEDBACK)
+            activity?.let {
+                Common.sendFeedback(it, getString(R.string.app_name), appInfo().emailFeedback, null)
+            }
+        }
+        binding.llPolicy.singleClick {
+            tracking(SETTING_CLICK_POLICY)
+            activity?.let {
+                Common.openWebView(it, appInfo().privacy)
+            }
+        }
+
+        binding.llTerm.singleClick {
+            tracking(SETTING_CLICK_TERM)
+            activity?.let {
+                Common.openWebView(it, appInfo().term)
+            }
+        }
+
+        binding.llCmpSetting.isVisible = isCmpRequired() && AppRemoteConfig.getShowCmp()
+        binding.llCmpSetting.singleClick {
+            tracking(SETTING_CLICK_CMP)
+            showPrivacyOptionForm(this)
+        }
+    }
+
+    override fun initData() {
+    }
+
+    private fun checkPlaySound() {
+        if (isMusic()) {
+            AppMusicPlayer.playBackgroundMusic()
+        } else {
+            AppMusicPlayer.stop()
+            AppMusicPlayer.releaseBackgroundMusic()
+        }
+    }
+
+    override fun onConsentCustom(consentPurpose: Int, consentVendor: Int) {
+        tracking(
+            CONSENT_SOME_OPTIONS,
+            hashMapOf(
+                PURPOSE_AMOUNT to consentPurpose.toString(),
+                VENDORS_AMOUNT to consentVendor.toString()
+            )
         )
+        tracking(CONSENT_SOME_OPTIONS)
+    }
+
+    override fun onConsentFull(isConsentFullBefore: Boolean) {
+        tracking(CONSENT_ALL_SUCCESS)
+    }
+
+    override fun onConsentReject() {
+        tracking(CONSENT_ALL_FAILED)
+    }
+
+    override fun onConsentSkip() {
+    }
+
+    override fun onError(error: FormError) {
+    }
+
+    override fun onShowConsentForm() {
+        tracking(CMP_MESSAGE_SHOW)
     }
 
     private fun setUpToolbar() = with(binding.settingToolbar) {
@@ -76,31 +134,5 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         }
         ivToolbarAction.isVisible = false
         tvToolbarTitle.text = getString(R.string.settings)
-    }
-
-    private fun showLanguageDialog() {
-        val languages = arrayOf("English", "Tiếng Việt")
-        val codes = arrayOf("en", "vi")
-        val currentLang = viewModel.prefs.appLanguage
-        val selectedIndex = codes.indexOf(currentLang).takeIf { it >= 0 } ?: 0
-
-        CommonComponents.showSingleChoiceDialog(
-            requireContext(),
-            title = getString(R.string.language),
-            options = languages,
-            selectedIndex = selectedIndex,
-            onSelected = { which ->
-                val selectedCode = codes[which]
-                val newContext = requireContext().setAppLocale(selectedCode)
-                viewModel.prefs.appLanguage = selectedCode
-                requireActivity().recreate()
-
-                CommonComponents.toastText(
-                    newContext,
-                    newContext.getString(R.string.change_language)
-                )
-            },
-            cancel = getString(R.string.cancel)
-        )
     }
 }

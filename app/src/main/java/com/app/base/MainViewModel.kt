@@ -9,8 +9,6 @@ class MainViewModel(
     private val appPrefs: AppPreferences
 ) : BaseViewModel() {
 
-    fun getAppLanguage(): String = appPrefs.appLanguage
-
     fun isFirstLaunch(): Boolean = appPrefs.isFirstLaunch
 
     fun markFirstLaunchCompleted() {

@@ -3,6 +3,7 @@ package com.app.base
 import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
@@ -10,18 +11,23 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.isVisible
 import androidx.navigation.NavController
-import androidx.navigation.ui.setupWithNavController
 import com.app.base.databinding.ActivityMainBinding
+import com.app.base.helpers.ContextUtils
 import com.app.base.helpers.PermissionHelper
 import com.app.base.local.db.AppPreferences
-import com.brally.mobile.base.activity.navigate
+import com.app.base.utils.LogUtil
 import com.brally.mobile.ui.features.main.BaseMainActivity
+import com.language_onboard.data.local.CommonAppSharePref
+import com.language_onboard.data.model.Language
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
+import kotlin.getValue
 
 class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
+
+    private val commonSharePref by inject<CommonAppSharePref>()
 
     private var lastBackPress = 0L
 
@@ -51,12 +57,12 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
             )
             controller.graph = navGraph
 
-            setupBottomNavigation(controller)
-
             setupBackPressHandler(controller)
 
             if (!viewModel.isFirstLaunch()) {
                 handleIntent(intent)
+            } else {
+                LogUtil.log("First launch, skipping intent handling")
             }
         }
     }
@@ -95,21 +101,28 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
         )
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        val prefs = AppPreferences(newBase)
-        val locale = Locale(prefs.appLanguage)
+//    override fun attachBaseContext(newBase: Context) {
+//        val prefs = AppPreferences(newBase)
+//        val locale = Locale(prefs.appLanguage)
+//
+//        val config = Configuration(newBase.resources.configuration)
+//        config.setLocale(locale)
+//
+//        val newContext = newBase.createConfigurationContext(config)
+//        super.attachBaseContext(newContext)
+//    }
 
-        val config = Configuration(newBase.resources.configuration)
-        config.setLocale(locale)
-
-        val newContext = newBase.createConfigurationContext(config)
-        super.attachBaseContext(newContext)
+    override fun attachBaseContext(context: Context) {
+        val locale = commonSharePref.languageCode ?: Language.ENGLISH.countryCode
+        val localeUpdatedContext: ContextWrapper =
+            ContextUtils.updateLocale(context, Locale(locale))
+        super.attachBaseContext(localeUpdatedContext)
     }
 
-    override fun initListener() {
-    }
+    override fun initListener() {}
 
     override fun initData() {
+        viewModel.markFirstLaunchCompleted()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -117,69 +130,20 @@ class MainActivity : BaseMainActivity<ActivityMainBinding, MainViewModel>() {
         handleIntent(intent)
     }
 
-    override fun onFlowFinished() {
-        viewModel.markFirstLaunchCompleted()
-    }
-
-    private fun setupBottomNavigation(navController: NavController) {
-        val bottomNav = binding.bottomNav
-        bottomNav.setupWithNavController(navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            bottomNav.isVisible = when (destination.id) {
-                R.id.homeFragment,
-                R.id.quickAlarmFragment,
-                R.id.timerFragment,
-                R.id.stopwatchFragment -> true
-
-                else -> false
-            }
-        }
-
-        bottomNav.setOnItemSelectedListener { item ->
-            navController.currentDestination?.id?.let { currentId ->
-                if (currentId == item.itemId) {
-                    return@setOnItemSelectedListener true
-                }
-            }
-            when (item.itemId) {
-                R.id.homeFragment -> {
-                    navigate(R.id.homeFragment)
-                    true
-                }
-
-                R.id.quickAlarmFragment -> {
-                    navigate(R.id.quickAlarmFragment)
-                    true
-                }
-
-                R.id.timerFragment -> {
-                    navigate(R.id.timerFragment)
-                    true
-                }
-
-                R.id.stopwatchFragment -> {
-                    navigate(R.id.stopwatchFragment)
-                    true
-                }
-
-                else -> false
-            }
-        }
-    }
-
     private fun handleIntent(intent: Intent?) {
-        viewModel.getDestinationFromIntent(intent)?.let { destination ->
-            navController?.navigate(destination)
-            // Cập nhật BottomNavigationView tương ứng
-            binding.bottomNav.selectedItemId = when (destination) {
-                R.id.timerFragment -> R.id.timerFragment
-                R.id.stopwatchFragment -> R.id.stopwatchFragment
-                else -> binding.bottomNav.selectedItemId
-            }
-            // Xóa extra để tránh navigate lại
+        LogUtil.log("MainActivity received intent: $intent")
+        val destination = viewModel.getDestinationFromIntent(intent)
+        destination?.let {
+            LogUtil.log("MainActivity handling intent to navigate to: $it")
+            // Chỉ cần đảm bảo MainHomeFragment đang hiện
+            navController?.navigate(R.id.mainHomeFragment)
+            // Truyền thông tin destination xuống fragment
+            navController?.currentBackStackEntry?.savedStateHandle?.set("destination", it)
             viewModel.consumeIntent(intent)
         }
+    }
+
+    override fun onFlowFinished() {
     }
 }
 

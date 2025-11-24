@@ -2,7 +2,6 @@ package com.app.base.ui.alarm
 
 import android.os.Bundle
 import androidx.core.widget.doOnTextChanged
-import androidx.navigation.fragment.findNavController
 import com.app.base.R
 import com.app.base.components.CommonComponents
 import com.app.base.data.model.toMyString
