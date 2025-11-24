@@ -104,6 +104,11 @@
     <string name="this_action_may_contain_ads">Hành động này có thể chứa quảng cáo..</string>
     <string name= "continue_text">Tiếp tục</string>
     <string name="exit">Nhấn lần nữa để thoát</string>
+    <string name="rate_5_stars">Đánh giá 5 sao</string>
+    <string name="share_to_your_friends">Chia sẻ với bạn bè</string>
+    <string name="term">Điều khoản sử dụng</string>
+    <string name="cmp_setting">Cài đặt CMP</string>
+    <string name="rate_us">Đánh giá chúng tôi</string>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.brally.mobile.ui.features.splash
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
@@ -55,17 +56,17 @@ abstract class BaseSplashFragment<VB : ViewBinding, VM : BaseViewModel> :
             OnboardingItem(
                 type = OnboardingType.IMAGE.type,
                 title = null,
-                imageRes = R.drawable.img_onboard_1,
+                imageRes = R.drawable.onboarding1,
                 nativeAdsLayoutRes = R.layout.layout_native_onboard
             ), OnboardingItem(
                 type = OnboardingType.IMAGE.type,
                 title = null,
-                imageRes = R.drawable.img_onboard_2,
+                imageRes = R.drawable.onboarding2,
                 nativeAdsLayoutRes = R.layout.layout_native_onboard
             ), OnboardingItem(
                 type = OnboardingType.IMAGE.type,
                 title = null,
-                imageRes = R.drawable.img_onboard_3,
+                imageRes = R.drawable.onboarding3,
                 nativeAdsLayoutRes = R.layout.layout_native_onboard,
             )
         )
@@ -88,6 +89,7 @@ abstract class BaseSplashFragment<VB : ViewBinding, VM : BaseViewModel> :
                 onAdDismiss = {
                     lifecycleScope.launch {
                         if (isFirst()) {
+                            Log.d("BaseSplashFragment", "Opening Onboarding Screen")
                             openOnboardingScreen()
                         } else {
                             openHome()

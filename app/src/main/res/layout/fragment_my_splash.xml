@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp_36">
+
+    <!-- ViewPager2 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@id/btnNext"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- Nút điều khiển -->
+    <Button
+        android:id="@+id/btnNext"
+        style="@style/btnNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/primary"
+        android:fontFamily="@font/open_sans_medium"
+        android:paddingVertical="@dimen/dp_16"
+        android:text="@string/continue_text"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        android:textSize="@dimen/sp_18" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:indeterminate="true"
+        android:padding="@dimen/_1sdp"
+        app:indicatorColor="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/tvContentAds"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent=".55"
+        app:trackColor="@color/white"
+        app:trackCornerRadius="@dimen/_40sdp"
+        app:trackThickness="@dimen/_12dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvContentAds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:fontFamily="@font/baloothambi2_semibold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="@string/this_action_may_contain_ads"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@id/banner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:minHeight="@dimen/_60sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

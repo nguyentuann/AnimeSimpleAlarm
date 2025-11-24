@@ -1,9 +1,9 @@
 package com.language_onboard.data.local
 
 import android.content.Context
-import android.content.res.Configuration
+import android.util.Log
 import java.util.Locale
-
+import androidx.core.content.edit
 
 class CommonAppSharePref(private val context: Context) {
     companion object {
@@ -18,20 +18,25 @@ class CommonAppSharePref(private val context: Context) {
     var isEnableLanguage: Boolean
         get() = sharePref.getBoolean(PREF_SHOW_LANGUAGE, false)
         set(value) {
-            sharePref.edit().putBoolean(PREF_SHOW_LANGUAGE, value).apply()
+            sharePref.edit { putBoolean(PREF_SHOW_LANGUAGE, value) }
         }
 
     var languageCode: String?
         get() = sharePref.getString(PREF_LANGUAGE_CODE, null)
         set(value) {
-            sharePref.edit().putString(PREF_LANGUAGE_CODE, value).apply()
+            sharePref.edit { putString(PREF_LANGUAGE_CODE, value) }
         }
 
     fun applyLanguage(languageCode: String) {
+        Log.d("CommonAppSharePref", "Applying language: $languageCode")
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
-        val config = Configuration()
+
+        val config = context.resources.configuration
         config.setLocale(locale)
-        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+        config.setLayoutDirection(locale)
+
+        context.createConfigurationContext(config)
     }
+
 }

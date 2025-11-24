@@ -6,11 +6,19 @@
     app:startDestination="@id/homeFragment"
     tools:ignore="InvalidNavigation">
 
+
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.app.base.ui.splash.SplashFragment"
         tools:layout="@layout/fragment_splash">
     </fragment>
+
+    <fragment
+        android:id="@+id/mainHomeFragment"
+        android:name="com.app.base.ui.root.RootFragment"
+        tools:layout="@layout/fragment_main_home">
+    </fragment>
+
 
     <fragment
         android:id="@+id/homeFragment"
@@ -43,6 +51,10 @@
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.app.base.ui.settings.SettingFragment" />
+
+    <fragment
+        android:id="@+id/languageAppFragment"
+        android:name="com.app.base.ui.language.LanguageAppFragment" />
 
     <fragment
         android:id="@+id/characterFragment"

@@ -117,5 +117,11 @@
 
     <string name="exit">Press again to exit </string>
 
+    <string name="rate_5_stars">Rate 5 stars</string>
+    <string name="share_to_your_friends">Share to your friends</string>
+    <string name="term">Term of use</string>
+    <string name="cmp_setting">Cmp setting</string>
+    <string name="max_size_feedback_text" translatable="false">%d/500</string>
+    <string name="rate_us">Rate Us</string>
 
 </resources>
